@@ -1,3 +1,2 @@
-Humlands - The Game
-
-    Das Spiel
+#Humlands - The Game
+Das Spiel
