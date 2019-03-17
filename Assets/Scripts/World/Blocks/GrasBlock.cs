@@ -19,8 +19,7 @@ public class GrassBlock : Block
                 return new Vector2(1,4);
             case Direction.DOWN:
                 return new Vector2(7,4);
-            default:
-                return new Vector2(4,4);
         }
+        return new Vector2(4, 4);
     }
 }
