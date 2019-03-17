@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[Serializable]
 public class GrassBlock : Block
 {
     public override bool IsSolid(Direction direction)
@@ -14,11 +16,11 @@ public class GrassBlock : Block
         switch(direction)
         {
             case Direction.UP:
-                return new Vector2(1,0);
+                return new Vector2(1,4);
             case Direction.DOWN:
-                return new Vector2(3,0);
+                return new Vector2(7,4);
             default:
-                return new Vector2(2,0);
+                return new Vector2(4,4);
         }
     }
 }

@@ -9,6 +9,7 @@ public class Modify : MonoBehaviour
 
     void Update()
     {
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             RaycastHit hit;

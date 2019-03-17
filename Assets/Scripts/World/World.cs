@@ -6,6 +6,33 @@ public class World : MonoBehaviour
 {
     public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
     public GameObject chunkPrefab;
+    public string worldName = "world";
+
+    public int newChunkX;
+    public int newChunkY;
+    public int newChunkZ;
+
+    public bool genChunk;
+
+    private void Update()
+    {
+
+        if (genChunk)
+        {
+            genChunk = false;
+            WorldPos chunkPos = new WorldPos(newChunkX, newChunkY, newChunkZ);
+            Chunk chunk = null;
+
+            if (chunks.TryGetValue(chunkPos, out chunk))
+            {
+                DestroyChunk(chunkPos.x, chunkPos.y, chunkPos.z);
+            }
+            else
+            {
+                CreateChunk(chunkPos.x, chunkPos.y, chunkPos.z);
+            }
+        }
+    }
 
     public void Start()
     {
@@ -19,7 +46,9 @@ public class World : MonoBehaviour
                 }
             }
         }
+
     }
+
 
     public void CreateChunk(int x, int y, int z)
     {
@@ -33,6 +62,30 @@ public class World : MonoBehaviour
         newChunk.world = this;
 
         chunks.Add(worldPos, newChunk);
+
+        bool loaded = Serialization.Load(newChunk);
+        if (loaded)
+            return;
+        
+        for (int xi = 0; xi < 16; xi++)
+        {
+            for (int yi = 0; yi < 16; yi++)
+            {
+                for (int zi = 0; zi < 16; zi++)
+                {
+                    if (yi <= 7)
+                    {
+                        SetBlock(x + xi, y + yi, z + zi, new GrassBlock(), false);
+                    }
+                    else
+                    {
+                        SetBlock(x + xi, y + yi, z + zi, new AirBlock(), false);
+                    }
+                }
+            }
+        }
+        newChunk.update = true;
+        
     }
 
     public Chunk GetChunk(int x, int y, int z)
@@ -66,13 +119,12 @@ public class World : MonoBehaviour
 
     }
 
-    public void SetBlock(int x, int y, int z, Block block)
+    public void SetBlock(int x, int y, int z, Block block, bool update = true)
     {
         Chunk chunk = GetChunk(x, y, z);
-
         if (chunk != null)
         {
-            chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, block);
+            chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, block, update);
 
             UpdateIfEqual(x - chunk.pos.x, 0, new WorldPos(x - 1, y, z));
             UpdateIfEqual(x - chunk.pos.x, Chunk.chunkSize - 1, new WorldPos(x + 1, y, z));
@@ -88,6 +140,7 @@ public class World : MonoBehaviour
         Chunk chunk = null;
         if (chunks.TryGetValue(new WorldPos(x, y, z), out chunk))
         {
+            Serialization.SaveChunk(chunk);
             Object.Destroy(chunk.gameObject);
             chunks.Remove(new WorldPos(x, y, z));
         }

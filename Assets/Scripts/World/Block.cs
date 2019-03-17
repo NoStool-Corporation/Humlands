@@ -1,34 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public enum Direction { NORTH, EAST, SOUTH, WEST, UP, DOWN };
 
+[Serializable]
 public class Block
 {
 
-    public const float tileSize = 0.25f;
+    public const float tileSize = 0.1f;
 
     public virtual Vector2 TexturePosition(Direction direction)
     {
         Vector2 tile = new Vector2();
-        tile.x = 2;
-        tile.y = 1;
+        tile.x = 0;
+        tile.y = 0;
         return tile;
     }
 
     public virtual Vector2[] FaceUVs(Direction direction)
     {
+        float test = 0;
+
         Vector2[] UVs = new Vector2[4];
         Vector2 tilePos = TexturePosition(direction);
-        UVs[0] = new Vector2(tileSize * tilePos.x + tileSize,
-            tileSize * tilePos.y);
-        UVs[1] = new Vector2(tileSize * tilePos.x + tileSize,
-            tileSize * tilePos.y + tileSize);
-        UVs[2] = new Vector2(tileSize * tilePos.x,
-            tileSize * tilePos.y + tileSize);
-        UVs[3] = new Vector2(tileSize * tilePos.x,
-            tileSize * tilePos.y);
+        UVs[0] = new Vector2(tileSize * tilePos.x + tileSize - test,
+            tileSize * tilePos.y + test);
+        UVs[1] = new Vector2(tileSize * tilePos.x + tileSize - test,
+            tileSize * tilePos.y + tileSize - test);
+        UVs[2] = new Vector2(tileSize * tilePos.x + test,
+            tileSize * tilePos.y + tileSize - test);
+        UVs[3] = new Vector2(tileSize * tilePos.x + test,
+            tileSize * tilePos.y + test);
         return UVs;
     }
 

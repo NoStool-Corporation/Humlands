@@ -9,8 +9,8 @@ using UnityEngine;
 public class Chunk : MonoBehaviour
 {
     public static int chunkSize = 16;
-    Block[,,] blocks = new Block[chunkSize, chunkSize, chunkSize];
-    public bool update = true;
+    public Block[,,] blocks;
+    public bool update = false;
 
     public World world;
     public WorldPos pos;
@@ -18,30 +18,15 @@ public class Chunk : MonoBehaviour
     MeshFilter filter;
     MeshCollider coll;
 
+    public Chunk()
+    {
+        blocks = new Block[chunkSize, chunkSize, chunkSize];
+    }
+
     void Start()
     {
         filter = gameObject.GetComponent<MeshFilter>();
         coll = gameObject.GetComponent<MeshCollider>();
-
-        blocks = new Block[chunkSize, chunkSize, chunkSize];
-        for (int x = 0; x < chunkSize; x++)
-        {
-            for (int y = 0; y < chunkSize; y++)
-            {
-                for (int z = 0; z < chunkSize; z++)
-                {
-                    blocks[x, y, z] = new AirBlock();
-                    if (y == 0 || y == 1)
-                        blocks[x, y, z] = new StoneBlock();
-                    if (y == 2)
-                        blocks[x, y, z] = new GrassBlock();
-                }
-            }
-        }
-
-
-
-        UpdateChunk();
     }
 
     public Block GetBlock(int x, int y, int z)
@@ -51,16 +36,16 @@ public class Chunk : MonoBehaviour
         return world.GetBlock(pos.x + x, pos.y + y, pos.z + z);
     }
 
-    public void SetBlock(int x, int y, int z, Block block)
+    public void SetBlock(int x, int y, int z, Block block, bool update = true)
     {
         if (InRange(x) && InRange(y) && InRange(z))
         {
             blocks[x, y, z] = block;
-            update = true;
+            this.update = update;
         }
         else
         {
-            world.SetBlock(pos.x + x, pos.y + y, pos.z + z, block);
+            world.SetBlock(pos.x + x, pos.y + y, pos.z + z, block, update);
         }
     }
 
@@ -76,7 +61,7 @@ public class Chunk : MonoBehaviour
     {
         if (!update)
             return;
-        
+
         update = false;
         UpdateChunk();
     }
