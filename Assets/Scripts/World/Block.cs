@@ -8,7 +8,7 @@ public enum Direction { NORTH, EAST, SOUTH, WEST, UP, DOWN };
 [Serializable]
 public class Block
 {
-
+    public bool changed = true;
     public const float tileSize = 0.1f;
 
     public virtual Vector2 TexturePosition(Direction direction)

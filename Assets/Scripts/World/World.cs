@@ -62,10 +62,6 @@ public class World : MonoBehaviour
         newChunk.world = this;
 
         chunks.Add(worldPos, newChunk);
-
-        bool loaded = Serialization.Load(newChunk);
-        if (loaded)
-            return;
         
         for (int xi = 0; xi < 16; xi++)
         {
@@ -84,9 +80,38 @@ public class World : MonoBehaviour
                 }
             }
         }
+
+        newChunk.SetBlocksUnmodified();
+        Serialization.Load(newChunk);   
+
         newChunk.update = true;
-        
+        //apparently neighbor chunks already update?
+        //UpdateNeighborChunks(newChunk);
     }
+    
+    /*public void UpdateNeighborChunks(Chunk midChunk)
+    {
+        WorldPos pos = midChunk.pos;
+        Chunk c1 = GetChunk(pos.x + 16, pos.y, pos.z);
+        Chunk c2 = GetChunk(pos.x, pos.y + 16, pos.z);
+        Chunk c3 = GetChunk(pos.x, pos.y, pos.z + 16);
+        Chunk c4 = GetChunk(pos.x - 16, pos.y, pos.z);
+        Chunk c5 = GetChunk(pos.x, pos.y - 16, pos.z);
+        Chunk c6 = GetChunk(pos.x, pos.y, pos.z - 16);
+
+        if (c1 != null)
+            c1.update = true;
+        if (c2 != null)
+            c2.update = true;
+        if (c3 != null)
+            c3.update = true;
+        if (c4 != null)
+            c4.update = true;
+        if (c5 != null)
+            c5.update = true;
+        if (c6 != null)
+            c6.update = true;
+    }*/
 
     public Chunk GetChunk(int x, int y, int z)
     {

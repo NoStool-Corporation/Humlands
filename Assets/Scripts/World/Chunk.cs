@@ -82,6 +82,14 @@ public class Chunk : MonoBehaviour
         RenderMesh(meshData);
     }
 
+    public void SetBlocksUnmodified()
+    {
+        foreach (Block block in blocks)
+        {
+            block.changed = false;
+        }
+    }
+
     void RenderMesh(MeshData meshData)
     {
         filter.mesh.Clear();
