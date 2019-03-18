@@ -10,13 +10,15 @@ public class Chunk : MonoBehaviour
 {
     public static int chunkSize = 16;
     public Block[,,] blocks;
-    public bool update = false;
-
     public World world;
     public WorldPos pos;
-
     MeshFilter filter;
     MeshCollider coll;
+    public int updates;
+
+    public bool update = false;
+    public bool updateNeighbors = false;
+    public bool rendered;
 
     public Chunk()
     {
@@ -27,6 +29,7 @@ public class Chunk : MonoBehaviour
     {
         filter = gameObject.GetComponent<MeshFilter>();
         coll = gameObject.GetComponent<MeshCollider>();
+        updates = 0;
     }
 
     public Block GetBlock(int x, int y, int z)
@@ -59,15 +62,22 @@ public class Chunk : MonoBehaviour
 
     private void Update()
     {
-        if (!update)
-            return;
+        if (update)
+        {
+            update = false;
+            UpdateChunk();
+        }
+        if (updateNeighbors)
+        {
+            updateNeighbors = false;
+            UpdateNeighbors();
+        }
 
-        update = false;
-        UpdateChunk();
     }
 
     void UpdateChunk()
     {
+        updates++;
         MeshData meshData = new MeshData();
         for (int x = 0; x < chunkSize; x++)
         {
@@ -80,6 +90,7 @@ public class Chunk : MonoBehaviour
             }
         }
         RenderMesh(meshData);
+        rendered = true;
     }
 
     public void SetBlocksUnmodified()
@@ -88,6 +99,23 @@ public class Chunk : MonoBehaviour
         {
             block.changed = false;
         }
+    }
+
+    public void UpdateNeighbors()
+    {
+        Chunk[] chunks =
+        {
+            world.GetChunk(pos.x + 16, pos.y, pos.z),
+            world.GetChunk(pos.x, pos.y + 16, pos.z),
+            world.GetChunk(pos.x, pos.y, pos.z + 16),
+            world.GetChunk(pos.x - 16, pos.y, pos.z),
+            world.GetChunk(pos.x, pos.y - 16, pos.z),
+            world.GetChunk(pos.x, pos.y, pos.z - 16)
+        };
+
+        foreach (Chunk c in chunks)
+            if (c != null)
+                c.update = true;
     }
 
     void RenderMesh(MeshData meshData)

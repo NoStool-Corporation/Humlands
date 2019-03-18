@@ -15,42 +15,6 @@ public class World : MonoBehaviour
 
     public bool genChunk;
 
-    private void Update()
-    {
-
-        if (genChunk)
-        {
-            genChunk = false;
-            WorldPos chunkPos = new WorldPos(newChunkX, newChunkY, newChunkZ);
-            Chunk chunk = null;
-
-            if (chunks.TryGetValue(chunkPos, out chunk))
-            {
-                DestroyChunk(chunkPos.x, chunkPos.y, chunkPos.z);
-            }
-            else
-            {
-                CreateChunk(chunkPos.x, chunkPos.y, chunkPos.z);
-            }
-        }
-    }
-
-    public void Start()
-    {
-        for (int x = -10; x < 10; x++)
-        {
-            for (int y = -3; y < 3; y++)
-            {
-                for (int z = -10; z < 10; z++)
-                {
-                    CreateChunk(x * 16 + 6400, y * 16, z * 16 + 64000);
-                }
-            }
-        }
-
-    }
-
-
     public void CreateChunk(int x, int y, int z)
     {
         WorldPos worldPos = new WorldPos(x, y, z);
@@ -73,33 +37,7 @@ public class World : MonoBehaviour
         Serialization.Load(newChunk);   
 
         newChunk.update = true;
-        //apparently neighbor chunks already update?
-        //UpdateNeighborChunks(newChunk);
     }
-    
-    /*public void UpdateNeighborChunks(Chunk midChunk)
-    {
-        WorldPos pos = midChunk.pos;
-        Chunk c1 = GetChunk(pos.x + 16, pos.y, pos.z);
-        Chunk c2 = GetChunk(pos.x, pos.y + 16, pos.z);
-        Chunk c3 = GetChunk(pos.x, pos.y, pos.z + 16);
-        Chunk c4 = GetChunk(pos.x - 16, pos.y, pos.z);
-        Chunk c5 = GetChunk(pos.x, pos.y - 16, pos.z);
-        Chunk c6 = GetChunk(pos.x, pos.y, pos.z - 16);
-
-        if (c1 != null)
-            c1.update = true;
-        if (c2 != null)
-            c2.update = true;
-        if (c3 != null)
-            c3.update = true;
-        if (c4 != null)
-            c4.update = true;
-        if (c5 != null)
-            c5.update = true;
-        if (c6 != null)
-            c6.update = true;
-    }*/
 
     public Chunk GetChunk(int x, int y, int z)
     {

@@ -8,13 +8,13 @@ public class TerrainGen
 
     float stoneBaseHeight = -24;
     float stoneBaseNoise = 0.05f;
-    float stoneBaseNoiseHeight = 2;
-    float stoneMountainHeight = 24;
+    float stoneBaseNoiseHeight = 1;
+    float stoneMountainHeight = 48;
     float stoneMountainFrequency = 0.008f;
     float stoneMinHeight = -12;
     float dirtBaseHeight = 4;
     float dirtNoise = 0.04f;
-    float dirtNoiseHeight = 3;
+    float dirtNoiseHeight = 2;
 
     public Chunk ChunkGen(Chunk chunk, int seed)
     {
