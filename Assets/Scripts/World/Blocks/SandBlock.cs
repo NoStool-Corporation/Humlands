@@ -8,6 +8,6 @@ public class SandBlock : Block
 {
     public override Vector2 TexturePosition(Direction direction)
     {
-        return new Vector2(0,1);
+        return new Vector2(1,1);
     }
 }

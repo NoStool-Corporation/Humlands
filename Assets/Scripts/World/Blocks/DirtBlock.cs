@@ -4,10 +4,10 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class SnowBlock : Block
+public class DirtBlock : Block
 {
     public override Vector2 TexturePosition(Direction direction)
     {
-        return new Vector2(4,1);
+        return new Vector2(7, 4);
     }
 }
