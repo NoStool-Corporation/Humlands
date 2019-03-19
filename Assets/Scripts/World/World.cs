@@ -15,7 +15,7 @@ public class World : MonoBehaviour
 
     public bool genChunk;
 
-    public void CreateChunk(int x, int y, int z)
+    public Chunk CreateChunk(int x, int y, int z)
     {
         WorldPos worldPos = new WorldPos(x, y, z);
 
@@ -37,6 +37,7 @@ public class World : MonoBehaviour
         Serialization.Load(newChunk);   
 
         newChunk.update = true;
+        return newChunk;
     }
 
     public Chunk GetChunk(int x, int y, int z)

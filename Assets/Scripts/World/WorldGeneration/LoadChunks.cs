@@ -47,7 +47,7 @@ public class LoadChunks : MonoBehaviour
                                             new WorldPos(-6, 0, -5), new WorldPos(-6, 0,  5), new WorldPos(-5, 0, -6), new WorldPos(-5, 0,  6), new WorldPos( 5, 0, -6),
                                             new WorldPos( 5, 0,  6), new WorldPos( 6, 0, -5), new WorldPos( 6, 0,  5) };
     //int renderDistanceXZ = 8;
-    int renderDistanceY = 4;
+    int renderDistanceY = 2;
 
     int timer = 0;
 
@@ -99,10 +99,11 @@ public class LoadChunks : MonoBehaviour
         }
     }
 
-    void BuildChunk(WorldPos pos)
+    Chunk BuildChunk(WorldPos pos)
     {
         if (world.GetChunk(pos.x, pos.y, pos.z) == null)
-            world.CreateChunk(pos.x, pos.y, pos.z);
+            return world.CreateChunk(pos.x, pos.y, pos.z);
+        return null;
     }
 
     void LoadAndRenderChunks()
@@ -111,7 +112,10 @@ public class LoadChunks : MonoBehaviour
         {
             for (int i = 0; i < buildList.Count && i < 8; i++)
             {
-                BuildChunk(buildList[0]);
+                Chunk chunk = BuildChunk(buildList[0]);
+                if(chunk != null)
+                    chunk.updateNeighbors = true;
+
                 buildList.RemoveAt(0);
             }
             return;
@@ -122,7 +126,6 @@ public class LoadChunks : MonoBehaviour
             if (chunk != null)
             {
                 chunk.update = true;
-                chunk.updateNeighbors = true;
             }
             updateList.RemoveAt(0);
         }
@@ -138,13 +141,15 @@ public class LoadChunks : MonoBehaviour
                 float distance = Vector3.Distance(
                     new Vector3(chunk.Value.pos.x, 0, chunk.Value.pos.z),
                     new Vector3(transform.position.x, 0, transform.position.z));
-                if (distance > 256)
+                if (distance > Chunk.chunkSize*8)
                     chunksToDelete.Add(chunk.Key);
             }
             foreach (var chunk in chunksToDelete)
+            {
                 world.DestroyChunk(chunk.x, chunk.y, chunk.z);
+                return true;
+            }
             timer = 0;
-            return true;
         }
         timer++;
         return false;

@@ -6,15 +6,15 @@ using SimplexNoise;
 public class TerrainGen
 {
 
-    float stoneBaseHeight = -24;
+    float stoneBaseHeight = 0;
     float stoneBaseNoise = 0.05f;
     float stoneBaseNoiseHeight = 1;
-    float stoneMountainHeight = 48;
-    float stoneMountainFrequency = 0.008f;
-    float stoneMinHeight = -12;
+    float stoneMountainHeight = 12;
+    float stoneMountainFrequency = 0.002f;
+    float stoneMinHeight = 0;
     float dirtBaseHeight = 4;
-    float dirtNoise = 0.04f;
-    float dirtNoiseHeight = 2;
+    float dirtNoise = 0.02f;
+    float dirtNoiseHeight = 1;
 
     public Chunk ChunkGen(Chunk chunk, int seed)
     {
