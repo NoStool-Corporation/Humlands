@@ -19,6 +19,15 @@ public class Modify : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 100))
+            {
+                Terrain.SetBlock(hit, new StoneBlock(), true);
+            }
+        }
+
         rot = new Vector2(
             rot.x + Input.GetAxis("Mouse X") * 3,
             rot.y + Input.GetAxis("Mouse Y") * 3);
