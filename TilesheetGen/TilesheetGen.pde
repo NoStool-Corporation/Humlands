@@ -44,7 +44,7 @@ void setup() {
 
   struct[0] = "using UnityEngine;";
   struct[1] = "\npublic struct Tilesheet{";
-  struct[struct.length - 2] = "\n\tpublic static Vector2 tileSize = new Vector2(1/(" + filenames.length + "*3) f, 1/3 f);";
+  struct[struct.length - 2] = "\n\tpublic static Vector2 tileSize = new Vector2(1/(" + filenames.length + "*3f), 1/3f);";
   struct[struct.length - 1] = "}";
   // Writes the strings to a file, each on a separate line
   saveStrings("../Assets/Scripts/Tilesheet.cs", struct);
