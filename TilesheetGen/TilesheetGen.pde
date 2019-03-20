@@ -30,7 +30,7 @@ void setup() {
   
   PImage canvas = createImage(3 * filenames.length * g.TILESIZE, 3 * g.TILESIZE, ARGB);
   
-  String[] struct = new String[filenames.length + 3];//First 2 Lines + tileSize + Brackets closed
+  String[] struct = new String[filenames.length + 4];//First 2 Lines + tileSize + Brackets closed
   
   for(int i = 0; i < filenames.length; i++){
     struct[i + 2] = "\tpublic static Vector2 " + filenames[i].toUpperCase().substring(0, filenames[i].length() - 4) + " = new Vector2(" + (i * 3 + 1) + ", 1);";
