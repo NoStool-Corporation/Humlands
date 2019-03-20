@@ -10,6 +10,10 @@ public final int TILESIZE = 64;
 void setup() {
   Global g = new Global();
   
+  size(300,40);
+  textSize(32);
+  text("Generating Files...", 10, 32); 
+ 
   // Using just the path of this sketch to demonstrate,
   // but you can list any directory you like.
   
@@ -27,9 +31,8 @@ void setup() {
   PImage canvas = createImage(3 * filenames.length * g.TILESIZE, 3 * g.TILESIZE, ARGB);
   
   String[] struct = new String[filenames.length + 3];//First Line + int y + Brackets closed
-  struct[0] = "struct TextureCords{";
   
-  for(int i = 0; i < filenames.length; i++){
+  for(int i = 1; i < filenames.length; i++){
     struct[i + 1] = "public static final int " + filenames[i].toUpperCase().substring(0, filenames[i].length() - 4) + " = " + (i * 3 + 1) + ";";
     println("[" + i + "]" + filenames[i]);
     images[i] = loadImage(g.IMG_DIRECTORY + filenames[i]);
@@ -37,14 +40,15 @@ void setup() {
     
   }
   
-  canvas.save("tilesheet.png");
+  canvas.save("../Assets/Graphics/tilesheet.png");
 
+  struct[0] = "public struct TextureCords{";
   struct[struct.length - 2] = "public static final int y = 1;";
   struct[struct.length - 1] = "}";
   // Writes the strings to a file, each on a separate line
-  saveStrings("struct.txt", struct);
+  saveStrings("../Assets/Scripts/TextureCords.cs", struct);
   
-  noLoop();
+  exit();
 }
 
 // Nothing is drawn in this program and the draw() doesn't loop because
