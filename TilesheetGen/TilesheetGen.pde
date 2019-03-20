@@ -33,7 +33,7 @@ void setup() {
   String[] struct = new String[filenames.length + 4];//First 2 Lines + tileSize + Brackets closed
   
   for(int i = 0; i < filenames.length; i++){
-    struct[i + 2] = "\tpublic static Vector2 " + filenames[i].toUpperCase().substring(0, filenames[i].length() - 4) + " = Vector2(" + (i * 3 + 1) + ", 1);";
+    struct[i + 2] = "\tpublic static Vector2 " + filenames[i].toUpperCase().substring(0, filenames[i].length() - 4) + " = new Vector2(" + (i * 3 + 1) + ", 1);";
     println("[" + i + "]" + filenames[i]);
     images[i] = loadImage(g.IMG_DIRECTORY + filenames[i]);
     addTile(canvas, images[i], i * 3 + 1, 1);
@@ -44,7 +44,7 @@ void setup() {
 
   struct[0] = "using UnityEngine;";
   struct[1] = "\npublic struct Tilesheet{";
-  struct[struct.length - 2] = "\n\tpublic static int tileSize = " + ((float)1 / (filenames.length * 3)) + "f;";
+  struct[struct.length - 2] = "\n\tpublic static float tileSize = " + ( (float)1 / (filenames.length * 3) ) + "f;";
   struct[struct.length - 1] = "}";
   // Writes the strings to a file, each on a separate line
   saveStrings("../Assets/Scripts/Tilesheet.cs", struct);
