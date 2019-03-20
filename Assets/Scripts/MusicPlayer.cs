@@ -17,6 +17,7 @@ public class MusicPlayer : MonoBehaviour
 
     void Start()
     {
+        audioSource.volume = 0.01f;
         clips = new AudioClip[clipAmount];
         for (int i = 0; i < clipAmount; i++)
         {
