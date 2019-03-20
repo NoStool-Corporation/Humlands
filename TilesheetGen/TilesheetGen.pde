@@ -32,8 +32,8 @@ void setup() {
   
   String[] struct = new String[filenames.length + 3];//First Line + int y + Brackets closed
   
-  for(int i = 1; i < filenames.length; i++){
-    struct[i + 1] = "public static final int " + filenames[i].toUpperCase().substring(0, filenames[i].length() - 4) + " = " + (i * 3 + 1) + ";";
+  for(int i = 0; i < filenames.length; i++){
+    struct[i + 1] = "public static int " + filenames[i].toUpperCase().substring(0, filenames[i].length() - 4) + " = " + (i * 3 + 1) + ";";
     println("[" + i + "]" + filenames[i]);
     images[i] = loadImage(g.IMG_DIRECTORY + filenames[i]);
     addTile(canvas, images[i], i * 3 + 1, 1);
@@ -43,7 +43,7 @@ void setup() {
   canvas.save("../Assets/Graphics/tilesheet.png");
 
   struct[0] = "public struct TextureCords{";
-  struct[struct.length - 2] = "public static final int y = 1;";
+  struct[struct.length - 2] = "public static int y = 1;";
   struct[struct.length - 1] = "}";
   // Writes the strings to a file, each on a separate line
   saveStrings("../Assets/Scripts/TextureCords.cs", struct);
