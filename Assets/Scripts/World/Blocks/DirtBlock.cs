@@ -8,6 +8,7 @@ public class DirtBlock : Block
 {
     public override Vector2 TexturePosition(Direction direction)
     {
-        return new Vector2(7, 4);
+        return new Vector2(TextureCords.DIRT, 1);
+
     }
 }

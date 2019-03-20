@@ -31,12 +31,8 @@ public class MusicPlayer : MonoBehaviour
 
     void Update()
     {
-        print(nextPlay);
-        print(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
         if (clipAmount >= 0 && nextPlay <= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
         {
-            print("t");
-
             audioSource.clip = clips[currentClip];
             audioSource.Play();
 

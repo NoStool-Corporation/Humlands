@@ -16,10 +16,10 @@ public class GrassBlock : Block
         switch(direction)
         {
             case Direction.UP:
-                return new Vector2(1,4);
+                return new Vector2(TextureCords.GRAS_TOP, 1);
             case Direction.DOWN:
-                return new Vector2(7,4);
+                return new Vector2(TextureCords.DIRT, 1);
         }
-        return new Vector2(4, 4);
+        return new Vector2(TextureCords.GRAS, 1);
     }
 }
