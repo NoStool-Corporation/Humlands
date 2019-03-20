@@ -135,21 +135,23 @@ public class LoadChunks : MonoBehaviour
     {
         if (timer == 10)
         {
+            bool deleted = false;
             var chunksToDelete = new List<WorldPos>();
             foreach (var chunk in world.chunks)
             {
                 float distance = Vector3.Distance(
                     new Vector3(chunk.Value.pos.x, 0, chunk.Value.pos.z),
                     new Vector3(transform.position.x, 0, transform.position.z));
-                if (distance > Chunk.chunkSize*8)
+                if (distance > Chunk.chunkSize*10)
                     chunksToDelete.Add(chunk.Key);
             }
             foreach (var chunk in chunksToDelete)
             {
                 world.DestroyChunk(chunk.x, chunk.y, chunk.z);
-                return true;
+                deleted = true;
             }
             timer = 0;
+            return deleted;
         }
         timer++;
         return false;

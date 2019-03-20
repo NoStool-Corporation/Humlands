@@ -52,6 +52,12 @@ public class World : MonoBehaviour
 
         return containerChunk;
     }
+
+    public Block GetBlock(WorldPos worldpos)
+    {
+        return GetBlock(worldpos.x, worldpos.y, worldpos.z);
+    }
+
     public Block GetBlock(int x, int y, int z)
     {
         Chunk containerChunk = GetChunk(x, y, z);
@@ -69,6 +75,11 @@ public class World : MonoBehaviour
             return new AirBlock();
         }
 
+    }
+
+    public void SetBlock(WorldPos worldpos, Block block, bool update = true)
+    {
+        SetBlock(worldpos.x, worldpos.y, worldpos.z, block, update);
     }
 
     public void SetBlock(int x, int y, int z, Block block, bool update = true)
