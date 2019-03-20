@@ -13,13 +13,13 @@ public class GrassBlock : Block
 
     public override Vector2 TexturePosition(Direction direction)
     {
-        switch(direction)
+        switch (direction)
         {
             case Direction.UP:
                 return Tilesheet.GRAS_TOP;
             case Direction.DOWN:
                 return Tilesheet.DIRT;
         }
-        return new Tilesheet.GRAS;
+        return Tilesheet.GRAS;
     }
 }

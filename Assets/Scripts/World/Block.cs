@@ -9,7 +9,6 @@ public enum Direction { NORTH, EAST, SOUTH, WEST, UP, DOWN };
 public class Block
 {
     public bool changed = true;
-    public static float tileSize = Tilesheet.tileSize;
 
     public virtual Vector2 TexturePosition(Direction direction)
     {
@@ -23,14 +22,14 @@ public class Block
     {
         Vector2[] UVs = new Vector2[4];
         Vector2 tilePos = TexturePosition(direction);
-        UVs[0] = new Vector2(tileSize * tilePos.x + tileSize,
-            tileSize * tilePos.y);
-        UVs[1] = new Vector2(tileSize * tilePos.x + tileSize,
-            tileSize * tilePos.y + tileSize);
-        UVs[2] = new Vector2(tileSize * tilePos.x,
-            tileSize * tilePos.y + tileSize);
-        UVs[3] = new Vector2(tileSize * tilePos.x,
-            tileSize * tilePos.y);
+        UVs[0] = new Vector2(Tilesheet.tileSize.x * tilePos.x + Tilesheet.tileSize.x,
+            Tilesheet.tileSize.y * tilePos.y);
+        UVs[1] = new Vector2(Tilesheet.tileSize.x * tilePos.x + Tilesheet.tileSize.x,
+            Tilesheet.tileSize.y * tilePos.y + Tilesheet.tileSize.y);
+        UVs[2] = new Vector2(Tilesheet.tileSize.x * tilePos.x,
+            Tilesheet.tileSize.y * tilePos.y + Tilesheet.tileSize.y);
+        UVs[3] = new Vector2(Tilesheet.tileSize.x * tilePos.x,
+            Tilesheet.tileSize.y * tilePos.y);
         return UVs;
     }
 

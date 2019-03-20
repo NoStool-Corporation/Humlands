@@ -21,7 +21,6 @@ public class MusicPlayer : MonoBehaviour
         clips = new AudioClip[clipAmount];
         for (int i = 0; i < clipAmount; i++)
         {
-            print(musicDir + i + ".mp3");
             clips[i] = Resources.Load<AudioClip>(musicDir + i);
         }
 
