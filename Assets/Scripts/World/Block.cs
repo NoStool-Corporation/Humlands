@@ -9,7 +9,7 @@ public enum Direction { NORTH, EAST, SOUTH, WEST, UP, DOWN };
 public class Block
 {
     public bool changed = true;
-    public const float tileSize = 0.1f;
+    public static float tileSize = Tilesheet.tileSize;
 
     public virtual Vector2 TexturePosition(Direction direction)
     {

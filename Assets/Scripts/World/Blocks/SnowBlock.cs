@@ -8,6 +8,6 @@ public class SnowBlock : Block
 {
     public override Vector2 TexturePosition(Direction direction)
     {
-        return new Vector2(TextureCords.SNOW, 1);
+        return Tilesheet.SNOW;
     }
 }
