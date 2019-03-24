@@ -1,7 +1,8 @@
 using UnityEngine;
-
+/// <summary>
+/// Automatically generated class that contains the texture positions to set the UVs for every block
+/// </summary>
 public struct Tilesheet{
-	public static Vector2 COALBLOCK = new Vector2(1, 1);
 	public static Vector2 DIRT = new Vector2(4, 1);
 	public static Vector2 GRAS = new Vector2(7, 1);
 	public static Vector2 GRAS_TOP = new Vector2(10, 1);

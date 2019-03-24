@@ -4,20 +4,33 @@ using UnityEngine;
 using System;
 
 public enum Direction { NORTH, EAST, SOUTH, WEST, UP, DOWN };
-
+/// <summary>
+/// Super class for all blocks, don't use create objects from this
+/// </summary>
 [Serializable]
 public class Block
 {
     public bool changed = true;
 
+    /// <summary>
+    /// Returns the position of the block's texture in the tilesheet based on the specified direction
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <returns>Returns a Vector2 with the position of the texture</returns>
     public virtual Vector2 TexturePosition(Direction direction)
     {
-        Vector2 tile = new Vector2();
-        tile.x = 0;
-        tile.y = 0;
+        Vector2 tile = new Vector2
+        {
+            x = 0,
+            y = 0
+        };
         return tile;
     }
-
+    /// <summary>
+    /// Creates all the UVs for a side of the block
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <returns>Returns an array with the UVs</returns>
     public virtual Vector2[] FaceUVs(Direction direction)
     {
         Vector2[] UVs = new Vector2[4];
@@ -32,7 +45,15 @@ public class Block
             Tilesheet.tileSize.y * tilePos.y);
         return UVs;
     }
-
+    /// <summary>
+    /// Creates the rendering and collision data based on surrounding blocks
+    /// </summary>
+    /// <param name="chunk"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="meshData">The MeshData into which the addditional mesh data gets put</param>
+    /// <returns>Returns the MeshData containing this block</returns>
     public virtual MeshData Blockdata(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         meshData.useRenderDataForCol = true;
@@ -56,7 +77,11 @@ public class Block
 
         return meshData;
     }
-
+    /// <summary>
+    /// Checks whether the block is solid towards the specified direction
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <returns>Returns true if the block is solid towards the specified side, otherwise returns false</returns>
     public virtual bool IsSolid(Direction direction)
     {
         switch (direction)
@@ -76,7 +101,15 @@ public class Block
         }
         return false;
     }
-
+    /// <summary>
+    /// Adds the MeshData for the top side of the block to the MeshData
+    /// </summary>
+    /// <param name="chunk"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="meshData"></param>
+    /// <returns>Returns the updated MeshData</returns>
     protected virtual MeshData FaceDataUp(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
@@ -87,7 +120,15 @@ public class Block
         meshData.uv.AddRange(FaceUVs(Direction.UP));
         return meshData;
     }
-
+    /// <summary>
+    /// Adds the MeshData for the bottom side of the block to the MeshData
+    /// </summary>
+    /// <param name="chunk"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="meshData"></param>
+    /// <returns>Returns the updated MeshData</returns>
     protected virtual MeshData FaceDataDown(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
@@ -99,7 +140,15 @@ public class Block
         meshData.uv.AddRange(FaceUVs(Direction.DOWN));
         return meshData;
     }
-
+    /// <summary>
+    /// Adds the MeshData for the northern side of the block to the MeshData
+    /// </summary>
+    /// <param name="chunk"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="meshData"></param>
+    /// <returns>Returns the updated MeshData</returns>
     protected virtual MeshData FaceDataNorth(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
@@ -111,7 +160,15 @@ public class Block
         meshData.uv.AddRange(FaceUVs(Direction.NORTH));
         return meshData;
     }
-
+    /// <summary>
+    /// Adds the MeshData for the eastern side of the block to the MeshData
+    /// </summary>
+    /// <param name="chunk"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="meshData"></param>
+    /// <returns>Returns the updated MeshData</returns>
     protected virtual MeshData FaceDataEast(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
@@ -123,7 +180,15 @@ public class Block
         meshData.uv.AddRange(FaceUVs(Direction.EAST));
         return meshData;
     }
-
+    /// <summary>
+    /// Adds the MeshData for the southern side of the block to the MeshData
+    /// </summary>
+    /// <param name="chunk"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="meshData"></param>
+    /// <returns>Returns the updated MeshData</returns>
     protected virtual MeshData FaceDataSouth(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
@@ -135,7 +200,15 @@ public class Block
         meshData.uv.AddRange(FaceUVs(Direction.SOUTH));
         return meshData;
     }
-
+    /// <summary>
+    /// Adds the MeshData for the western side of the block to the MeshData
+    /// </summary>
+    /// <param name="chunk"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="meshData"></param>
+    /// <returns>Returns the updated MeshData</returns>
     protected virtual MeshData FaceDataWest(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));

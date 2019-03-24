@@ -1,7 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// The world in which the game takes place.
+/// Has an array with all the loaded chunks,
+/// has seed to determine how the world looks,
+/// has a name to determine the save folder.
+/// </summary>
 public class World : MonoBehaviour
 {
     public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
@@ -9,12 +14,15 @@ public class World : MonoBehaviour
     public string worldName = "world";
     private int seed = 1;
 
-    public int newChunkX;
-    public int newChunkY;
-    public int newChunkZ;
-
-    public bool genChunk;
-
+    /// <summary>  
+    /// Creates a chunk with the smallest corner at the position
+    /// </summary>
+    ///
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// 
+    /// <returns> created Chunk </returns>
     public Chunk CreateChunk(int x, int y, int z)
     {
         WorldPos worldPos = new WorldPos(x, y, z);
@@ -28,18 +36,39 @@ public class World : MonoBehaviour
 
         chunks.Add(worldPos, newChunk);
 
-        var terrainGen = new TerrainGen();
-        newChunk = terrainGen.ChunkGen(newChunk, seed);
+        var TerrainGen = new TerrainGen();
+        newChunk = TerrainGen.ChunkGen(newChunk, seed);
         newChunk.SetBlocksUnmodified();
         bool loaded = Serialization.Load(newChunk);
 
         newChunk.SetBlocksUnmodified();
         Serialization.Load(newChunk);   
 
-        newChunk.update = true;
+        newChunk.render = true;
         return newChunk;
     }
 
+    /// <summary>  
+    /// Creates a chunk with the smallest corner at the position
+    /// </summary>
+    /// 
+    /// <param name="worldpos"></param>
+    /// 
+    /// <returns> created Chunk </returns>
+    public Chunk CreateChunk(WorldPos worldpos)
+    {
+        return CreateChunk(worldpos.x, worldpos.y, worldpos.z);
+    }
+
+    /// <summary>  
+    /// Returns the chunk at the specified position
+    /// </summary>
+    /// 
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// 
+    /// <returns> Chunk at x,y,z </returns>
     public Chunk GetChunk(int x, int y, int z)
     {
         WorldPos pos = new WorldPos();
@@ -53,11 +82,24 @@ public class World : MonoBehaviour
         return containerChunk;
     }
 
-    public Block GetBlock(WorldPos worldpos)
+    /// <summary>  
+    /// Returns the chunk at the specified position
+    /// </summary>
+    /// 
+    /// <param name="worldpos"></param>
+    /// 
+    /// <returns> Chunk at x,y,z </returns>
+    public Chunk GetChunk(WorldPos worldpos)
     {
-        return GetBlock(worldpos.x, worldpos.y, worldpos.z);
+        return GetChunk(worldpos.x, worldpos.y, worldpos.z);
     }
-
+    /// <summary>
+    /// Returns the block at the specified position
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <returns> Returns the block at the specified position or AirBlock if no block exists </returns>
     public Block GetBlock(int x, int y, int z)
     {
         Chunk containerChunk = GetChunk(x, y, z);
@@ -76,29 +118,55 @@ public class World : MonoBehaviour
         }
 
     }
-
-    public void SetBlock(WorldPos worldpos, Block block, bool update = true)
+    /// <summary>
+    /// Returns the block at the specified position
+    /// </summary>
+    /// <param name="worldpos"></param>
+    /// <returns> Returns the block at the specified position or AirBlock if no block exists </returns>
+    public Block GetBlock(WorldPos worldpos)
     {
-        SetBlock(worldpos.x, worldpos.y, worldpos.z, block, update);
+        return GetBlock(worldpos.x, worldpos.y, worldpos.z);
     }
-
-    public void SetBlock(int x, int y, int z, Block block, bool update = true)
+    /// <summary>
+    /// Places a block at the specified position.
+    /// </summary>
+    /// <param name="worldpos"></param>
+    /// <param name="block"></param>
+    /// <param name="render">Rerenders the chunk if set to true, defaults to true</param>
+    public void SetBlock(WorldPos worldpos, Block block, bool render = true)
+    {
+        SetBlock(worldpos.x, worldpos.y, worldpos.z, block, render);
+    }
+    /// <summary>
+    /// Places a block at the specified position.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="block"></param>
+    /// <param name="render">Rerenders the chunk if set to true, defaults to true</param>
+    public void SetBlock(int x, int y, int z, Block block, bool render = true)
     {
         Chunk chunk = GetChunk(x, y, z);
         if (chunk != null)
         {
-            chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, block, update);
+            chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, block, render);
 
-            UpdateIfEqual(x - chunk.pos.x, 0, new WorldPos(x - 1, y, z));
-            UpdateIfEqual(x - chunk.pos.x, Chunk.chunkSize - 1, new WorldPos(x + 1, y, z));
-            UpdateIfEqual(y - chunk.pos.y, 0, new WorldPos(x, y - 1, z));
-            UpdateIfEqual(y - chunk.pos.y, Chunk.chunkSize - 1, new WorldPos(x, y + 1, z));
-            UpdateIfEqual(z - chunk.pos.z, 0, new WorldPos(x, y, z - 1));
-            UpdateIfEqual(z - chunk.pos.z, Chunk.chunkSize - 1, new WorldPos(x, y, z + 1));
+            RenderIfEqual(x - chunk.pos.x, 0, new WorldPos(x - 1, y, z));
+            RenderIfEqual(x - chunk.pos.x, Chunk.chunkSize - 1, new WorldPos(x + 1, y, z));
+            RenderIfEqual(y - chunk.pos.y, 0, new WorldPos(x, y - 1, z));
+            RenderIfEqual(y - chunk.pos.y, Chunk.chunkSize - 1, new WorldPos(x, y + 1, z));
+            RenderIfEqual(z - chunk.pos.z, 0, new WorldPos(x, y, z - 1));
+            RenderIfEqual(z - chunk.pos.z, Chunk.chunkSize - 1, new WorldPos(x, y, z + 1));
         }
     }
-
-    public void DestroyChunk(int x, int y, int z)
+    /// <summary>
+    /// Unloads and saves the chunk at the specified position
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    public void UnloadChunk(int x, int y, int z)
     {
         Chunk chunk = null;
         if (chunks.TryGetValue(new WorldPos(x, y, z), out chunk))
@@ -108,14 +176,19 @@ public class World : MonoBehaviour
             chunks.Remove(new WorldPos(x, y, z));
         }
     }
-
-    void UpdateIfEqual(int value1, int value2, WorldPos pos)
+    /// <summary>
+    /// Renders the chunk at if the values are equal,
+    /// </summary>
+    /// <param name="value1"></param>
+    /// <param name="value2"></param>
+    /// <param name="pos">WorldPos of the chunk to render</param>
+    void RenderIfEqual(int value1, int value2, WorldPos pos)
     {
         if (value1 == value2)
         {
-            Chunk chunk = GetChunk(pos.x, pos.y, pos.z);
+            Chunk chunk = GetChunk(pos);
             if (chunk != null)
-                chunk.update = true;
+                chunk.render = true;
         }
     }
 }

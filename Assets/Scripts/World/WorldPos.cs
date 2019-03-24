@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+/// <summary>
+/// A position in the world, like a Vector3 but only for ints.
+/// </summary>
 [Serializable]
 public struct WorldPos
 {

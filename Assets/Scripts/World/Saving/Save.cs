@@ -2,11 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+/// <summary>
+/// Takes all the changed blocks of a chunk and then get's serialized to save the chunk.
+/// </summary>
 [Serializable]
 public class Save
 {
     public Dictionary<WorldPos, Block> blocks = new Dictionary<WorldPos, Block>();
-
+    /// <summary>
+    /// Loops through all blocks of the chunk and saves those marked as changed
+    /// </summary>
+    /// <param name="chunk"></param>
     public Save(Chunk chunk)
     {
         for (int x = 0; x < Chunk.chunkSize; x++)

@@ -2,45 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/* How to use the camera:
- * 
-*/
+/// <summary>
+/// Script to control the player camera movement
+/// </summary>
 public class CameraMovement : MonoBehaviour
 {
-    // General Camera Speed
     public float moveSpeed = 20f;
 
     public float degToRad = Mathf.PI / 180;
 
-    public float panBorderThickness = 10f;
+    public float moveBorderThickness = 10f;
 
-    // Update is called once per frame
+
     void Update()
     {
         Vector3 pos = transform.position;
 
-        if (Input.GetKey(KeyCode.W) || Input.mousePosition.y >= Screen.height - panBorderThickness)
+        if (Input.GetKey(KeyCode.W) || Input.mousePosition.y >= Screen.height - moveBorderThickness)
         {
             Vector3 direction = new Vector3(Round(Mathf.Sin(transform.rotation.eulerAngles.y * degToRad),3), 0, Round(Mathf.Cos(transform.rotation.eulerAngles.y * degToRad),3));
             pos += moveSpeed * Time.deltaTime * direction;
         }
-        if (Input.GetKey(KeyCode.S) || Input.mousePosition.y <= panBorderThickness)
+        if (Input.GetKey(KeyCode.S) || Input.mousePosition.y <= moveBorderThickness)
         {
             Vector3 direction = new Vector3(Round(Mathf.Sin(transform.rotation.eulerAngles.y * degToRad),3), 0, Round(Mathf.Cos(transform.rotation.eulerAngles.y * degToRad),3));
             pos -= moveSpeed * Time.deltaTime * direction;
         }
-        if (Input.GetKey(KeyCode.A) || Input.mousePosition.x <= panBorderThickness)
+        if (Input.GetKey(KeyCode.A) || Input.mousePosition.x <= moveBorderThickness)
         {
             Vector3 direction = new Vector3(Round(Mathf.Sin((transform.rotation.eulerAngles.y + 90) * degToRad),3), 0, Round(Mathf.Cos((transform.rotation.eulerAngles.y+90) * degToRad),3));
             pos -= moveSpeed * Time.deltaTime * direction;
         }
-        if (Input.GetKey(KeyCode.D) || Input.mousePosition.x >= Screen.width - panBorderThickness)
+        if (Input.GetKey(KeyCode.D) || Input.mousePosition.x >= Screen.width - moveBorderThickness)
         {
             Vector3 direction = new Vector3(Round(Mathf.Sin((transform.rotation.eulerAngles.y + 90) * degToRad),3), 0, Round(Mathf.Cos((transform.rotation.eulerAngles.y + 90) * degToRad),3));
             pos += moveSpeed * Time.deltaTime * direction;
         }
 
-        if (Input.GetKey(KeyCode.D) || Input.mousePosition.x >= Screen.width - panBorderThickness)
+        if (Input.GetKey(KeyCode.D) || Input.mousePosition.x >= Screen.width - moveBorderThickness)
         {
             Vector3 direction = new Vector3(Round(Mathf.Sin((transform.rotation.eulerAngles.y + 90) * degToRad), 3), 0, Round(Mathf.Cos((transform.rotation.eulerAngles.y + 90) * degToRad), 3));
             pos += moveSpeed * Time.deltaTime * direction;
@@ -69,7 +68,7 @@ public class CameraMovement : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.forward, out hit, 100))
             {
-                Terrain.SetBlock(hit, new AirBlock());
+                TerrainControl.SetBlock(hit, new AirBlock());
             }
         }
 
@@ -78,7 +77,7 @@ public class CameraMovement : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.forward, out hit, 100))
             {
-                Terrain.SetBlock(hit, new StoneBlock(), true);
+                TerrainControl.SetBlock(hit, new StoneBlock(), true);
             }
         }
 

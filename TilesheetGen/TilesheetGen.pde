@@ -43,7 +43,8 @@ void setup() {
   canvas.save("../Assets/Graphics/tilesheet.png");
 
   struct[0] = "using UnityEngine;";
-  struct[1] = "\npublic struct Tilesheet{";
+  struct[1] = "/// <summary>\n/// Automatically generated class that contains the texture positions to set the UVs for every block\n/// </summary>";
+  struct[2] = "public struct Tilesheet{";
   struct[struct.length - 2] = "\n\tpublic static Vector2 tileSize = new Vector2(1/(" + filenames.length + "*3f), 1/3f);";
   struct[struct.length - 1] = "}";
   // Writes the strings to a file, each on a separate line

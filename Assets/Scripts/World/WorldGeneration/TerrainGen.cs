@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SimplexNoise;
-
+/// <summary>
+/// Uses noise based on the world seed to generate the blocks into chunks
+/// </summary>
 public class TerrainGen
 {
 
@@ -15,7 +17,12 @@ public class TerrainGen
     float dirtBaseHeight = 4;
     float dirtNoise = 0.02f;
     float dirtNoiseHeight = 1;
-
+    /// <summary>
+    /// Generates a chunk based on the seed
+    /// </summary>
+    /// <param name="chunk">Chunk which needs to be generated</param>
+    /// <param name="seed">World seed</param>
+    /// <returns>Generated chunk</returns>
     public Chunk ChunkGen(Chunk chunk, int seed)
     {
         for (int x = chunk.pos.x; x < chunk.pos.x + Chunk.chunkSize; x++)
@@ -27,7 +34,14 @@ public class TerrainGen
         }
         return chunk;
     }
-
+    /// <summary>
+    /// Generates a single column of a chunk
+    /// </summary>
+    /// <param name="chunk">Chunk in which to generate the column of blocks</param>
+    /// <param name="x">Local x coordinate of the column</param>
+    /// <param name="z">Local y coordinate of the column</param>
+    /// <param name="seed">World seed</param>
+    /// <returns>The chunk with the added generated column of blocks</returns>
     private Chunk ChunkColumnGen(Chunk chunk, int x, int z, int seed)
     {
         Noise.Seed = seed;
@@ -61,7 +75,15 @@ public class TerrainGen
 
         return chunk;
     }
-
+    /// <summary>
+    /// Simpler way to generate an int using 3D noise
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="scale">higher scale means a smoother transition when changing x, y and z</param>
+    /// <param name="max">maximum return value</param>
+    /// <returns>a value between zero and max</returns>
     public static int GetNoise(int x, int y, int z, float scale, int max)
     {
         return Mathf.FloorToInt((Noise.Generate(x * scale, y * scale, z * scale) + 1f) * (max / 2f));

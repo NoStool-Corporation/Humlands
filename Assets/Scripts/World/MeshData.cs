@@ -1,18 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Manages the Mesh of a single chunk
+/// </summary>
 public class MeshData
-{
-    public List<Vector3> vertices = new List<Vector3>();
-    public List<int> triangles = new List<int>();
+{   
+    public List<Vector3> vertices { get;} = new List<Vector3>(); 
+    public List<int> triangles { get; } = new List<int>();
     public List<Vector2> uv = new List<Vector2>();
-    public List<Vector3> colVertices = new List<Vector3>();
-    public List<int> colTriangles = new List<int>();
-    public MeshData() { }
 
+    public List<Vector3> colVertices { get; } = new List<Vector3>();
+    public List<int> colTriangles { get; } = new List<int>();
+    /// <summary>
+    /// Whether to use the render data for collision or not.
+    /// Should only be set at the start of the Blockdata method in the subclasses of Block
+    /// </summary>
     public bool useRenderDataForCol;
 
+    /// <summary>
+    /// Adds the two newest triangles to from a square
+    /// </summary>
     public void AddQuadTriangles()
     {
         triangles.Add(vertices.Count - 4);
@@ -31,16 +39,10 @@ public class MeshData
             colTriangles.Add(colVertices.Count - 1);
         }
     }
-
-    public void AddTriangle(int tri)
-    {
-        triangles.Add(tri);
-        if (useRenderDataForCol)
-        {
-            colTriangles.Add(tri - (vertices.Count - colVertices.Count));
-        }
-    }
-
+    /// <summary>
+    /// Add a new vertex to the vertex array
+    /// </summary>
+    /// <param name="vertex"></param>
     public void AddVertex(Vector3 vertex)
     {
         vertices.Add(vertex);

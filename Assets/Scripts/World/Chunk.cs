@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// A chunk is used to render and manage a 16x16x16 area of blocks in the world
+/// </summary>
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshCollider))]
@@ -14,10 +16,9 @@ public class Chunk : MonoBehaviour
     public WorldPos pos;
     MeshFilter filter;
     MeshCollider coll;
-    public int updates;
 
-    public bool update = false;
-    public bool updateNeighbors = false;
+    public bool render = false;
+    public bool renderNeighbors = false;
     public bool rendered;
 
     public Chunk()
@@ -29,30 +30,46 @@ public class Chunk : MonoBehaviour
     {
         filter = gameObject.GetComponent<MeshFilter>();
         coll = gameObject.GetComponent<MeshCollider>();
-        updates = 0;
     }
-
+    /// <summary>
+    /// Takes local coordinates to return the block
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <returns>Returns the block at the specified local coordinate</returns>
     public Block GetBlock(int x, int y, int z)
     {
         if (InRange(x) && InRange(y) && InRange(z))
             return blocks[x, y, z];
         return world.GetBlock(pos.x + x, pos.y + y, pos.z + z);
     }
-
-    public void SetBlock(int x, int y, int z, Block block, bool update = true)
+    /// <summary>
+    /// Places a block at the specified local coordinates
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="block"></param>
+    /// <param name="render">Whether to rerender the whole chunk after placing the block</param>
+    public void SetBlock(int x, int y, int z, Block block, bool render = true)
     {
         if (InRange(x) && InRange(y) && InRange(z))
         {
             blocks[x, y, z] = block;
-            this.update = update;
+            this.render = render;
         }
         else
         {
-            world.SetBlock(pos.x + x, pos.y + y, pos.z + z, block, update);
+            world.SetBlock(pos.x + x, pos.y + y, pos.z + z, block, render);
         }
     }
-
-    public static bool InRange(int index)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns>Returns true if index is between 1 and 15 (inclusive)</returns>
+    private static bool InRange(int index)
     {
         if (index < 0 || index >= chunkSize)
             return false;
@@ -62,22 +79,23 @@ public class Chunk : MonoBehaviour
 
     private void Update()
     {
-        if (update)
+        if (render)
         {
-            update = false;
-            UpdateChunk();
+            render = false;
+            RenderChunk();
         }
-        if (updateNeighbors)
+        if (renderNeighbors)
         {
-            updateNeighbors = false;
-            UpdateNeighbors();
+            renderNeighbors = false;
+            RenderNeighbors();
         }
 
     }
-
-    void UpdateChunk()
+    /// <summary>
+    /// Renders the whole chunk
+    /// </summary>
+    void RenderChunk()
     {
-        updates++;
         MeshData meshData = new MeshData();
         for (int x = 0; x < chunkSize; x++)
         {
@@ -90,9 +108,12 @@ public class Chunk : MonoBehaviour
             }
         }
         RenderMesh(meshData);
+        UseCollisionMesh(meshData);
         rendered = true;
     }
-
+    /// <summary>
+    /// Sets every block inside this chunk to unmodified
+    /// </summary>
     public void SetBlocksUnmodified()
     {
         foreach (Block block in blocks)
@@ -100,8 +121,11 @@ public class Chunk : MonoBehaviour
             block.changed = false;
         }
     }
-
-    public void UpdateNeighbors()
+    /// <summary>
+    /// Queues a rerender for every already rendered neighbor chunk. &lt;br&gt;
+    /// Useful when generating new chunks and recalculating which sides can be seen by the player
+    /// </summary>
+    public void RenderNeighbors()
     {
         Chunk[] chunks =
         {
@@ -114,10 +138,13 @@ public class Chunk : MonoBehaviour
         };
 
         foreach (Chunk c in chunks)
-            if (c != null)
-                c.update = true;
+            if (c != null && c.rendered)
+                c.render = true;
     }
-
+    /// <summary>
+    /// Renders the meshData of the chunk
+    /// </summary>
+    /// <param name="meshData"></param>
     void RenderMesh(MeshData meshData)
     {
         filter.mesh.Clear();
@@ -125,7 +152,13 @@ public class Chunk : MonoBehaviour
         filter.mesh.triangles = meshData.triangles.ToArray();
         filter.mesh.uv = meshData.uv.ToArray();
         filter.mesh.RecalculateNormals();
-
+    }
+    /// <summary>
+    /// Creates the collider Mesh based on the meshData
+    /// </summary>
+    /// <param name="meshData"></param>
+    void UseCollisionMesh(MeshData meshData)
+    {
         coll.sharedMesh = null;
         Mesh mesh = new Mesh();
         mesh.vertices = meshData.colVertices.ToArray();
