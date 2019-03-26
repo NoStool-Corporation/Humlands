@@ -16,6 +16,11 @@ public struct WorldPos
         this.z = z;
     }
 
+    public Vector3 ToVector3()
+    {
+        return new Vector3(x,y,z);
+    }
+
     public override bool Equals(object obj)
     {
         if (GetHashCode() == obj.GetHashCode())

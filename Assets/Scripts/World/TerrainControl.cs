@@ -11,7 +11,7 @@ public static class TerrainControl
     /// </summary>
     /// <param name="pos"></param>
     /// <returns></returns>
-    public static WorldPos GetBlockPos(Vector3 pos)
+    public static WorldPos RoundToBlockPos(Vector3 pos)
     {
         WorldPos blockPos = new WorldPos(
             Mathf.RoundToInt(pos.x),
@@ -35,7 +35,7 @@ public static class TerrainControl
             MoveWithinBlock(hit.point.z, hit.normal.z, adjacent)
             );
 
-        return GetBlockPos(pos);
+        return RoundToBlockPos(pos);
     }
     /// <summary>
     /// Moves the position into the block, so rounding will return the blocks position

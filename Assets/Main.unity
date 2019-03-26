@@ -127,6 +127,8 @@ GameObject:
   - component: {fileID: 534669906}
   - component: {fileID: 534669907}
   - component: {fileID: 534669908}
+  - component: {fileID: 534669911}
+  - component: {fileID: 534669910}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -192,7 +194,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534669902}
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 6400, y: 20, z: 64000}
+  m_LocalPosition: {x: 6400, y: 60, z: 64000}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -238,7 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 20
   degToRad: 0.017453292
-  panBorderThickness: 10
+  moveBorderThickness: 10
 --- !u!82 &534669909
 AudioSource:
   m_ObjectHideFlags: 0
@@ -335,6 +337,32 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &534669910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534669902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b68f1f7f2ef2ae4d940089b3f938a03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 534669911}
+--- !u!114 &534669911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534669902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6089a193ad9c33344bd893506fb3d667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroy: 0
 --- !u!1 &795186479
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,10 +464,6 @@ MonoBehaviour:
   chunkPrefab: {fileID: 7975140726705348689, guid: 644b3db58b049f94aab3f4294197b653,
     type: 3}
   worldName: world
-  newChunkX: 0
-  newChunkY: 0
-  newChunkZ: 0
-  genChunk: 0
 --- !u!4 &957791926
 Transform:
   m_ObjectHideFlags: 0
