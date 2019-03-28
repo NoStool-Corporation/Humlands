@@ -10,6 +10,7 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
     public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
+    public List<Entity> entities = new List<Entity>();
     GameObject chunkPrefab;
     public string worldName = "world";
     private int seed = 1;
@@ -44,13 +45,19 @@ public class World : MonoBehaviour
         var TerrainGen = new TerrainGen();
         newChunk = TerrainGen.ChunkGen(newChunk, seed);
         newChunk.SetBlocksUnmodified();
-        bool loaded = Serialization.Load(newChunk);
+        bool loaded = Serialization.LoadChunk(newChunk);
 
         newChunk.SetBlocksUnmodified();
-        Serialization.Load(newChunk);   
+        Serialization.LoadChunk(newChunk);   
 
         newChunk.render = true;
         return newChunk;
+    }
+
+    public void LoadEntities() {
+        List<Entity> entities = new List<Entity>();
+        Serialization.LoadEntities(entities);
+        LoadChunks loadChunks = GameObject.Find("Main Camera").GetComponent<LoadChunks>();
     }
 
     /// <summary>  

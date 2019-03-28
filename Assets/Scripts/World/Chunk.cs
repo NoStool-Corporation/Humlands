@@ -21,6 +21,7 @@ public class Chunk : MonoBehaviour
     public bool render = false;
     public bool renderNeighbors = false;
     public bool rendered;
+    public bool stayLoaded = false;
 
     public Chunk()
     {

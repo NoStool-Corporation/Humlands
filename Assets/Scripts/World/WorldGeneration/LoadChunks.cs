@@ -49,9 +49,10 @@ public class LoadChunks : MonoBehaviour
                                             new WorldPos(-3, 0,  7), new WorldPos( 3, 0, -7), new WorldPos( 3, 0,  7), new WorldPos( 7, 0, -3), new WorldPos( 7, 0,  3),
                                             new WorldPos(-6, 0, -5), new WorldPos(-6, 0,  5), new WorldPos(-5, 0, -6), new WorldPos(-5, 0,  6), new WorldPos( 5, 0, -6),
                                             new WorldPos( 5, 0,  6), new WorldPos( 6, 0, -5), new WorldPos( 6, 0,  5) };
-    //Will be needed once this great great array of chunk positions to load relative to the player get's automatically generated
-    //int renderDistanceXZ = 8;
-    int renderDistanceY = 2;
+
+    int renderHeight = 2;
+
+    public int renderDistance;
 
     /// <summary>
     /// Timer to only unload chunks every 10 update ticks
@@ -98,7 +99,7 @@ public class LoadChunks : MonoBehaviour
                     continue;
 
                 //load a column of chunks in this position
-                for (int y = -renderDistanceY; y < renderDistanceY; y++)
+                for (int y = 0; y < renderHeight; y++)
                 {
                     for (int x = newChunkPos.x - Chunk.chunkSize; x <= newChunkPos.x + Chunk.chunkSize; x += Chunk.chunkSize)
                     {
@@ -166,7 +167,7 @@ public class LoadChunks : MonoBehaviour
                 float distance = Vector3.Distance(
                     new Vector3(chunk.Value.pos.x, 0, chunk.Value.pos.z),
                     new Vector3(transform.position.x, 0, transform.position.z));
-                if (distance > Chunk.chunkSize*10)
+                if (distance > Chunk.chunkSize*10 && !chunk.Value.stayLoaded)
                     chunksToDelete.Add(chunk.Key);
             }
             foreach (var chunk in chunksToDelete)
@@ -178,6 +179,15 @@ public class LoadChunks : MonoBehaviour
             return deleted;
         }
         timer++;
+        return false;
+    }
+
+    public bool IsInRenderDistance(Vector3 pos) {
+
+
+        if (Mathf.Abs(pos.x - transform.position.x) <= renderDistance * 16 && Mathf.Abs(pos.y - transform.position.y) <= renderDistance * 16 && Mathf.Abs(pos.z - transform.position.z) <= renderDistance * 16)
+            return true;
+
         return false;
     }
 }

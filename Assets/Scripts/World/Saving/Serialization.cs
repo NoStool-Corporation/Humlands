@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
++using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -11,6 +12,7 @@ using System.Runtime.Serialization;
 public static class Serialization
 {
     public static string saveFolderName = "Saves";
+    public static string entityFileName = "Entities.bin";
     /// <summary>
     /// Returns the save location based on the world name
     /// </summary>
@@ -42,25 +44,65 @@ public static class Serialization
     /// <param name="chunk"></param>
     public static void SaveChunk(Chunk chunk)
     {
-        Save save = new Save(chunk);
+        SaveChunk save = new SaveChunk(chunk);
         if (save.blocks.Count == 0)
             return;
 
         string saveFile = SaveLocation(chunk.world.worldName);
         saveFile += FileName(chunk.pos);
 
+        Save(saveFile, save);
+    }
+
+    /// <summary>
+    /// Saves a List of Entities
+    /// </summary>
+    /// <param name="entities">The Linked List of Entities</param>
+    public static void SaveEntities(List<Entity> entities) {
+        SaveEntities saveEntities = new SaveEntities();
+        saveEntities.entities = entities;
+
+        Save(entityFileName, saveEntities);
+    }
+
+    /// <summary>
+    /// Writes an object to file
+    /// </summary>
+    /// <param name="path">Path to the file (including the file name)</param>
+    /// <param name="obj">The object</param>
+    private static void Save(String path, object obj) {
         IFormatter formatter = new BinaryFormatter();
-        Stream stream = new FileStream(saveFile, FileMode.Create, FileAccess.Write, FileShare.None);
-        formatter.Serialize(stream, save);
+        Stream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+        formatter.Serialize(stream, obj);
+        stream.Close();
+    }
+
+    /// <summary>
+    /// Loads all Entities
+    /// </summary>
+    /// <param name="entities">The reference to the List the Entities should be loaded into</param>
+    /// <returns></returns>
+    public static bool LoadEntities(List<Entity> entities) {
+        if (!File.Exists(entityFileName))
+            return false;
+
+        IFormatter formatter = new BinaryFormatter();
+        FileStream stream = new FileStream(entityFileName, FileMode.Open);
+
+        SaveEntities saveEntities = (SaveEntities)formatter.Deserialize(stream);
         stream.Close();
 
+        entities = saveEntities.entities;
+
+        return true;
     }
+
     /// <summary>
     /// Loads saved blocks into the generated chunk
     /// </summary>
     /// <param name="chunk">An already generated chunk</param>
     /// <returns>Returns true if the load was successful, otherwise returns false</returns>
-    public static bool Load(Chunk generatedChunk)
+    public static bool LoadChunk(Chunk generatedChunk)
     {
         string saveFile = SaveLocation(generatedChunk.world.worldName);
         saveFile += FileName(generatedChunk.pos);
@@ -71,7 +113,7 @@ public static class Serialization
         IFormatter formatter = new BinaryFormatter();
         FileStream stream = new FileStream(saveFile, FileMode.Open);
 
-        Save save = (Save)formatter.Deserialize(stream);
+        SaveChunk save = (SaveChunk)formatter.Deserialize(stream);
         foreach (var block in save.blocks)
         {
             generatedChunk.blocks[block.Key.x, block.Key.y, block.Key.z] = block.Value;
