@@ -10,9 +10,14 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
     public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
-    public GameObject chunkPrefab;
+    GameObject chunkPrefab;
     public string worldName = "world";
     private int seed = 1;
+
+    private void Start()
+    {
+        chunkPrefab = Resources.Load<GameObject>("Prefabs/Chunk");
+    }
 
     /// <summary>  
     /// Creates a chunk with the smallest corner at the position
@@ -22,7 +27,7 @@ public class World : MonoBehaviour
     /// <param name="y"></param>
     /// <param name="z"></param>
     /// 
-    /// <returns> created Chunk </returns>
+    /// <returns> Created Chunk </returns>
     public Chunk CreateChunk(int x, int y, int z)
     {
         WorldPos worldPos = new WorldPos(x, y, z);
