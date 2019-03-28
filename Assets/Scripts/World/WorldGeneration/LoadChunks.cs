@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 public class LoadChunks : MonoBehaviour
 {
-    public World world;
+    World world;
 
     List<WorldPos> renderList = new List<WorldPos>();
     List<WorldPos> buildList = new List<WorldPos>();
@@ -57,6 +57,11 @@ public class LoadChunks : MonoBehaviour
     /// Timer to only unload chunks every 10 update ticks
     /// </summary>
     int timer = 0;
+
+    private void Start()
+    {
+        world = GameObject.Find("World").GetComponent<World>();
+    }
 
     void Update()
     {

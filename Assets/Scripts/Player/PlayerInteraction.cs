@@ -7,7 +7,12 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
 
-    public Player player;
+    Player player;
+
+    private void Start()
+    {
+        player = this.GetComponent<Player>();
+    }
 
     void Update()
     {

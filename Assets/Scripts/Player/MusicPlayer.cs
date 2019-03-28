@@ -8,7 +8,7 @@ using System;
 [RequireComponent(typeof(AudioSource))]
 public class MusicPlayer : MonoBehaviour
 {
-    public AudioSource audioSource;
+    AudioSource audioSource;
     /// <summary>
     /// Amount of clips to load from the musicDir
     /// </summary>
@@ -35,6 +35,7 @@ public class MusicPlayer : MonoBehaviour
     /// </summary>
     void Start()
     {
+        audioSource = this.GetComponent<AudioSource>();
         audioSource.volume = 0.01f;
         clips = new AudioClip[clipAmount];
         for (int i = 0; i < clipAmount; i++)
