@@ -50,7 +50,6 @@ public class MusicPlayer : MonoBehaviour
 
         nextPlay = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         currentClip = 0;
-        print(clips[1]);
     }
     /// <summary>
     /// Checks if there are music tracks and if it's time to play the next.
@@ -76,7 +75,6 @@ public class MusicPlayer : MonoBehaviour
 
         if (clipAmount >= 0 && nextPlay <= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
         {
-            print(currentClip);
             audioSource.clip = clips[currentClip];
             audioSource.Play();
 
@@ -88,6 +86,5 @@ public class MusicPlayer : MonoBehaviour
             audioSource.Stop();
             nextPlay = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         }
-
     }
 }
