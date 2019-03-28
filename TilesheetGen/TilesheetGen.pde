@@ -40,7 +40,7 @@ void setup() {
     
   }
   
-  canvas.save("../Assets/Graphics/tilesheet.png");
+  canvas.save("../Assets/Resources/Graphics/tilesheet.png");
 
   struct[0] = "using UnityEngine;";
   struct[1] = "/// <summary>\n/// Automatically generated class that contains the texture positions to set the UVs for every block\n/// </summary>";
