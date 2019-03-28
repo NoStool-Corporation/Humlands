@@ -12,7 +12,7 @@ public class Inventory
     /// </summary>
     public int Amount
     {
-        get { return getAmount(); }
+        get { return GetAmount(); }
     }
 
     /// <summary>
@@ -53,23 +53,54 @@ public class Inventory
     }
 
     /// <summary>
+    /// Removes Items in the form of an ItemStack from this inventory.
+    /// </summary>
+    /// <param name="stack">The Stack of Items to remove</param>
+    /// <returns>Returns the amount of Items removed as an ItemStack</returns>
+    public ItemStack Remove(ItemStack stack)
+    {
+        ItemStack removeFrom = GetItemStackWithItem(stack.Item);
+
+        if (removeFrom == null)
+            return new ItemStack(stack.Item, 0);
+
+        if (removeFrom.Size - stack.Size < 0)
+            return removeFrom.Remove(removeFrom.Size);
+
+        return removeFrom.Remove(stack);
+    }
+
+    /// <summary>
     /// Returns the amount of items of the specified item type 
     /// </summary>
     /// <param name="item"></param>
     /// <returns>Returns the amount of items of the specified item type</returns>
-    public int getAmountOfItem(Item item)
+    public int GetAmountOfItem(Item item)
+    {
+        ItemStack stack = GetItemStackWithItem(item);
+        if (stack != null)
+            return stack.Size;
+        return 0;
+    }
+
+    /// <summary>
+    /// Searches for an ItemStack in this inventory which contains the specified item
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns>Returns the ItemStack with the item, or null if non was found</returns>
+    private ItemStack GetItemStackWithItem(Item item)
     {
         for (int i = 0; i < itemStacks.Count; i++)
             if (itemStacks[i].Item == item)
-                return itemStacks[i].Size;
-        return 0;
+                return itemStacks[i];
+        return null;
     }
 
     /// <summary>
     /// Returns the amount of items in the inventory
     /// </summary>
     /// <returns>Returns the amount of items in the inventory as an int</returns>
-    private int getAmount()
+    private int GetAmount()
     {
         int amount = 0;
         for(int i = 0; i < itemStacks.Count; i++)
