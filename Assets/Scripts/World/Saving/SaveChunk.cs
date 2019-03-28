@@ -6,14 +6,14 @@ using System;
 /// Takes all the changed blocks of a chunk and then get's serialized to save the chunk.
 /// </summary>
 [Serializable]
-public class Save
+public class SaveChunk
 {
-    public Dictionary<WorldPos, Block> blocks = new Dictionary<WorldPos, Block>();
+    public Dictionary<WorldPos, Block> blocks = new Dictionary<WorldPos, Block>()
     /// <summary>
     /// Loops through all blocks of the chunk and saves those marked as changed
     /// </summary>
     /// <param name="chunk"></param>
-    public Save(Chunk chunk)
+    public SaveChunk(Chunk chunk)
     {
         for (int x = 0; x < Chunk.chunkSize; x++)
         {
