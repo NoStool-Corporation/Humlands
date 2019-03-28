@@ -17,19 +17,27 @@ public class TerrainGen
     float dirtBaseHeight = 4;
     float dirtNoise = 0.02f;
     float dirtNoiseHeight = 1;
+
+    int seed;
+
+    public TerrainGen(int seed)
+    {
+        this.seed = seed;
+    }
+
     /// <summary>
     /// Generates a chunk based on the seed
     /// </summary>
     /// <param name="chunk">Chunk which needs to be generated</param>
     /// <param name="seed">World seed</param>
     /// <returns>Generated chunk</returns>
-    public Chunk ChunkGen(Chunk chunk, int seed)
+    public Chunk ChunkGen(Chunk chunk)
     {
         for (int x = chunk.pos.x; x < chunk.pos.x + Chunk.chunkSize; x++)
         {
             for (int z = chunk.pos.z; z < chunk.pos.z + Chunk.chunkSize; z++)
             {
-                chunk = ChunkColumnGen(chunk, x, z, seed);
+                chunk = ChunkColumnGen(chunk, x, z);
             }
         }
         return chunk;
@@ -42,7 +50,7 @@ public class TerrainGen
     /// <param name="z">Local y coordinate of the column</param>
     /// <param name="seed">World seed</param>
     /// <returns>The chunk with the added generated column of blocks</returns>
-    private Chunk ChunkColumnGen(Chunk chunk, int x, int z, int seed)
+    private Chunk ChunkColumnGen(Chunk chunk, int x, int z)
     {
         Noise.Seed = seed;
 

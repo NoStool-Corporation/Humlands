@@ -14,10 +14,21 @@ public class World : MonoBehaviour
     GameObject chunkPrefab;
     public string worldName = "world";
     private int seed = 1;
+    TerrainGen terrainGen;
 
     private void Start()
     {
         chunkPrefab = Resources.Load<GameObject>("Prefabs/Chunk");
+        terrainGen = new TerrainGen(seed);
+    }
+
+    private void OnApplicationQuit()
+    {
+        foreach (var chunk in chunks)
+        {
+            Destroy(chunk.Value);
+            chunks.Remove(chunk.Key);
+        }
     }
 
     /// <summary>  
@@ -33,7 +44,7 @@ public class World : MonoBehaviour
     {
         WorldPos worldPos = new WorldPos(x, y, z);
 
-        GameObject newChunkObject = Instantiate(chunkPrefab, new Vector3(x, y, z), Quaternion.Euler(Vector3.zero)) as GameObject;
+        GameObject newChunkObject = Instantiate(chunkPrefab, new Vector3(x, y, z), Quaternion.Euler(Vector3.zero));
 
         Chunk newChunk = newChunkObject.GetComponent<Chunk>();
 
@@ -42,13 +53,9 @@ public class World : MonoBehaviour
 
         chunks.Add(worldPos, newChunk);
 
-        var TerrainGen = new TerrainGen();
-        newChunk = TerrainGen.ChunkGen(newChunk, seed);
+        newChunk = terrainGen.ChunkGen(newChunk);
         newChunk.SetBlocksUnmodified();
-        bool loaded = Serialization.LoadChunk(newChunk);
-
-        newChunk.SetBlocksUnmodified();
-        Serialization.LoadChunk(newChunk);   
+        Serialization.LoadChunk(newChunk);
 
         newChunk.render = true;
         return newChunk;

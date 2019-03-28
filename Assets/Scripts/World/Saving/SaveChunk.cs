@@ -8,7 +8,7 @@ using System;
 [Serializable]
 public class SaveChunk
 {
-    public Dictionary<WorldPos, Block> blocks = new Dictionary<WorldPos, Block>()
+    public Dictionary<WorldPos, Block> blocks = new Dictionary<WorldPos, Block>();
     /// <summary>
     /// Loops through all blocks of the chunk and saves those marked as changed
     /// </summary>

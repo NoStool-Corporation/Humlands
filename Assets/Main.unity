@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc40aa2d27aece4596852dfc950c6e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 534669909}
+  biom: 
 --- !u!114 &534669907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,7 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98bd4b5273059c841b1327180aa070f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  world: {fileID: 957791925}
+  renderDistance: 0
 --- !u!114 &534669908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,10 +253,10 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.024
+  m_Volume: 0.014
   m_Pitch: 1
   Loop: 0
-  Mute: 0
+  Mute: 1
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
@@ -349,7 +349,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b68f1f7f2ef2ae4d940089b3f938a03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 534669911}
 --- !u!114 &534669911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,8 +460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 074d279b430ffcc48bce137369b56aa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chunkPrefab: {fileID: 7975140726705348689, guid: 644b3db58b049f94aab3f4294197b653,
-    type: 3}
+  entities: []
   worldName: world
 --- !u!4 &957791926
 Transform:
