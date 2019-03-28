@@ -12,7 +12,7 @@ public class MusicPlayer : MonoBehaviour
     /// <summary>
     /// Amount of clips to load from the musicDir
     /// </summary>
-    int clipAmount = 1;
+    int clipAmount = 2;
 
     AudioClip[] clips;
 
@@ -30,11 +30,16 @@ public class MusicPlayer : MonoBehaviour
 
     String musicDir = "Music/";
 
+    public string biom;
+
+    World world;
+
     /// <summary>
     /// Loads all the music tracks into an array on start
     /// </summary>
     void Start()
     {
+        world = GameObject.Find("World").GetComponent<World>();
         audioSource = this.GetComponent<AudioSource>();
         audioSource.volume = 0.01f;
         clips = new AudioClip[clipAmount];
@@ -45,24 +50,44 @@ public class MusicPlayer : MonoBehaviour
 
         nextPlay = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         currentClip = 0;
+        print(clips[1]);
     }
     /// <summary>
     /// Checks if there are music tracks and if it's time to play the next.
     /// </summary>
     void Update()
     {
+        if (biom != world.GetChunk((int)transform.position.x, 0, (int)transform.position.z).biom)
+        {
+            biom = world.GetChunk((int)transform.position.x, 0, (int)transform.position.z).biom;
+
+            if(biom == "wald")
+            {
+                currentClip = 1;
+            }
+            else if(biom == "grassland")
+            {        
+                currentClip = 0;
+            }
+
+            audioSource.Stop();
+            nextPlay = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        }
+
         if (clipAmount >= 0 && nextPlay <= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
         {
+            print(currentClip);
             audioSource.clip = clips[currentClip];
             audioSource.Play();
 
             nextPlay = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + (int)(audioSource.clip.length * 1000) + delay;
 
-            currentClip++;
-            if(currentClip <= clipAmount)
-            {
-                currentClip = 0;
-            }
         }
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            audioSource.Stop();
+            nextPlay = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        }
+
     }
 }

@@ -10,6 +10,7 @@ using UnityEngine;
 [RequireComponent(typeof(MeshCollider))]
 public class Chunk : MonoBehaviour
 {
+    public string biom;
     public static int chunkSize = 16;
     public Block[,,] blocks;
     public World world;
@@ -30,6 +31,10 @@ public class Chunk : MonoBehaviour
     {
         filter = gameObject.GetComponent<MeshFilter>();
         coll = gameObject.GetComponent<MeshCollider>();
+        if (Random.value < 0.5)
+            biom = "wald";
+        else
+            biom = "grassland";
     }
     /// <summary>
     /// Takes local coordinates to return the block

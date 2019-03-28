@@ -15,7 +15,7 @@ public class CameraMovement : MonoBehaviour
 
     Vector3? pivot;
 
-    bool moveBorder = true;
+    bool moveBorder = false;
 
     void Update()
     {
