@@ -15,12 +15,15 @@ public class CameraMovement : MonoBehaviour
 
     Vector3? pivot;
 
-    bool moveBorder = false;
+    bool moveBorder = true;
 
     void Update()
     {
-        Movement();
-        Rotation();
+        if (Application.isFocused)
+        {
+            Movement();
+            Rotation();
+        }
     }
 
     /// <summary>
