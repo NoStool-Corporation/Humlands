@@ -153,7 +153,7 @@ public class Chunk : MonoBehaviour
     /// <param name="meshData"></param>
     void RenderMesh(MeshData meshData)
     {
-        filter.mesh.Clear();
+        filter.mesh.Clear(false);
         filter.mesh.vertices = meshData.vertices.ToArray();
         filter.mesh.triangles = meshData.triangles.ToArray();
         filter.mesh.uv = meshData.uv.ToArray();
@@ -166,10 +166,13 @@ public class Chunk : MonoBehaviour
     void UseCollisionMesh(MeshData meshData)
     {
         coll.sharedMesh = null;
-        Mesh mesh = new Mesh();
-        mesh.vertices = meshData.colVertices.ToArray();
-        mesh.triangles = meshData.colTriangles.ToArray();
+        Mesh mesh = new Mesh
+        {
+            vertices = meshData.colVertices.ToArray(),
+            triangles = meshData.colTriangles.ToArray()
+        };
         mesh.RecalculateNormals();
         coll.sharedMesh = mesh;
+        Destroy(mesh);
     }
 }

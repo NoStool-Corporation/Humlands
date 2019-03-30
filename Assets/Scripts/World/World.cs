@@ -57,7 +57,6 @@ public class World : MonoBehaviour
         newChunk.SetBlocksUnmodified();
         Serialization.LoadChunk(newChunk);
 
-        newChunk.render = true;
         return newChunk;
     }
 
