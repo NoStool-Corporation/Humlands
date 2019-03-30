@@ -56,9 +56,10 @@ public class MusicPlayer : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (biom != world.GetChunk((int)transform.position.x, 0, (int)transform.position.z).biom)
+        Chunk tmp = world.GetChunk((int)transform.position.x, 0, (int)transform.position.z);
+        if (tmp != null && biom != tmp.biom)
         {
-            biom = world.GetChunk((int)transform.position.x, 0, (int)transform.position.z).biom;
+            biom = tmp.biom;
 
             if(biom == "wald")
             {
