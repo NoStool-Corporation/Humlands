@@ -114,7 +114,7 @@ public class Chunk : MonoBehaviour
             }
         }
         RenderMesh(meshData);
-        UseCollisionMesh(meshData);
+        MakeCollisionMesh(meshData);
         rendered = true;
     }
     /// <summary>
@@ -153,19 +153,27 @@ public class Chunk : MonoBehaviour
     /// <param name="meshData"></param>
     void RenderMesh(MeshData meshData)
     {
-        filter.mesh.Clear(false);
-        filter.mesh.vertices = meshData.vertices.ToArray();
-        filter.mesh.triangles = meshData.triangles.ToArray();
-        filter.mesh.uv = meshData.uv.ToArray();
-        filter.mesh.RecalculateNormals();
+        if (filter.sharedMesh != null)
+            Destroy(filter.sharedMesh);
+        Mesh mesh = new Mesh
+        {
+            vertices = meshData.vertices.ToArray(),
+            triangles = meshData.triangles.ToArray(),
+            uv = meshData.uv.ToArray()
+        };
+        mesh.RecalculateNormals();
+        filter.mesh = mesh;
     }
+
     /// <summary>
     /// Creates the collider Mesh based on the meshData
     /// </summary>
     /// <param name="meshData"></param>
-    void UseCollisionMesh(MeshData meshData)
+    void MakeCollisionMesh(MeshData meshData)
     {
-        coll.sharedMesh = null;
+        if (coll.sharedMesh != null)
+            coll.sharedMesh.Clear();
+
         Mesh mesh = new Mesh
         {
             vertices = meshData.colVertices.ToArray(),
@@ -173,6 +181,5 @@ public class Chunk : MonoBehaviour
         };
         mesh.RecalculateNormals();
         coll.sharedMesh = mesh;
-        Destroy(mesh);
     }
 }
