@@ -59,10 +59,13 @@ public static class Serialization
     /// </summary>
     /// <param name="entities">The Linked List of Entities</param>
     public static void SaveEntities(List<Entity> entities) {
-        SaveEntities saveEntities = new SaveEntities();
-        saveEntities.entities = entities;
+        List<SaveEntity> save = new List<SaveEntity>(entities.Count);
 
-        Save(entityFileName, saveEntities);
+        for (int i = 0; i < entities.Count; i++) {
+            save[i] = new SaveEntity(entities[i]);
+        }
+
+        Save(entityFileName, save);
     }
 
     /// <summary>
@@ -88,12 +91,14 @@ public static class Serialization
 
         IFormatter formatter = new BinaryFormatter();
         FileStream stream = new FileStream(entityFileName, FileMode.Open);
-
-        SaveEntities saveEntities = (SaveEntities)formatter.Deserialize(stream);
         stream.Close();
 
-        entities = saveEntities.entities;
+        List<SaveEntity> saves = (List<SaveEntity>) formatter.Deserialize(stream);
+        GameObject prefab = Resources.Load<GameObject>(Entity.PREFAB_PATH);
 
+        for (int i = 0; i < saves.Count; i++) 
+            entities.Add(saves[i].Instantiate(prefab));
+    
         return true;
     }
 

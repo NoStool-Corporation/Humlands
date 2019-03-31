@@ -16,6 +16,13 @@ public struct WorldPos
         this.z = z;
     }
 
+    public WorldPos(Vector3 pos)
+    {
+        this.x = (int)pos.x;
+        this.y = (int)pos.y;
+        this.z = (int)pos.z;
+    }
+
     public Vector3 ToVector3()
     {
         return new Vector3(x,y,z);

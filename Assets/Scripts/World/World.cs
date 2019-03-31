@@ -20,6 +20,12 @@ public class World : MonoBehaviour
     {
         chunkPrefab = Resources.Load<GameObject>("Prefabs/Chunk");
         terrainGen = new TerrainGen(seed);
+        Serialization.LoadEntities(entities);
+
+        /*GameObject prefab = Resources.Load<GameObject>(Entity.PREFAB_PATH);
+        GameObject g = Entity.Instantiate(prefab, new Vector3(0,0,0), new Quaternion(0,0,0,0));
+        Entity e = g.GetComponent<Entity>();
+        entities.Add(e);*/
     }
 
     private void OnApplicationQuit()
@@ -28,6 +34,7 @@ public class World : MonoBehaviour
         {
             Destroy(chunk.Value);
             chunks.Remove(chunk.Key);
+            //Serialization.SaveEntities(entities);
         }
     }
 
@@ -98,6 +105,18 @@ public class World : MonoBehaviour
         chunks.TryGetValue(pos, out containerChunk);
 
         return containerChunk;
+    }
+
+    /// <summary>
+    /// Creates a chunk if there isn't alreay one
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns>Retuns the created chunk or null if there already was one</returns>
+    public Chunk BuildChunk(WorldPos pos)
+    {
+        if (GetChunk(pos.x, pos.y, pos.z) == null)
+            return CreateChunk(pos.x, pos.y, pos.z);
+        return GetChunk(pos);
     }
 
     /// <summary>  

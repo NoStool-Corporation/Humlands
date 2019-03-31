@@ -114,17 +114,7 @@ public class LoadChunks : MonoBehaviour
             }
         }
     }
-    /// <summary>
-    /// Creates a chunk if there isn't alreay one
-    /// </summary>
-    /// <param name="pos"></param>
-    /// <returns>Retuns the created chunk or null if there already was one</returns>
-    Chunk BuildChunk(WorldPos pos)
-    {
-        if (world.GetChunk(pos.x, pos.y, pos.z) == null)
-            return world.CreateChunk(pos.x, pos.y, pos.z);
-        return null;
-    }
+
     /// <summary>
     /// Loads all the chunks in the build list and renders all the chunks in the render list
     /// </summary>
@@ -134,7 +124,7 @@ public class LoadChunks : MonoBehaviour
         {
             for (int i = 0; i < buildList.Count && i < 8; i++)
             {
-                Chunk chunk = BuildChunk(buildList[0]);
+                Chunk chunk = world.BuildChunk(buildList[0]);
                 if(chunk != null)
                     chunk.renderNeighbors = true;
 
@@ -182,9 +172,8 @@ public class LoadChunks : MonoBehaviour
         return false;
     }
 
-    public bool IsInRenderDistance(Vector3 pos) {
-
-
+    public bool IsInRenderDistance(WorldPos pos) {
+        
         if (Mathf.Abs(pos.x - transform.position.x) <= renderDistance * 16 && Mathf.Abs(pos.y - transform.position.y) <= renderDistance * 16 && Mathf.Abs(pos.z - transform.position.z) <= renderDistance * 16)
             return true;
 
