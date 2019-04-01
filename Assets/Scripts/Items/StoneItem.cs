@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Plank : Item
+public class StoneItem : Item
 {
-    public Plank() : base("plank") { }
+    public StoneItem() : base("Stone") { }
 }

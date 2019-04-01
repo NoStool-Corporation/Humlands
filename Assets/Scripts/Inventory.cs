@@ -8,11 +8,19 @@ public class Inventory
     private readonly int maxSize;
 
     /// <summary>
-    /// Amount of items in the Inventory
+    /// Amount of Items in the Inventory
     /// </summary>
     public int Amount
     {
         get { return GetAmount(); }
+    }
+
+    /// <summary>
+    /// Amount of ItemStacks in the Inventory
+    /// </summary>
+    public int StackAmount
+    {
+        get { return itemStacks.Count;  }
     }
 
     /// <summary>
@@ -108,5 +116,15 @@ public class Inventory
             amount += itemStacks[i].Size;
         }
         return amount;
+    }
+
+    /// <summary>
+    /// Returns the ItemStack at the specified position.
+    /// </summary>
+    /// <param name="i"></param>
+    /// <returns></returns>
+    public ItemStack GetStack(int i)
+    {
+        return itemStacks[i];
     }
 }

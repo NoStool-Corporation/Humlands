@@ -14,12 +14,15 @@ public static class ItemSprites
 
     public static void LoadItemSprite(string name)
     {
+        name = name.ToLower();
+        MonoBehaviour.print(name);
         if (!sprites.ContainsKey(name))
             sprites.Add(name, Resources.Load<Sprite>(dir + name));
     }
 
     public static Sprite GetItemSprite(string name)
     {
+        name = name.ToLower();
         sprites.TryGetValue(name, out Sprite tmp);
         return tmp;
     }

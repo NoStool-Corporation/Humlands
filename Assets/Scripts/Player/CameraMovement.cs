@@ -19,7 +19,7 @@ public class CameraMovement : MonoBehaviour
 
     void Update()
     {
-        if (Application.isFocused)
+        if (Application.isFocused && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
             Movement();
             Rotation();
@@ -52,6 +52,24 @@ public class CameraMovement : MonoBehaviour
         Vector3 left = new Vector3(Round(Mathf.Sin((transform.rotation.eulerAngles.y + 90) * degToRad), 3), 0, Round(Mathf.Cos((transform.rotation.eulerAngles.y + 90) * degToRad), 3));
         transform.position += left * moveSpeed * Time.deltaTime * swMovement;
 
+
+        /*if(Input.GetKey(KeyCode.U))
+        {
+            ItemStack stack = new ItemStack(new WoodItem(), 10);
+            ItemStack stack2 = new ItemStack(new PlankItem(), 22);
+            ItemStack stack3 = new ItemStack(new PlankItem(), 5);
+            ItemStack stack4 = new ItemStack(new StoneItem(), 15);
+            ItemStack stack5 = new ItemStack(new CutStoneItem(), 11);
+            Inventory inventory = new Inventory(400);
+            inventory.Add(stack);
+            inventory.Add(stack2);
+            inventory.Add(stack3);
+            inventory.Add(stack4);
+            inventory.Add(stack5);
+            inventory.Add(new ItemStack(new WoodItem(), 66));
+
+            InventoryUIManager UI = new InventoryUIManager(inventory);
+        }*/
 
 
         //zooming with the scroll wheel

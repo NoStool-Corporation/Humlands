@@ -16,22 +16,24 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+        if (Application.isFocused && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) { 
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                if (player.destroy)
-                    TerrainControl.SetBlock(hit, new AirBlock());
-                else
-                    TerrainControl.SetBlock(hit, player.getBlockToPlace(), true);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (player.destroy)
+                        TerrainControl.SetBlock(hit, new AirBlock());
+                    else
+                        TerrainControl.SetBlock(hit, player.getBlockToPlace(), true);
+                }
             }
-        }
 
-        if(Input.GetKeyDown(KeyCode.Tab))
-        {
-            player.destroy = !player.destroy;
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                player.destroy = !player.destroy;
+            }
         }
     }
 }
