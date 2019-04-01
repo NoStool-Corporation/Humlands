@@ -1,24 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Superclass of all items, do not initialize.
+/// </summary>
 public class Item
 {
-    static readonly string textureFolder = "Graphics/ItemTextures/";
-    readonly string name;
-
-    public Item(string name = "item")
-    {
-        this.name = name;
-    }
+    public readonly string name;
 
     /// <summary>
-    /// Returns the Texture2D of the item
+    /// Do not initialize.
     /// </summary>
-    /// <returns>Returns the Texture2D of the item</returns>
-    public virtual Texture2D GetTexture()
+    /// <param name="name"></param>
+    public Item(string name)
     {
-        return Resources.Load<Texture2D>(textureFolder + name);
+        this.name = name;
+        ItemSprites.LoadItemSprite(name);
     }
 
     public static bool operator ==(Item i1, Item i2)
@@ -33,7 +30,7 @@ public class Item
 
     public override bool Equals(object obj)
     {
-        if (this.GetType() == obj.GetType())
+        if (this.name == ((Item)obj).name)
             return true;
         return false;
     }
