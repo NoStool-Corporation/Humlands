@@ -11,6 +11,13 @@ public enum Direction { NORTH, EAST, SOUTH, WEST, UP, DOWN };
 public class Block
 {
     public bool changed = true;
+    [NonSerialized()]
+    public GameObject customModel;
+
+    public virtual void DeleteData()
+    {
+        GameObject.Destroy(customModel);
+    }
 
     /// <summary>
     /// Returns the position of the block's texture in the tilesheet based on the specified direction

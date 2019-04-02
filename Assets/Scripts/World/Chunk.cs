@@ -42,10 +42,7 @@ public class Chunk : MonoBehaviour
             {
                 for (int z = 0; z < 16; z++)
                 {
-                    if(((TreeBlock)blocks[x, y, z]).Tree != null)
-                    {
-                        Destroy(((TreeBlock)blocks[x, y, z]).Tree);
-                    }
+                    blocks[x,y,z].DeleteData();
                 }
             }
         }
