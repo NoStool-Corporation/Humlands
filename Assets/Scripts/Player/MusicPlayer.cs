@@ -30,7 +30,7 @@ public class MusicPlayer : MonoBehaviour
 
     String musicDir = "Music/";
 
-    public string biom;
+    public string biome;
 
     World world;
 
@@ -57,15 +57,15 @@ public class MusicPlayer : MonoBehaviour
     void Update()
     {
         Chunk tmp = world.GetChunk((int)transform.position.x, 0, (int)transform.position.z);
-        if (tmp != null && biom != tmp.biom)
+        if (tmp != null && biome != tmp.biome)
         {
-            biom = tmp.biom;
+            biome = tmp.biome;
 
-            if(biom == "wald")
+            if(biome == "forest")
             {
                 currentClip = 1;
             }
-            else if(biom == "grassland")
+            else if(biome == "grassland")
             {        
                 currentClip = 0;
             }

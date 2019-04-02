@@ -11,13 +11,15 @@ public class TerrainGen
     float stoneBaseHeight = 0;
     float stoneBaseNoise = 0.05f;
     float stoneBaseNoiseHeight = 1;
-    float stoneMountainHeight = 12;
-    float stoneMountainFrequency = 0.002f;
+    float stoneMountainHeight =3;
+    float stoneMountainFrequency = 0.02f;
     float stoneMinHeight = 0;
     float dirtBaseHeight = 4;
     float dirtNoise = 0.02f;
     float dirtNoiseHeight = 1;
-
+    float forestFrequency = 0.01f;
+    float treeFrequency = 0.2f;
+    float treeDensity = 30f;
     int seed;
 
     public TerrainGen(int seed)
@@ -33,6 +35,17 @@ public class TerrainGen
     /// <returns>Generated chunk</returns>
     public Chunk ChunkGen(Chunk chunk)
     {
+        int Biome = GetNoise(chunk.pos.x, 0, chunk.pos.z, forestFrequency, 2);
+        if(Biome == 1)
+        {
+            chunk.biome = "grassland";
+        }
+        else
+        {
+            chunk.biome = "forest"; 
+        }
+        
+
         for (int x = chunk.pos.x; x < chunk.pos.x + Chunk.chunkSize; x++)
         {
             for (int z = chunk.pos.z; z < chunk.pos.z + Chunk.chunkSize; z++)
@@ -75,6 +88,9 @@ public class TerrainGen
             } else if (y == dirtHeight+1)
             {
                 chunk.SetBlock(x-chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new GrassBlock());
+            } else if (GetNoise(x,y,z, forestFrequency, 2) == 1 && y == dirtHeight+2 && GetNoise(x,0,z, treeFrequency, 100) < treeDensity)
+            {
+                chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new TreeBlock());
             } else
             {
                 chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new AirBlock());
