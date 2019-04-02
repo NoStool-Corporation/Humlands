@@ -19,7 +19,7 @@ public class TerrainGen
     float dirtNoiseHeight = 1;
     float forestFrequency = 0.01f;
     float treeFrequency = 0.2f;
-    float treeDensity = 30f;
+    float treeDensity = 10f;
     int seed;
 
     public TerrainGen(int seed)
