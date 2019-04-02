@@ -12,6 +12,7 @@ public class World : MonoBehaviour
     public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
     public List<Entity> entities = new List<Entity>();
     GameObject chunkPrefab;
+    GameObject entityPrefab;
     public string worldName = "world";
     private int seed = 1;
     TerrainGen terrainGen;
@@ -19,13 +20,16 @@ public class World : MonoBehaviour
     private void Start()
     {
         chunkPrefab = Resources.Load<GameObject>("Prefabs/Chunk");
+        entityPrefab = Resources.Load<GameObject>(Entity.PREFAB_PATH);
         terrainGen = new TerrainGen(seed);
-        Serialization.LoadEntities(entities);
 
-        /*GameObject prefab = Resources.Load<GameObject>(Entity.PREFAB_PATH);
-        GameObject g = Entity.Instantiate(prefab, new Vector3(0,0,0), new Quaternion(0,0,0,0));
+        LoadEntities();
+        
+        GameObject g = Instantiate(entityPrefab, new Vector3(0,2,0), new Quaternion(0,0,0,0));
         Entity e = g.GetComponent<Entity>();
-        entities.Add(e);*/
+        entities.Add(e);
+        //print(entities.Count); 
+        //Serialization.SaveEntities(entities);
     }
 
     private void OnApplicationQuit()
@@ -67,10 +71,26 @@ public class World : MonoBehaviour
         return newChunk;
     }
 
-    public void LoadEntities() {
-        List<Entity> entities = new List<Entity>();
-        Serialization.LoadEntities(entities);
-        LoadChunks loadChunks = GameObject.Find("Main Camera").GetComponent<LoadChunks>();
+    void LoadEntities()
+    {
+        List<SaveEntity> saves = Serialization.LoadEntities();
+        if (saves == null)
+            return;
+
+        GameObject gameObject;
+
+        foreach (SaveEntity save in saves) {
+            gameObject = Instantiate(entityPrefab, save.position, save.rotation);
+            Entity e = gameObject.GetComponent<Entity>();
+            e.entityName = save.entityName;
+            e.transform.position = save.position;
+            e.transform.rotation = save.rotation;
+            e.stayLoaded = save.stayLoaded;
+            e.inventory = save.inventory;
+            e.job = save.job;
+            entities.Add(e);
+        }
+        
     }
 
     /// <summary>  

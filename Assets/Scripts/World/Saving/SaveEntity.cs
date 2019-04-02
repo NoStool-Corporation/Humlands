@@ -7,7 +7,7 @@ using System;
 /// Datascructure to save all the information about one entity which are needed to recreate it afer a reload.
 /// </summary>
 [Serializable]
-public class SaveEntity : MonoBehaviour
+public class SaveEntity
 {
     public string entityName;
     public Vector3 position;
@@ -24,24 +24,5 @@ public class SaveEntity : MonoBehaviour
         stayLoaded = e.stayLoaded;
         inventory = e.inventory;
         job = e.job;
-    }
-
-    /// <summary>
-    /// Instantiates an GameObject out of the stored data.
-    /// </summary>
-    /// <param name="prefab"></param>
-    /// <returns>The Entity Object (Not the GameObject)</returns>
-    public Entity Instantiate(GameObject prefab)
-    {
-        GameObject gameObject = Instantiate(prefab, position, rotation);
-        Entity e = gameObject.GetComponent<Entity>();
-        e.entityName = entityName;
-        e.transform.position = position;
-        e.transform.rotation = rotation;
-        e.stayLoaded = stayLoaded;
-        e.inventory = inventory;
-        e.job = job;
-
-        return e;
     }
 }

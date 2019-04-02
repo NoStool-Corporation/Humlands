@@ -10,7 +10,7 @@ public class Entity : MonoBehaviour
 
 
     private string NAME_FILE_PATH = "Assets/Resources/Strings/EntityNames.txt";
-    public static string PREFAB_PATH = "Assets/Resources/Prefabs/Entity.prefab";
+    public static string PREFAB_PATH = "Prefabs/Entity";
 
 
     public bool stayLoaded = false;
