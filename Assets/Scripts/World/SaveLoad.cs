@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System;
 
-public static class SaveLoadGame
+public static class SaveLoad
 {
     // Saves the GameData in a binary file using a binary formatter.
     public static void SaveGame(World world)
@@ -42,14 +42,13 @@ public static class SaveLoadGame
 /* This part of the code has yet to be written.
  * It will contain the seed and everything that the Player changed while playing.
  * It will be written as soon as the Serialization process of changed Blocks can be implemented.
-
+*/
 
 [Serializable]
 public class GameData
 {
 
 }
-*/
 
 
 
