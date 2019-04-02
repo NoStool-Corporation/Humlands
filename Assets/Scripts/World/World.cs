@@ -34,12 +34,7 @@ public class World : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        foreach (var chunk in chunks)
-        {
-            Destroy(chunk.Value);
-            chunks.Remove(chunk.Key);
-            Serialization.SaveEntities(entities);
-        }
+        SaveLoad.SaveGame(this);
     }
 
     /// <summary>  
