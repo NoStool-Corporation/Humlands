@@ -86,7 +86,7 @@ public static class Serialization
     /// <param name="entities">The reference to the List the Entities should be loaded into</param>
     /// <returns></returns>
     public static List<SaveEntity> LoadEntities() {
-        if (!File.Exists(entityFileName))
+        if (!File.Exists(saveFolderName + "/" + entityFileName))
             return null;
 
         IFormatter formatter = new BinaryFormatter();

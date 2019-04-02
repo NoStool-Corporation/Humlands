@@ -10,17 +10,25 @@ using System;
 public class SaveEntity
 {
     public string entityName;
-    public Vector3 position;
-    public Quaternion rotation;
+    public float[] position = new float[3];
+    public float[] rotation = new float[4];
     public bool stayLoaded = false;
     public Inventory inventory;
     public Entity.Jobs job;
 
     public SaveEntity(Entity e)
     {
+
         entityName = e.entityName;
-        position = e.transform.position;
-        rotation = e.transform.rotation;
+        position[0] = e.transform.position.x;
+        position[1] = e.transform.position.y;
+        position[2] = e.transform.position.z;
+
+        rotation[0] = e.transform.rotation.x;
+        rotation[1] = e.transform.rotation.y;
+        rotation[2] = e.transform.rotation.z;
+        rotation[3] = e.transform.rotation.w;
+
         stayLoaded = e.stayLoaded;
         inventory = e.inventory;
         job = e.job;

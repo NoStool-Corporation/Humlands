@@ -25,11 +25,11 @@ public class World : MonoBehaviour
 
         LoadEntities();
         
-        GameObject g = Instantiate(entityPrefab, new Vector3(0,2,0), new Quaternion(0,0,0,0));
+        /*GameObject g = Instantiate(entityPrefab, new Vector3(0,2,0), new Quaternion(0,0,0,0));
         Entity e = g.GetComponent<Entity>();
         entities.Add(e);
-        //print(entities.Count); 
-        //Serialization.SaveEntities(entities);
+        WorldPos pp = new WorldPos(30, 20, -5);
+        Serialization.SaveEntities(entities);*/
     }
 
     private void OnApplicationQuit()
@@ -38,7 +38,7 @@ public class World : MonoBehaviour
         {
             Destroy(chunk.Value);
             chunks.Remove(chunk.Key);
-            //Serialization.SaveEntities(entities);
+            Serialization.SaveEntities(entities);
         }
     }
 
@@ -74,17 +74,26 @@ public class World : MonoBehaviour
     void LoadEntities()
     {
         List<SaveEntity> saves = Serialization.LoadEntities();
-        if (saves == null)
+        if (saves == null) {
+            print("No entities loadable");
             return;
+        }
+            
 
         GameObject gameObject;
+        Entity e;
+        Vector3 pos;
+        Quaternion quat;
 
         foreach (SaveEntity save in saves) {
-            gameObject = Instantiate(entityPrefab, save.position, save.rotation);
-            Entity e = gameObject.GetComponent<Entity>();
+            pos = new Vector3(save.position[0], save.position[1], save.position[2]);
+            quat = new Quaternion(save.rotation[0], save.rotation[1], save.rotation[2], save.rotation[3]);
+
+            gameObject = Instantiate(entityPrefab, pos, quat);
+            e = gameObject.GetComponent<Entity>();
             e.entityName = save.entityName;
-            e.transform.position = save.position;
-            e.transform.rotation = save.rotation;
+            e.transform.position = pos;
+            e.transform.rotation = quat;
             e.stayLoaded = save.stayLoaded;
             e.inventory = save.inventory;
             e.job = save.job;

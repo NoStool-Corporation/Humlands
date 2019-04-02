@@ -173,10 +173,30 @@ public class LoadChunks : MonoBehaviour
     }
 
     public bool IsInRenderDistance(WorldPos pos) {
-        
         if (Mathf.Abs(pos.x - transform.position.x) <= renderDistance * 16 && Mathf.Abs(pos.y - transform.position.y) <= renderDistance * 16 && Mathf.Abs(pos.z - transform.position.z) <= renderDistance * 16)
             return true;
 
         return false;
+    }
+
+    public List<Vector3> GetRenderDistanceChunks() {
+        if (renderDistance < 1) {
+            return null;
+        }
+
+        int size = renderDistance * 2 + 1;
+        List<Vector3> ret = new List<Vector3>(size*size*size);
+
+        for (int z = -renderDistance; z < size; z++) {
+            for (int y = -renderDistance; y < size; y++)
+            {
+                for (int x = -renderDistance; x < size; x++)
+                {
+                    ret.Add(new Vector3(x, y, z));
+                }
+            }
+        }
+
+        return ret;
     }
 }

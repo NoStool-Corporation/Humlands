@@ -38,13 +38,13 @@ public class Entity : MonoBehaviour
     }
 
     public void SetPosition(WorldPos pos) {
-
-        if (world.GetChunk(new WorldPos(transform.position)) != world.GetChunk(pos)) {
-            world.GetChunk(pos);
+        print("Not working condition in Entity::SetPosition(WorldPos)");
+        return;
+        /*if (world.GetChunk(new WorldPos(transform.position)) != world.GetChunk(pos)) {
             world.BuildChunk(pos);
         }
 
-        transform.position = pos.ToVector3();
+        transform.position = pos.ToVector3();*/
     }
 
     private string[] GetNames() {
