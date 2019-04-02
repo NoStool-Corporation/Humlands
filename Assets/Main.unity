@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc40aa2d27aece4596852dfc950c6e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  biom: 
+  biome: 
 --- !u!114 &534669907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,7 +256,7 @@ AudioSource:
   m_Volume: 0.014
   m_Pitch: 1
   Loop: 0
-  Mute: 1
+  Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128

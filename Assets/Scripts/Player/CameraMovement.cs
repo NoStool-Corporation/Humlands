@@ -53,7 +53,7 @@ public class CameraMovement : MonoBehaviour
         transform.position += left * moveSpeed * Time.deltaTime * swMovement;
 
 
-        /*if(Input.GetKey(KeyCode.U))
+        if(Input.GetKey(KeyCode.U))
         {
             ItemStack stack = new ItemStack(new WoodItem(), 10);
             ItemStack stack2 = new ItemStack(new PlankItem(), 22);
@@ -69,7 +69,7 @@ public class CameraMovement : MonoBehaviour
             inventory.Add(new ItemStack(new WoodItem(), 66));
 
             InventoryUIManager UI = new InventoryUIManager(inventory);
-        }*/
+        }
 
 
         //zooming with the scroll wheel

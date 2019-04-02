@@ -4,7 +4,6 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Canvas))]
 public class InventoryUIManager
 {
     Inventory inventory;
@@ -21,6 +20,7 @@ public class InventoryUIManager
 
         UI = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/InventoryUI"));
         content = UI.GetComponentInChildren<Content>();
+        UI.GetComponentInChildren<Button>().onClick.AddListener(delegate { Delete(); }); ;
 
         imagePrefab = Resources.Load<GameObject>("Prefabs/Image");
         textPrefab = Resources.Load<GameObject>("Prefabs/Text");
