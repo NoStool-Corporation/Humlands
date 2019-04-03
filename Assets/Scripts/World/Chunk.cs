@@ -194,4 +194,13 @@ public class Chunk : MonoBehaviour
         mesh.RecalculateNormals();
         coll.sharedMesh = mesh;
     }
+	
+	public override bool Equals(object o) {
+		if(o.GetType() != this.GetType())
+			return false;
+		WorldPos otherPos = ((Chunk)o).pos;
+		if (pos.x == otherPos.x && pos.y == otherPos.y && pos.z == otherPos.z)
+			return true;
+		return false;
+	}
 }
