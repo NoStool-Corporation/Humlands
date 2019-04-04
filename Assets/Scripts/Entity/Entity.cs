@@ -19,13 +19,15 @@ public class Entity : MonoBehaviour
     public Jobs job;
 
     private World world;
+	
+	private bool chunkLoaded = false;
     
 
     // Start is called before the first frame update
     void Start()
     {
-        world = FindObjectOfType<World>();
-        world.BuildChunk(new WorldPos((int)Mathf.Round(transform.position.x), (int)Mathf.Round(transform.position.y), (int)Mathf.Round(transform.position.z))).stayLoaded = true;
+		if(chunkLoaded == false)
+			LoadChunk();
     }
 
     // Update is called once per frame
@@ -38,11 +40,14 @@ public class Entity : MonoBehaviour
     }
 
     public void SetPosition(WorldPos pos) {
-        if (!world.GetChunk(new WorldPos(transform.position)).Equals(world.GetChunk(pos))) {
+		if(chunkLoaded == false)
+			LoadChunk();
+		Chunk ch = world.GetChunk(new WorldPos(transform.position));
+		if(ch != null && ch.Equals(world.GetChunk(pos))){
             world.BuildChunk(pos);
 			print("t");
         }
-
+		
         transform.position = pos.ToVector3();
     }
 
@@ -61,4 +66,9 @@ public class Entity : MonoBehaviour
         entityName = names[Random.Range(0, names.Length - 1)];
     }
     
+	private void LoadChunk(){
+		world = FindObjectOfType<World>();
+        world.BuildChunk(new WorldPos((int)Mathf.Round(transform.position.x), (int)Mathf.Round(transform.position.y), (int)Mathf.Round(transform.position.z))).stayLoaded = true;
+	}
+	
 }
