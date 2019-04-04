@@ -34,7 +34,11 @@ public class World : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        SaveLoad.SaveGame(this);
+        foreach (var chunk in chunks)
+		{
+			print("t");
+			UnloadChunk(chunk.Key.x, chunk.Key.y, chunk.Key.z);
+		}
     }
 
     /// <summary>  
