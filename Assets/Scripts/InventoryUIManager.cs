@@ -57,7 +57,6 @@ public class InventoryUIManager
     {
         GameObject.Destroy(UI);
         GameObject.Destroy(content);
-        GameObject.Destroy(imagePrefab);
-        GameObject.Destroy(textPrefab);
+
     }
 }
