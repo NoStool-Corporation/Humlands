@@ -92,7 +92,7 @@ public class TerrainGen
             } else if (y == dirtHeight+1)
             {
                 chunk.SetBlock(x-chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new GrassBlock());
-            } else if (GetNoise(x,y,z, forestFrequency, 2) == 1 && y == dirtHeight+2 && GetNoise(x,0,z, treeFrequency, 100) < treeDensity)
+            } else if (y == dirtHeight + 2 && GetNoise(x,y,z, forestFrequency, 2) == 1 && GetNoise(x,0,z, treeFrequency, 100) < treeDensity)
             {
                 chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new TreeBlock());
             } else
