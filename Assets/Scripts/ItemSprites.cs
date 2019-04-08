@@ -15,7 +15,6 @@ public static class ItemSprites
     public static void LoadItemSprite(string name)
     {
         name = name.ToLower();
-        MonoBehaviour.print(name);
         if (!sprites.ContainsKey(name))
             sprites.Add(name, Resources.Load<Sprite>(dir + name));
     }
