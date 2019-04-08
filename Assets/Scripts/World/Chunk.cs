@@ -34,6 +34,10 @@ public class Chunk : MonoBehaviour
         coll = gameObject.GetComponent<MeshCollider>();
         
     }
+
+    /// <summary>
+    /// Deletes all data like custom models of the blocks to prevent memory leak
+    /// </summary>
     private void OnDestroy()
     {
         for(int x = 0;x<16;x++)

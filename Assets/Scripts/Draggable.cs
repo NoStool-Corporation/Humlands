@@ -14,7 +14,7 @@ public class Draggable : MonoBehaviour
     Vector3 mouseOffset;
 
     /// <summary>
-    /// Adds OnDrag and OnBEginDrag to the EventTrigger.
+    /// Adds OnDrag and OnBeginDrag to the EventTrigger.
     /// </summary>
     public void Awake()
     {

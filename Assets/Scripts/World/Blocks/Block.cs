@@ -11,9 +11,13 @@ public enum Direction { NORTH, EAST, SOUTH, WEST, UP, DOWN };
 public class Block
 {
     public bool changed = true;
+
     [NonSerialized()]
     public GameObject customModel;
 
+    /// <summary>
+    /// Deletes additional data like a custom model to prevent memory leaks
+    /// </summary>
     public virtual void DeleteData()
     {
         GameObject.Destroy(customModel);

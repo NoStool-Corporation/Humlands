@@ -28,13 +28,13 @@ public class TerrainGen
     }
 
     /// <summary>
-    /// Generates a chunk based on the seed
+    /// Generates a chunk.
     /// </summary>
     /// <param name="chunk">Chunk which needs to be generated</param>
-    /// <param name="seed">World seed</param>
     /// <returns>Generated chunk</returns>
     public Chunk ChunkGen(Chunk chunk)
     {
+        //set the biome of the chunk
         int Biome = GetNoise(chunk.pos.x, 0, chunk.pos.z, forestFrequency, 2);
         if(Biome == 1)
         {
@@ -45,7 +45,7 @@ public class TerrainGen
             chunk.biome = "forest"; 
         }
         
-
+        //generate each column of the chunk
         for (int x = chunk.pos.x; x < chunk.pos.x + Chunk.chunkSize; x++)
         {
             for (int z = chunk.pos.z; z < chunk.pos.z + Chunk.chunkSize; z++)
@@ -55,6 +55,7 @@ public class TerrainGen
         }
         return chunk;
     }
+
     /// <summary>
     /// Generates a single column of a chunk
     /// </summary>
@@ -65,24 +66,27 @@ public class TerrainGen
     /// <returns>The chunk with the added generated column of blocks</returns>
     private Chunk ChunkColumnGen(Chunk chunk, int x, int z)
     {
+        //set the seed of the noise to the world seed
         Noise.Seed = seed;
 
+        //calculate stone height in this column
         int stoneHeight = Mathf.FloorToInt(stoneBaseHeight);
         stoneHeight += GetNoise(x, 0, z, stoneMountainFrequency, Mathf.FloorToInt(stoneMountainHeight));
         if (stoneHeight < stoneMinHeight)
             stoneHeight = Mathf.FloorToInt(stoneMinHeight);
         stoneHeight += GetNoise(x, 0, z, stoneBaseNoise, Mathf.FloorToInt(stoneBaseNoiseHeight));
 
+        //calculate dirt height in this column
         int dirtHeight = stoneHeight + Mathf.FloorToInt(dirtBaseHeight);
         dirtHeight += GetNoise(x, 100, z, dirtNoise, Mathf.FloorToInt(dirtNoiseHeight));
 
+        //go through every block in the column and place blocks according to the calculated values
         for (int y = chunk.pos.y; y < chunk.pos.y + Chunk.chunkSize; y++)
         {
             if (y <= stoneHeight)
             {
                 chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new StoneBlock());
-            }
-            else if (y <= dirtHeight)
+            } else if (y <= dirtHeight)
             {
                 chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new DirtBlock());
             } else if (y == dirtHeight+1)
@@ -107,7 +111,7 @@ public class TerrainGen
     /// <param name="z"></param>
     /// <param name="scale">higher scale means a smoother transition when changing x, y and z</param>
     /// <param name="max">maximum return value</param>
-    /// <returns>a value between zero and max</returns>
+    /// <returns>Returns an int between (including) zero and (excluding) max </returns>
     public static int GetNoise(int x, int y, int z, float scale, int max)
     {
         return Mathf.FloorToInt((Noise.Generate(x * scale, y * scale, z * scale) + 1f) * (max / 2f));

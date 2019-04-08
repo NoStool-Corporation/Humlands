@@ -109,16 +109,6 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
-    private static float UnwrapAngle(float angle)
-    {
-        if (angle >= 0)
-            return angle;
-
-        angle = -angle % 360;
-
-        return 360 - angle;
-    }
-
     float Round(float f, int precision)
     {
         return Mathf.Round(f * Mathf.Pow(10, precision)) / (float)(Mathf.Pow(10, precision));
