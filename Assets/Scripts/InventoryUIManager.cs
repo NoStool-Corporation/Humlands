@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
-
+/// <summary>
+/// Creates and manages the UI object of an inventory.
+/// </summary>
 public class InventoryUIManager
 {
     Inventory inventory;
@@ -26,17 +28,35 @@ public class InventoryUIManager
         textPrefab = Resources.Load<GameObject>("Prefabs/Text");
 
         Render();
+        inventory.AddUIManager(this);
     }
-
+    /// <summary>
+    /// Renders the inventory by creating UI Images and UI Texts
+    /// </summary>
     public void Render()
     {
+        //Destroy old InventoryUI content
+        foreach (var image in content.GetComponentsInChildren<Image>())
+        {
+            GameObject.Destroy(image.gameObject);
+        }
+        foreach (var text in content.GetComponentsInChildren<Text>())
+        {
+            GameObject.Destroy(text.gameObject);
+        }
+
+        //Create new InventoryUI content
         for (int i = 0; i < inventory.StackAmount; i++)
         {
             CreateImage(inventory.GetStack(i).Item, i);
             CreateText(inventory.GetStack(i).Size, i);
         }
     }
-
+    /// <summary>
+    /// Creates and positions the Image for an ItemStack in an Inventory
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="index"></param>
     void CreateImage(Item item, int index)
     {
         Image image = GameObject.Instantiate(imagePrefab, content.transform).GetComponent<Image>();
@@ -44,7 +64,11 @@ public class InventoryUIManager
         image.sprite = ItemSprites.GetItemSprite(item.name);
         image.rectTransform.anchoredPosition += new Vector2(10 * (index % 3),-15*Mathf.FloorToInt(index/3));
     }
-
+    /// <summary>
+    /// Creates and positions the Image for an ItemStack in an Inventory
+    /// </summary>
+    /// <param name="size"></param>
+    /// <param name="index"></param>
     void CreateText(int size, int index)
     {
         Text text = GameObject.Instantiate(textPrefab, content.transform).GetComponent<Text>();
@@ -53,10 +77,13 @@ public class InventoryUIManager
         text.rectTransform.anchoredPosition += new Vector2(10 * (index % 3), -15 * Mathf.FloorToInt(index / 3));
     }
 
+    /// <summary>
+    /// Call this to destroy the InventoryUI
+    /// </summary>
     public void Delete()
     {
         GameObject.Destroy(UI);
         GameObject.Destroy(content);
-
+        inventory.RemoveUIManager(this);
     }
 }

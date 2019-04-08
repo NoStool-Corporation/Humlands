@@ -10,6 +10,11 @@ public class Inventory
     private readonly int maxSize;
 
     /// <summary>
+    /// The InventoryUIManagers displaying this inventory
+    /// </summary>
+    private List<InventoryUIManager> uiManagers;
+
+    /// <summary>
     /// Amount of Items in the Inventory
     /// </summary>
     public int Amount
@@ -33,6 +38,7 @@ public class Inventory
     {
         this.itemStacks = new List<ItemStack>();
         this.maxSize = maxSize;
+        this.uiManagers = new List<InventoryUIManager>();
     }
 
     /// <summary>
@@ -55,10 +61,12 @@ public class Inventory
             if (itemStacks[i].Item == toAdd.Item)
             {
                 itemStacks[i].Add(toAdd.Size);
+                UpdateUI();
                 return toAdd;
             }
         }
         itemStacks.Add(toAdd);
+        UpdateUI();
         return toAdd;
     }
 
@@ -77,7 +85,9 @@ public class Inventory
         if (removeFrom.Size - stack.Size < 0)
             return removeFrom.Remove(removeFrom.Size);
 
-        return removeFrom.Remove(stack);
+        ItemStack itemsRemoved = removeFrom.Remove(stack);
+        UpdateUI();
+        return itemsRemoved;
     }
 
     /// <summary>
@@ -128,5 +138,23 @@ public class Inventory
     public ItemStack GetStack(int i)
     {
         return itemStacks[i];
+    }
+
+    private void UpdateUI()
+    {
+        foreach (var man in uiManagers)
+        {
+            man.Render();
+        }
+    }
+
+    public void AddUIManager(InventoryUIManager man)
+    {
+        uiManagers.Add(man);
+    }
+
+    public void RemoveUIManager(InventoryUIManager man)
+    {
+        uiManagers.Remove(man);
     }
 }
