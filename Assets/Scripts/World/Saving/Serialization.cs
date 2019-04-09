@@ -58,14 +58,14 @@ public static class Serialization
     /// Saves a List of Entities
     /// </summary>
     /// <param name="entities">The Linked List of Entities</param>
-    public static void SaveEntities(List<Entity> entities) {
+    public static void SaveEntities(List<Entity> entities, string worldName) {
         List<SaveEntity> save = new List<SaveEntity>();
 
         for (int i = 0; i < entities.Count; i++) {
             save.Add(new SaveEntity(entities[i]));
         }
 
-        Save(saveFolderName + "/" + entityFileName, save);
+        Save(saveFolderName + "/worldName/" + entityFileName, save);
     }
 
     /// <summary>
@@ -85,8 +85,8 @@ public static class Serialization
     /// </summary>
     /// <param name="entities">The reference to the List the Entities should be loaded into</param>
     /// <returns></returns>
-    public static List<SaveEntity> LoadEntities() {
-        if (!File.Exists(saveFolderName + "/" + entityFileName))
+    public static List<SaveEntity> LoadEntities(string worldName) {
+        if (!File.Exists(saveFolderName + "/worldName/" + entityFileName))
             return null;
 
         IFormatter formatter = new BinaryFormatter();
