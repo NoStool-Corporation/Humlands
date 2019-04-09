@@ -6,52 +6,57 @@ using System.IO;
 
 public class Entity : MonoBehaviour
 {
-    public enum Jobs {Miner, Crafter, Baker}
+    public enum Jobs { Miner, Crafter, Baker }
 
 
     private string NAME_FILE_PATH = "Assets/Resources/Strings/EntityNames.txt";
     public static string PREFAB_PATH = "Prefabs/Entity";
 
-
-    public bool stayLoaded = false;
     public Inventory inventory;
     public string entityName;
     public Jobs job;
 
     private World world;
-	
-	private bool chunkLoaded = false;
-    
 
     // Start is called before the first frame update
     void Start()
     {
-		if(chunkLoaded == false)
-			LoadChunk();
+        world = FindObjectOfType<World>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Work()
     {
+        world.GetChunk(world.GetChunkPos(new WorldPos(transform.position))).stayLoaded = true;
     }
 
-    public void Work() {
-        stayLoaded = true;
-    }
+    /// <summary>
+    /// Sets the position of the Entity; Loads the new Chunk and Uloads the old one
+    /// </summary>
+    /// <param name="pos"></param>
+    public void SetPosition(WorldPos pos)
+    {
+        WorldPos newChPos = world.GetChunkPos(pos);
+        WorldPos ownChPos = world.GetChunkPos(new WorldPos(transform.position));
+        if (newChPos.Equals(ownChPos))
+        {
+            Chunk tmpCh = world.GetChunk(ownChPos);
+            if (tmpCh != null)
+                tmpCh.stayLoaded = false;
 
-    public void SetPosition(WorldPos pos) {
-		if(chunkLoaded == false)
-			LoadChunk();
-		Chunk ch = world.GetChunk(new WorldPos(transform.position));
-		if(ch != null && ch.Equals(world.GetChunk(pos))){
-            world.BuildChunk(pos);
-			print("t");
+            tmpCh = world.BuildChunk(newChPos);
+            if (tmpCh != null)
+                tmpCh.stayLoaded = true;
         }
-		
+
         transform.position = pos.ToVector3();
     }
 
-    private string[] GetNames() {
+    /// <summary>
+    /// Parses the names of the name file by splitting the string after every new line
+    /// </summary>
+    /// <returns>stirng[] of all the names form the name file</returns>
+    private string[] GetNames()
+    {
         StreamReader reader = new StreamReader(NAME_FILE_PATH);
         string read = reader.ReadToEnd();
         reader.Close();
@@ -61,14 +66,21 @@ public class Entity : MonoBehaviour
         return ret;
     }
 
-    private void GiveRandomName() {
+    /// <summary>
+    /// Chooses a random name for the entity 
+    /// </summary>
+    public void GiveRandomName()
+    {
         string[] names = GetNames();
         entityName = names[Random.Range(0, names.Length - 1)];
     }
-    
-	private void LoadChunk(){
-		world = FindObjectOfType<World>();
-        world.BuildChunk(new WorldPos((int)Mathf.Round(transform.position.x), (int)Mathf.Round(transform.position.y), (int)Mathf.Round(transform.position.z))).stayLoaded = true;
-	}
-	
+
+    /// <summary>
+    /// Teleports the Entity relative to the current postion
+    /// </summary>
+    /// <param name="step"></param>
+    public void Step(Vector3 step)
+    {
+        SetPosition(new WorldPos(transform.position + step));
+    }
 }

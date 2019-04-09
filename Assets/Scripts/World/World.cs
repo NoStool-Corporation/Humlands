@@ -26,11 +26,12 @@ public class World : MonoBehaviour
 
         //LoadEntities();
 
-        GameObject g = Instantiate(entityPrefab, new Vector3(20, 2, 0), new Quaternion(0, 0, 0, 0));
+        /*GameObject g = Instantiate(entityPrefab, new Vector3(20, 2, 0), new Quaternion(0, 0, 0, 0));
         Entity e = g.GetComponent<Entity>();
         entities.Add(e);
         WorldPos pp = new WorldPos(30, 20, -5);
-        Serialization.SaveEntities(entities, worldName);
+        entities[0].GiveRandomName();
+        Serialization.SaveEntities(entities, worldName);*/
     }
 
     private void OnApplicationQuit()
@@ -102,7 +103,6 @@ public class World : MonoBehaviour
             e.entityName = save.entityName;
             e.transform.position = pos;
             e.transform.rotation = quat;
-            e.stayLoaded = save.stayLoaded;
             e.inventory = save.inventory;
             e.job = save.job;
             entities.Add(e);

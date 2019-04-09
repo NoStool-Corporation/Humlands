@@ -85,19 +85,19 @@ public class TerrainGen
         {
             if (y <= stoneHeight)
             {
-                chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new StoneBlock());
+                chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new StoneBlock(), false);
             } else if (y <= dirtHeight)
             {
-                chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new DirtBlock());
+                chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new DirtBlock(), false);
             } else if (y == dirtHeight+1)
             {
-                chunk.SetBlock(x-chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new GrassBlock());
+                chunk.SetBlock(x-chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new GrassBlock(), false);
             } else if (y == dirtHeight + 2 && GetNoise(x,y,z, forestFrequency, 2) == 1 && GetNoise(x,0,z, treeFrequency, 100) < treeDensity)
             {
-                chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new TreeBlock());
+                chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new TreeBlock(), false);
             } else
             {
-                chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new AirBlock());
+                chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new AirBlock(), false);
             }
         }
 

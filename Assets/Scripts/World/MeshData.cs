@@ -19,7 +19,7 @@ public class MeshData
     public bool useRenderDataForCol;
 
     /// <summary>
-    /// Adds the two newest triangles to from a square
+    /// Adds the two newest triangles to form a square
     /// </summary>
     public void AddQuadTriangles()
     {
@@ -39,6 +39,22 @@ public class MeshData
             colTriangles.Add(colVertices.Count - 1);
         }
     }
+
+    public void AddQuadTrianglesCollisionOnly()
+    {
+        colTriangles.Add(colVertices.Count - 4);
+        colTriangles.Add(colVertices.Count - 3);
+        colTriangles.Add(colVertices.Count - 2);
+        colTriangles.Add(colVertices.Count - 4);
+        colTriangles.Add(colVertices.Count - 2);
+        colTriangles.Add(colVertices.Count - 1);
+    }
+
+    public void AddVertexCollisionOnly(Vector3 vertex)
+    {
+        colVertices.Add(vertex);
+    }
+
     /// <summary>
     /// Add a new vertex to the vertex array
     /// </summary>

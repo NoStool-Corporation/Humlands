@@ -80,7 +80,11 @@ public class Chunk : MonoBehaviour
     {
         if (InRange(x) && InRange(y) && InRange(z))
         {
-            RemoveUpdateBlock(blocks[x, y, z]);
+            if (blocks[x, y, z] != null)
+            {
+                RemoveUpdateBlock(blocks[x, y, z]);
+                blocks[x, y, z].DeleteData();
+            }
             blocks[x, y, z] = block;
             block.OnPlacement(this);
             this.render = render;
