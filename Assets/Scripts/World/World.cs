@@ -34,6 +34,10 @@ public class World : MonoBehaviour
         Serialization.SaveEntities(entities, worldName);*/
     }
 
+    // Saves world when player quits
+    // through saving all chunk positions in the Dictionary "chunkPos"
+    // and unloading the chunks with these positions afterwards
+    // when the player closes the game.
     private void OnApplicationQuit()
     {
         int Key = 0;
