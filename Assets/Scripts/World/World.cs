@@ -16,6 +16,7 @@ public class World : MonoBehaviour
     public string worldName = "world";
     private int seed = 1;
     TerrainGen terrainGen;
+    public Dictionary<int, WorldPos> chunkPlaces = new Dictionary<int, WorldPos>();
 
     private void Start()
     {
@@ -34,9 +35,16 @@ public class World : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        int Key = 0;
         foreach (var chunk in chunks)
+        { 
+            WorldPos chunkPos = new WorldPos(chunk.Key.x, chunk.Key.y, chunk.Key.z);
+            chunkPlaces.Add(Key, chunkPos);
+            Key++;
+        }
+        foreach (var chunk in chunkPlaces)
         {
-            UnloadChunk(chunk.Key.x, chunk.Key.y, chunk.Key.z);
+            UnloadChunk(chunk.Value.x, chunk.Value.y, chunk.Value.z);
         }
     }
 
