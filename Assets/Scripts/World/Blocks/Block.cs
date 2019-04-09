@@ -14,7 +14,7 @@ public class Block
 
     [NonSerialized()]
     public GameObject customModel;
-
+    
     /// <summary>
     /// Gets called by the chunk once the block is actually placed into a chunk and before the chunk gets rerendered.
     /// You can use this method to add this block to the updateBlocks list of the chunk using chunk.AddUpdateBlock(this)
@@ -250,4 +250,140 @@ public class Block
         return meshData;
     }
 
+    /// <summary>
+    /// Adds the CollisionMeshData for the top side of the block to the MeshData
+    /// </summary>
+    /// <param name="chunk"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="meshData"></param>
+    /// <returns>Returns the updated MeshData</returns>
+    protected virtual MeshData FaceDataUpCollisionOnly(Chunk chunk, int x, int y, int z, MeshData meshData)
+    {
+        meshData.AddVertexCollisionOnly(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
+        meshData.AddQuadTrianglesCollisionOnly();
+        return meshData;
+    }
+    /// <summary>
+    /// Adds the CollisionMeshData for the bottom side of the block to the MeshData
+    /// </summary>
+    /// <param name="chunk"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="meshData"></param>
+    /// <returns>Returns the updated MeshData</returns>
+    protected virtual MeshData FaceDataDownCollisionOnly(Chunk chunk, int x, int y, int z, MeshData meshData)
+    {
+        meshData.AddVertexCollisionOnly(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
+
+        meshData.AddQuadTrianglesCollisionOnly();
+        return meshData;
+    }
+    /// <summary>
+    /// Adds the CollisionMeshData for the northern side of the block to the MeshData
+    /// </summary>
+    /// <param name="chunk"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="meshData"></param>
+    /// <returns>Returns the updated MeshData</returns>
+    protected virtual MeshData FaceDataNorthCollisionOnly(Chunk chunk, int x, int y, int z, MeshData meshData)
+    {
+        meshData.AddVertexCollisionOnly(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
+
+        meshData.AddQuadTrianglesCollisionOnly();
+        return meshData;
+    }
+    /// <summary>
+    /// Adds the CollisionMeshData for the eastern side of the block to the MeshData
+    /// </summary>
+    /// <param name="chunk"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="meshData"></param>
+    /// <returns>Returns the updated MeshData</returns>
+    protected virtual MeshData FaceDataEastCollisionOnly(Chunk chunk, int x, int y, int z, MeshData meshData)
+    {
+        meshData.AddVertexCollisionOnly(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
+
+        meshData.AddQuadTrianglesCollisionOnly();
+        return meshData;
+    }
+    /// <summary>
+    /// Adds the CollisionMeshData for the southern side of the block to the MeshData
+    /// </summary>
+    /// <param name="chunk"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="meshData"></param>
+    /// <returns>Returns the updated MeshData</returns>
+    protected virtual MeshData FaceDataSouthCollisionOnly(Chunk chunk, int x, int y, int z, MeshData meshData)
+    {
+        meshData.AddVertexCollisionOnly(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
+
+        meshData.AddQuadTrianglesCollisionOnly();
+        return meshData;
+    }
+    /// <summary>
+    /// Adds the CollisionMeshData for the western side of the block to the MeshData
+    /// </summary>
+    /// <param name="chunk"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <param name="meshData"></param>
+    /// <returns>Returns the updated MeshData</returns>
+    protected virtual MeshData FaceDataWestCollisionOnly(Chunk chunk, int x, int y, int z, MeshData meshData)
+    {
+        meshData.AddVertexCollisionOnly(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
+        meshData.AddVertexCollisionOnly(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
+
+        meshData.AddQuadTrianglesCollisionOnly();
+        return meshData;
+    }
+
+    public virtual MeshData BlockDataCollisionOnly(Chunk chunk, int x, int y, int z, MeshData meshData)
+    {
+        if (!chunk.GetBlock(x, y + 1, z).IsSolid(Direction.DOWN))
+            meshData = FaceDataUpCollisionOnly(chunk, x, y, z, meshData);
+
+        if (!chunk.GetBlock(x, y - 1, z).IsSolid(Direction.UP))
+            meshData = FaceDataDownCollisionOnly(chunk, x, y, z, meshData);
+
+        if (!chunk.GetBlock(x, y, z + 1).IsSolid(Direction.SOUTH))
+            meshData = FaceDataNorthCollisionOnly(chunk, x, y, z, meshData);
+
+        if (!chunk.GetBlock(x, y, z - 1).IsSolid(Direction.NORTH))
+            meshData = FaceDataSouthCollisionOnly(chunk, x, y, z, meshData);
+
+        if (!chunk.GetBlock(x + 1, y, z).IsSolid(Direction.WEST))
+            meshData = FaceDataEastCollisionOnly(chunk, x, y, z, meshData);
+
+        if (!chunk.GetBlock(x - 1, y, z).IsSolid(Direction.EAST))
+            meshData = FaceDataWestCollisionOnly(chunk, x, y, z, meshData);
+
+        return meshData;
+    }
 }
