@@ -65,7 +65,7 @@ public static class Serialization
             save.Add(new SaveEntity(entities[i]));
         }
 
-        Save(saveFolderName + "/worldName/" + entityFileName, save);
+        Save(saveFolderName + "/" + worldName + "/" + entityFileName, save);
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ public static class Serialization
     /// <param name="entities">The reference to the List the Entities should be loaded into</param>
     /// <returns></returns>
     public static List<SaveEntity> LoadEntities(string worldName) {
-        if (!File.Exists(saveFolderName + "/worldName/" + entityFileName))
+        if (!File.Exists(saveFolderName + "/" + worldName + "/" + entityFileName))
             return null;
 
         IFormatter formatter = new BinaryFormatter();
