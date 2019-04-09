@@ -23,22 +23,21 @@ public class World : MonoBehaviour
         entityPrefab = Resources.Load<GameObject>(Entity.PREFAB_PATH);
         terrainGen = new TerrainGen(seed);
 
-        LoadEntities();
-        
-        /*GameObject g = Instantiate(entityPrefab, new Vector3(0,2,0), new Quaternion(0,0,0,0));
+        //LoadEntities();
+
+        GameObject g = Instantiate(entityPrefab, new Vector3(20, 2, 0), new Quaternion(0, 0, 0, 0));
         Entity e = g.GetComponent<Entity>();
         entities.Add(e);
         WorldPos pp = new WorldPos(30, 20, -5);
-        Serialization.SaveEntities(entities);*/
+        Serialization.SaveEntities(entities, worldName);
     }
 
     private void OnApplicationQuit()
     {
         foreach (var chunk in chunks)
-		{
-			print("t");
-			UnloadChunk(chunk.Key.x, chunk.Key.y, chunk.Key.z);
-		}
+        {
+            UnloadChunk(chunk.Key.x, chunk.Key.y, chunk.Key.z);
+        }
     }
 
     /// <summary>  
@@ -72,19 +71,21 @@ public class World : MonoBehaviour
 
     void LoadEntities()
     {
-        List<SaveEntity> saves = Serialization.LoadEntities();
-        if (saves == null) {
+        List<SaveEntity> saves = Serialization.LoadEntities(worldName);
+        if (saves == null)
+        {
             print("No entities loadable");
             return;
         }
-            
+
 
         GameObject gameObject;
         Entity e;
         Vector3 pos;
         Quaternion quat;
 
-        foreach (SaveEntity save in saves) {
+        foreach (SaveEntity save in saves)
+        {
             pos = new Vector3(save.position[0], save.position[1], save.position[2]);
             quat = new Quaternion(save.rotation[0], save.rotation[1], save.rotation[2], save.rotation[3]);
 
@@ -98,7 +99,7 @@ public class World : MonoBehaviour
             e.job = save.job;
             entities.Add(e);
         }
-        
+
     }
 
     /// <summary>  
@@ -124,11 +125,7 @@ public class World : MonoBehaviour
     /// <returns> Chunk at x,y,z </returns>
     public Chunk GetChunk(int x, int y, int z)
     {
-        WorldPos pos = new WorldPos();
-        float multiple = Chunk.chunkSize;
-        pos.x = Mathf.FloorToInt(x / multiple) * Chunk.chunkSize;
-        pos.y = Mathf.FloorToInt(y / multiple) * Chunk.chunkSize;
-        pos.z = Mathf.FloorToInt(z / multiple) * Chunk.chunkSize;
+        WorldPos pos = GetChunkPos(x,y,z);
         Chunk containerChunk = null;
         chunks.TryGetValue(pos, out containerChunk);
 
@@ -226,7 +223,7 @@ public class World : MonoBehaviour
         }
     }
     /// <summary>
-    /// Unloads and saves the chunk at the specified position
+    /// Unloads and saves the chunk at the specified position in the chunk grid
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
@@ -241,6 +238,43 @@ public class World : MonoBehaviour
             chunks.Remove(new WorldPos(x, y, z));
         }
     }
+
+    /// <summary>
+    /// Unloads and saves the chunk at the specified position in the chunk grid
+    /// </summary>
+    /// <param name="pos"></param>
+    public void UnloadChunk(WorldPos pos)
+    {
+        UnloadChunk(pos.x, pos.y, pos.z);
+    }
+
+    /// <summary>
+    /// Returns the coordinate of the Chunk in the Chunk grid at a specified position inside the world coordiante system
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
+    public WorldPos GetChunkPos(WorldPos pos)
+    {
+        WorldPos ret = new WorldPos();
+        float multiple = Chunk.chunkSize;
+        ret.x = Mathf.FloorToInt(pos.x / multiple) * Chunk.chunkSize;
+        ret.y = Mathf.FloorToInt(pos.y / multiple) * Chunk.chunkSize;
+        ret.z = Mathf.FloorToInt(pos.z / multiple) * Chunk.chunkSize;
+        return ret;
+    }
+
+    /// <summary>
+    /// Returns the coordinate of the Chunk in the Chunk grid at a specified position inside the world coordiante system
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <returns></returns>
+    public WorldPos GetChunkPos(int x, int y, int z)
+    {
+        return GetChunkPos(new WorldPos(x, y, z));
+    }
+
     /// <summary>
     /// Renders the chunk at if the values are equal,
     /// </summary>
