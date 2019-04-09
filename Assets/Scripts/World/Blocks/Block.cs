@@ -16,6 +16,24 @@ public class Block
     public GameObject customModel;
 
     /// <summary>
+    /// Gets called by the chunk once the block is actually placed into a chunk and before the chunk gets rerendered.
+    /// You can use this method to add this block to the updateBlocks list of the chunk using chunk.AddUpdateBlock(this)
+    /// </summary>
+    /// <param name="chunk"></param>
+    public virtual void OnPlacement(Chunk chunk)
+    {
+
+    }
+
+    /// <summary>
+    /// If this block is marked as a block that needs updates in it's chunk, this method gets called every frame.
+    /// </summary>
+    public virtual void Update()
+    {
+
+    }
+
+    /// <summary>
     /// Deletes additional data like a custom model to prevent memory leaks
     /// </summary>
     public virtual void DeleteData()

@@ -13,6 +13,7 @@ public class Chunk : MonoBehaviour
     public string biome;
     public static int chunkSize = 16;
     public Block[,,] blocks;
+    private List<Block> updateBlocks;
     public World world;
     public WorldPos pos;
     MeshFilter filter;
@@ -26,13 +27,14 @@ public class Chunk : MonoBehaviour
     public Chunk()
     {
         blocks = new Block[chunkSize, chunkSize, chunkSize];
+        updateBlocks = new List<Block>();
     }
 
     void Start()
     {
         filter = gameObject.GetComponent<MeshFilter>();
         coll = gameObject.GetComponent<MeshCollider>();
-        
+
     }
 
     /// <summary>
@@ -40,17 +42,17 @@ public class Chunk : MonoBehaviour
     /// </summary>
     private void OnDestroy()
     {
-        for(int x = 0;x<16;x++)
+        for (int x = 0; x < 16; x++)
         {
             for (int y = 0; y < 16; y++)
             {
                 for (int z = 0; z < 16; z++)
                 {
-                    blocks[x,y,z].DeleteData();
+                    blocks[x, y, z].DeleteData();
                 }
             }
         }
-       
+
     }
 
     /// <summary>
@@ -78,7 +80,9 @@ public class Chunk : MonoBehaviour
     {
         if (InRange(x) && InRange(y) && InRange(z))
         {
+            RemoveUpdateBlock(blocks[x, y, z]);
             blocks[x, y, z] = block;
+            block.OnPlacement(this);
             this.render = render;
         }
         else
@@ -99,8 +103,37 @@ public class Chunk : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Adds a block to the list of update blocks
+    /// </summary>
+    public void AddUpdateBlock(Block block)
+    {
+        updateBlocks.Add(block);
+    }
+
+    /// <summary>
+    /// Removes a block from the list of update blocks
+    /// </summary>
+    /// <param name="block"></param>
+    public void RemoveUpdateBlock(Block block)
+    {
+        updateBlocks.Remove(block);
+    }
+
+    /// <summary>
+    /// Updates all the blocks that need to get updated
+    /// </summary>
+    private void UpdateBlocks()
+    {
+        foreach (var block in updateBlocks)
+        {
+            block.Update();
+        }
+    }
+
     private void Update()
     {
+        UpdateBlocks();
         if (render)
         {
             render = false;
@@ -198,15 +231,16 @@ public class Chunk : MonoBehaviour
         mesh.RecalculateNormals();
         coll.sharedMesh = mesh;
     }
-	
-	public override bool Equals(object o) {
-		if(o.GetType() != this.GetType())
-			return false;
-		WorldPos otherPos = ((Chunk)o).pos;
-		if (pos.x == otherPos.x && pos.y == otherPos.y && pos.z == otherPos.z)
-			return true;
-		return false;
-	}
+
+    public override bool Equals(object o)
+    {
+        if (o.GetType() != this.GetType())
+            return false;
+        WorldPos otherPos = ((Chunk)o).pos;
+        if (pos.x == otherPos.x && pos.y == otherPos.y && pos.z == otherPos.z)
+            return true;
+        return false;
+    }
 
     public override int GetHashCode()
     {
