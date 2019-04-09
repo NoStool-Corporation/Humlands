@@ -12,7 +12,6 @@ public class SaveEntity
     public string entityName;
     public float[] position = new float[3];
     public float[] rotation = new float[4];
-    public bool stayLoaded = false;
     public Inventory inventory;
     public Entity.Jobs job;
 
@@ -28,8 +27,7 @@ public class SaveEntity
         rotation[1] = e.transform.rotation.y;
         rotation[2] = e.transform.rotation.z;
         rotation[3] = e.transform.rotation.w;
-
-        stayLoaded = e.stayLoaded;
+        
         inventory = e.inventory;
         job = e.job;
     }
