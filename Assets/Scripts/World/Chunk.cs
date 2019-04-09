@@ -207,4 +207,13 @@ public class Chunk : MonoBehaviour
 			return true;
 		return false;
 	}
+
+    public override int GetHashCode()
+    {
+        int hash = base.GetHashCode();
+        hash = (hash + pos.x) * 1327;
+        hash = (hash + pos.y) * 2591;
+        hash = (hash + pos.z) * 521;
+        return hash;
+    }
 }
