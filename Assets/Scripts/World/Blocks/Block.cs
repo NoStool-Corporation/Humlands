@@ -388,7 +388,7 @@ public class Block
         return meshData;
     }
 	
-	public void WorkOnToBreak
+	public void WorkOnToBreak()
 	{
 		workToBreak--;
 	}

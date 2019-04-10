@@ -41,4 +41,15 @@ public class Item
         hash = hash + name.GetHashCode() * 227;
         return hash;
     }
+
+    public int workToCraft;
+
+    public void Craft(Entity entity)
+    {
+        workToCraft--;
+        if (workToCraft == 0)
+        {
+            // Add Item to Inventory of the Entity.
+        }
+    }
 }

@@ -17,7 +17,8 @@ public class Entity : MonoBehaviour
     public Jobs job;
 
     private World world;
-	public boolean isBreakingABlock;
+	public bool isBreakingABlock;
+    public bool isCraftingItem;
 
     // Start is called before the first frame update
     void Start()
@@ -27,19 +28,22 @@ public class Entity : MonoBehaviour
 	
 	public void Update()
 	{
-		
+		// Call DoWork with specific parameter! (the other should not be defined)
 	}
 	
 	// Finds out what type of work the Entity is doing 
-	// (breaking a block; ...)
+	// (breaking a block; crafting an item)
 	// and calls the specific method created for that purpose.
-	public void DoWork(Block block)
+	public void DoWork(Block block, WorkTable workTable)
 	{
     	if (isBreakingABlock = true)
 		{
 			block.WorkOnToBreak();
 		}
-		else if
+		else if (isCraftingItem = true)
+        {
+            workTable.CraftItem(this);
+        }
 	}
 	
     /// <summary>
