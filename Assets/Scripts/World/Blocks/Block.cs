@@ -11,6 +11,7 @@ public enum Direction { NORTH, EAST, SOUTH, WEST, UP, DOWN };
 public class Block
 {
     public bool changed = true;
+	public int workToBreak;
 
     [NonSerialized()]
     public GameObject customModel;
@@ -386,4 +387,9 @@ public class Block
 
         return meshData;
     }
+	
+	public void WorkOnToBreak
+	{
+		workToBreak--;
+	}
 }

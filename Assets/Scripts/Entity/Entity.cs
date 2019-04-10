@@ -17,18 +17,31 @@ public class Entity : MonoBehaviour
     public Jobs job;
 
     private World world;
+	public boolean isBreakingABlock;
 
     // Start is called before the first frame update
     void Start()
     {
         world = FindObjectOfType<World>();
     }
-
-    public void Work()
-    {
-        world.GetChunk(world.GetChunkPos(new WorldPos(transform.position))).stayLoaded = true;
-    }
-
+	
+	public void Update()
+	{
+		
+	}
+	
+	// Finds out what type of work the Entity is doing 
+	// (breaking a block; ...)
+	// and calls the specific method created for that purpose.
+	public void DoWork(Block block)
+	{
+    	if (isBreakingABlock = true)
+		{
+			block.WorkOnToBreak();
+		}
+		else if
+	}
+	
     /// <summary>
     /// Sets the position of the Entity; Loads the new Chunk and Uloads the old one
     /// </summary>
