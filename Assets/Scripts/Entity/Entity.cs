@@ -28,6 +28,7 @@ public class Entity : MonoBehaviour
 	
 	public void Update()
 	{
+		Step(new Vector3(1,0,0));
 		// Call DoWork with specific parameter! (the other should not be defined)
 	}
 	
