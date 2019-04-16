@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorkTable : Block
+public class WorkTableBlock : Block
 {
     public Item craftableItem;
 
