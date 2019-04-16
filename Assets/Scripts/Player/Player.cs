@@ -14,6 +14,17 @@ public class Player : MonoBehaviour
         toPlace = new StoneBlock().GetType();
     }
 
+    public void CycleBlock()
+    {
+        if (toPlace == new StoneBlock().GetType())
+        {
+            toPlace = new WorkTableBlock().GetType();
+        } else
+        {
+            toPlace = new StoneBlock().GetType();
+        }
+    }
+
     public Block getBlockToPlace()
     {
         Block instance = (Block)Activator.CreateInstance(toPlace);

@@ -34,6 +34,11 @@ public class PlayerInteraction : MonoBehaviour
             {
                 player.destroy = !player.destroy;
             }
+
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                player.CycleBlock();
+            }
         }
     }
 }
