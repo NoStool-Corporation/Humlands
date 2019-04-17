@@ -65,6 +65,9 @@ public static class Serialization
             save.Add(new SaveEntity(entities[i]));
         }
 
+        if (!File.Exists(saveFolderName + "/" + worldName))
+            return;
+
         Save(saveFolderName + "/" + worldName + "/" + entityFileName, save);
     }
 
@@ -90,7 +93,7 @@ public static class Serialization
             return null;
 
         IFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(saveFolderName + "/" + entityFileName, FileMode.Open);
+        FileStream stream = new FileStream(saveFolderName + "/" + worldName + "/" + entityFileName, FileMode.Open);
 
         List<SaveEntity> saves = (List<SaveEntity>) formatter.Deserialize(stream);
 
@@ -119,6 +122,7 @@ public static class Serialization
         foreach (var block in save.blocks)
         {
             generatedChunk.blocks[block.Key.x, block.Key.y, block.Key.z] = block.Value;
+            block.Value.SetupAfterSerialization();
         }
         stream.Close();
         return true;
