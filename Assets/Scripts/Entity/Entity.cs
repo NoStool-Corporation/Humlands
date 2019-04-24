@@ -17,35 +17,45 @@ public class Entity : MonoBehaviour
     public Jobs job;
 
     private World world;
-	public bool isBreakingABlock;
+	public bool isBreakingBlock;
     public bool isCraftingItem;
+
+    public Entity()
+    {
+        isBreakingBlock = false;
+        isCraftingItem = false;
+        inventory = new Inventory(1000);
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        InventoryUIManager ui = new InventoryUIManager(inventory);
         world = FindObjectOfType<World>();
     }
 	
-	public void Update()
+	void Update()
 	{
-		Step(new Vector3(1,0,0));
-		// Call DoWork with specific parameter! (the other should not be defined)
+        DoWork();
 	}
 	
 	// Finds out what type of work the Entity is doing 
 	// (breaking a block; crafting an item)
 	// and calls the specific method created for that purpose.
-	public void DoWork(Block block, WorkTable workTable)
+	public void DoWork()
 	{
-    	if (isBreakingABlock = true)
+        Block frontBlock = world.GetBlock(new WorldPos(transform.position + transform.forward.normalized));
+        //print(frontBlock);
+        //print(frontBlock as WorkTableBlock);
+    	if (isBreakingBlock == false && frontBlock != null)
 		{
-			block.WorkOnToBreak();
+            frontBlock.WorkOnToBreak();
 		}
-		else if (isCraftingItem = true)
+	    if (isCraftingItem == false && frontBlock as WorkTableBlock != null)
         {
-            workTable.CraftItem(this);
+            (frontBlock as WorkTableBlock).Craft(this);
         }
-	}
+    }
 	
     /// <summary>
     /// Sets the position of the Entity; Loads the new Chunk and Uloads the old one
