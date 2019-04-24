@@ -26,7 +26,7 @@ public class World : MonoBehaviour
 
         //LoadEntities();
 
-        GameObject g = Instantiate(entityPrefab, new Vector3(20, 2, 0), new Quaternion(0, 0, 0, 0));
+        GameObject g = Instantiate(entityPrefab, new Vector3(6390.26f, 10f, 64052.61f), new Quaternion(0, 0, 0, 0));
         Entity e = g.GetComponent<Entity>();
         entities.Add(e);
         WorldPos pp = new WorldPos(30, 20, -5);
