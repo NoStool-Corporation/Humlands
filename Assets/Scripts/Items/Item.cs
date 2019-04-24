@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 /// <summary>
 /// Superclass of all items, do not initialize.
 /// </summary>
+[Serializable]
 public class Item
 {
     public readonly string name;
@@ -40,16 +42,5 @@ public class Item
         int hash = 101;
         hash = hash + name.GetHashCode() * 227;
         return hash;
-    }
-
-    public int workToCraft;
-
-    public void Craft(Entity entity)
-    {
-        workToCraft--;
-        if (workToCraft == 0)
-        {
-            // Add Item to Inventory of the Entity.
-        }
     }
 }
