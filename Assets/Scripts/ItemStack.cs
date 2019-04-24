@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 /// <summary>
 /// Organizes Items into stacks of a stack size and provides functions to access it
 /// </summary>
-public class ItemStack
+
+[Serializable]
+public class ItemStack : ICloneable
 {
     /// <summary>
     /// What Item the ItemStack contains
@@ -91,5 +94,10 @@ public class ItemStack
             return Remove(stack.stackSize);
         }
         return new ItemStack(stack.Item, 0);
+    }
+
+    public object Clone()
+    {
+        return new ItemStack(this.Item, this.Size);
     }
 }
