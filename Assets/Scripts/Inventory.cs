@@ -60,7 +60,6 @@ public class Inventory
     public ItemStack Add(ItemStack stackOriginal)
     {
         ItemStack stack = stackOriginal.Clone() as ItemStack;
-        Debug.Log("Start" + stack.Size);
         if (this.Amount == this.maxSize)
             return new ItemStack(stack.Item, 0);
 

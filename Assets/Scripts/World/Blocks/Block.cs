@@ -22,7 +22,8 @@ public class Block
     }
 
     /// <summary>
-    /// Gets called after beeing loaded from a save file, used to reinitialize values that aren't supposed to be saved.
+    /// USE THIS INSTEAD OF THE CONSTRUCTOR!
+    /// Gets called after beeing loaded from a save file and in the constructor, used to reinitialize values that aren't supposed to be saved.
     /// </summary>
     public virtual void SetupAfterSerialization()
     {

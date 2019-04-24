@@ -18,11 +18,11 @@ public class Player : MonoBehaviour
     {
         if (toPlace == new StoneBlock().GetType())
         {
-            toPlace = new WorkTableBlock().GetType();
+            toPlace = new CarpenterBlock().GetType();
         } else
         {
             toPlace = new StoneBlock().GetType();
-        }
+        }   
     }
 
     public Block getBlockToPlace()
