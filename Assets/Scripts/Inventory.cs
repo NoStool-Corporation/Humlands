@@ -12,6 +12,7 @@ public class Inventory
     /// <summary>
     /// The InventoryUIManagers displaying this inventory
     /// </summary>
+    [NonSerialized]
     private List<InventoryUIManager> uiManagers;
 
     /// <summary>
@@ -42,12 +43,24 @@ public class Inventory
     }
 
     /// <summary>
+    /// Adds an ItemStack to this inventory, just like the Add(ItemStack) function, but also takes it away from the original ItemStack.
+    /// </summary>
+    /// <param name="stack"></param>
+    /// <returns>Returns the amount of Items transfered as an ItemStack</returns>
+    public ItemStack Transfer(ItemStack stack)
+    {
+        return stack.Remove(this.Add(stack));
+    }
+
+    /// <summary>
     /// Adds an ItemStack to this inventory or as much of an ItemStack as there is space left in the inventory.
     /// </summary>
     /// <param name="stack"></param>
     /// <returns>Returns the amount of items added to this inventory as an ItemStack</returns>
-    public ItemStack Add(ItemStack stack)
+    public ItemStack Add(ItemStack stackOriginal)
     {
+        ItemStack stack = stackOriginal.Clone() as ItemStack;
+        Debug.Log("Start" + stack.Size);
         if (this.Amount == this.maxSize)
             return new ItemStack(stack.Item, 0);
 
