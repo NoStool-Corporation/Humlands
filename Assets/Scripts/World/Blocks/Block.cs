@@ -5,7 +5,7 @@ using System;
 
 public enum Direction { NORTH, EAST, SOUTH, WEST, UP, DOWN };
 /// <summary>
-/// Super class for all blocks, don't use create objects from this
+/// Super class for all blocks, don't create objects from this
 /// </summary>
 [Serializable]
 public class Block
@@ -15,7 +15,20 @@ public class Block
 
     [NonSerialized()]
     public GameObject customModel;
-    
+
+    public Block()
+    {
+        SetupAfterSerialization();
+    }
+
+    /// <summary>
+    /// Gets called after beeing loaded from a save file, used to reinitialize values that aren't supposed to be saved.
+    /// </summary>
+    public virtual void SetupAfterSerialization()
+    {
+
+    }
+
     /// <summary>
     /// Gets called by the chunk once the block is actually placed into a chunk and before the chunk gets rerendered.
     /// You can use this method to add this block to the updateBlocks list of the chunk using chunk.AddUpdateBlock(this)
@@ -51,8 +64,8 @@ public class Block
     {
         Vector2 tile = new Vector2
         {
-            x = 0,
-            y = 0
+            x = 500,
+            y = 500
         };
         return tile;
     }
