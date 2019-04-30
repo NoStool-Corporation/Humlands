@@ -20,6 +20,8 @@ public class Entity : MonoBehaviour
 	public bool isBreakingBlock;
     public bool isCraftingItem;
 
+    public Movement movement = new Movement();
+
     public Entity()
     {
         isBreakingBlock = false;
@@ -30,19 +32,22 @@ public class Entity : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InventoryUIManager ui = new InventoryUIManager(inventory);
+        movement.Start(transform.position, new Vector3(1, 1, 1), new Vector3(transform.position.x + 100, transform.position.y, transform.position.z + 1000));
         world = FindObjectOfType<World>();
     }
 	
 	void Update()
 	{
         DoWork();
-	}
-	
-	// Finds out what type of work the Entity is doing 
-	// (breaking a block; crafting an item)
-	// and calls the specific method created for that purpose.
-	public void DoWork()
+
+        transform.position = movement.GetPosition();
+    }
+    
+
+    // Finds out what type of work the Entity is doing 
+    // (breaking a block; crafting an item)
+    // and calls the specific method created for that purpose.
+    public void DoWork()
 	{
         Block frontBlock = world.GetBlock(new WorldPos(transform.position + transform.forward.normalized));
         //print(frontBlock);
