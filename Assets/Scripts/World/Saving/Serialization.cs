@@ -59,15 +59,15 @@ public static class Serialization
     /// </summary>
     /// <param name="entities">The Linked List of Entities</param>
     public static void SaveEntities(List<Entity> entities, string worldName) {
+        if (!Directory.Exists(saveFolderName + "/" + worldName))
+            return;
+
         List<SaveEntity> save = new List<SaveEntity>();
 
         for (int i = 0; i < entities.Count; i++) {
             save.Add(new SaveEntity(entities[i]));
         }
-
-        if (!File.Exists(saveFolderName + "/" + worldName))
-            return;
-
+        
         Save(saveFolderName + "/" + worldName + "/" + entityFileName, save);
     }
 

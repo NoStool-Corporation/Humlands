@@ -213,8 +213,6 @@ public class LoadChunks : MonoBehaviour
                 i++;
             }
         }
-        Debug.Log(i);
-        Debug.Log(ret.Length);
         return ret;
     }
 

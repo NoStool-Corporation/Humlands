@@ -24,14 +24,14 @@ public class World : MonoBehaviour
         entityPrefab = Resources.Load<GameObject>(Entity.PREFAB_PATH);
         terrainGen = new TerrainGen(seed);
 
-        //LoadEntities();
+        LoadEntities();
 
-        GameObject g = Instantiate(entityPrefab, new Vector3(6390.26f, 10f, 64052.61f), new Quaternion(0, 0, 0, 0));
+        /*GameObject g = Instantiate(entityPrefab, new Vector3(6390.26f, 10f, 64052.61f), new Quaternion(0, 0, 0, 0));
         Entity e = g.GetComponent<Entity>();
         entities.Add(e);
         WorldPos pp = new WorldPos(30, 20, -5);
         entities[0].GiveRandomName();
-        Serialization.SaveEntities(entities, worldName);
+        Serialization.SaveEntities(entities, worldName);*/
     }
 
     // Saves world when player quits
@@ -51,6 +51,7 @@ public class World : MonoBehaviour
         {
             UnloadChunk(chunk.Value.x, chunk.Value.y, chunk.Value.z);
         }
+        Serialization.SaveEntities(entities, worldName);
     }
 
     /// <summary>  

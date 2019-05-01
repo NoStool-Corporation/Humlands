@@ -32,7 +32,7 @@ public class Entity : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        movement.Start(transform.position, new Vector3(1, 1, 1), new Vector3(transform.position.x + 100, transform.position.y, transform.position.z + 1000));
+        movement.Start(transform.position, 1, new Vector3(transform.position.x + 100, transform.position.y, transform.position.z + 10));
         world = FindObjectOfType<World>();
     }
 	
