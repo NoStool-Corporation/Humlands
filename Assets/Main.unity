@@ -225,6 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98bd4b5273059c841b1327180aa070f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chunksPerTick: 20
   renderDistance: 40
 --- !u!114 &534669908
 MonoBehaviour:
