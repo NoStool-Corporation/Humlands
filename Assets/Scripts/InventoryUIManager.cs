@@ -100,7 +100,7 @@ public class InventoryUIManager
 
 	private void CreateWorktableUIElements() {
 		Text workDone = GameObject.Instantiate(textPrefab, content.transform).GetComponent<Text>();
-		workDone.text = "" + worktable.tasks[worktable.currentTask].workToComplete - worktable.tasks[worktable.currentTask].workToComplete + "/" + worktable.tasks[worktable.currentTask].workNeeded;
+		workDone.text = "" + (worktable.tasks[worktable.currentTask].workToComplete - worktable.tasks[worktable.currentTask].workToComplete) + "/" + worktable.tasks[worktable.currentTask].workNeeded;
 	}
 	
     /// <summary>

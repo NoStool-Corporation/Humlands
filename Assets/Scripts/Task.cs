@@ -6,8 +6,8 @@ public struct Task
 {
     public ItemStack[] requiredResources { get; }
     public ItemStack[] product { get; }
-    int workToComplete;
-    int workNeeded;
+    public int workToComplete;
+    public int workNeeded;
 
 
     /// <summary>
