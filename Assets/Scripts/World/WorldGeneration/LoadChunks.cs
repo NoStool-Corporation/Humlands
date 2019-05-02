@@ -54,7 +54,9 @@ public class LoadChunks : MonoBehaviour
     
     int renderHeight = 2;
 
+    public uint chunksPerTick;
     public int renderDistance = 8;
+    private int blockRenderDistance = -1;
 
     /// <summary>
     /// Timer to only unload chunks every 10 update ticks
@@ -127,7 +129,7 @@ public class LoadChunks : MonoBehaviour
     {
         if (buildList.Count != 0)
         {
-            for (int i = 0; i < buildList.Count && i < 16; i++)
+            for (int i = 0; i < buildList.Count && i < chunksPerTick; i++)
             {
                 Chunk chunk = world.BuildChunk(buildList[0]);
                 if (chunk != null)
@@ -162,7 +164,7 @@ public class LoadChunks : MonoBehaviour
                 float distance = Vector3.Distance(
                     new Vector3(chunk.Value.pos.x, 0, chunk.Value.pos.z),
                     new Vector3(transform.position.x, 0, transform.position.z));
-                if (distance > Chunk.chunkSize * 20 && !chunk.Value.stayLoaded)
+                if (!IsInRenderDistance(chunk.Value.pos, false) && !chunk.Value.stayLoaded)
                     chunksToDelete.Add(chunk.Key);
             }
             foreach (var chunk in chunksToDelete)
@@ -177,8 +179,17 @@ public class LoadChunks : MonoBehaviour
         return false;
     }
 
-    public bool IsInRenderDistance(WorldPos pos) {
-        if (Mathf.Abs(pos.x * 16 - transform.position.x) <= renderDistance * 16 && Mathf.Abs(pos.y * 16 - transform.position.y) <= renderDistance * 16 && Mathf.Abs(pos.z * 16 - transform.position.z) <= renderDistance * 16)
+    public bool IsInRenderDistance(WorldPos pos, bool isChunkPos) {
+        if (blockRenderDistance < 0)
+            blockRenderDistance = renderDistance * 16;
+
+        if (isChunkPos) {
+            pos.x *= 16;
+            pos.y *= 16;
+            pos.z *= 16;
+        }
+
+        if (Mathf.Abs(pos.x  - transform.position.x) <= blockRenderDistance && Mathf.Abs(pos.z- transform.position.z) <= blockRenderDistance)
             return true;
 
         return false;
