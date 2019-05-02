@@ -50,7 +50,7 @@ public class LoadChunks : MonoBehaviour
                                             new WorldPos(-6, 0, -5), new WorldPos(-6, 0,  5), new WorldPos(-5, 0, -6), new WorldPos(-5, 0,  6), new WorldPos( 5, 0, -6),
                                             new WorldPos( 5, 0,  6), new WorldPos( 6, 0, -5), new WorldPos( 6, 0,  5) };*/
 
-    private WorldPos[] chunkPositions;
+    private WorldPos[] chunkPositions = null;
     
     int renderHeight = 2;
 
@@ -88,7 +88,8 @@ public class LoadChunks : MonoBehaviour
             Mathf.FloorToInt(transform.position.z / Chunk.chunkSize) * Chunk.chunkSize
             );
 
-        WorldPos[] chunkPositions = GetRenderDistanceChunks();
+        if(chunkPositions == null)
+            chunkPositions = GetRenderDistanceChunks();
 
         if (renderList.Count == 0)
         {
