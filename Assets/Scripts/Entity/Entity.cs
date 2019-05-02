@@ -40,7 +40,7 @@ public class Entity : MonoBehaviour
 	{
         DoWork();
 
-        transform.position = movement.GetPosition();
+        SetPosition(movement.GetPosition());
     }
     
 
@@ -66,10 +66,11 @@ public class Entity : MonoBehaviour
     /// Sets the position of the Entity; Loads the new Chunk and Uloads the old one
     /// </summary>
     /// <param name="pos"></param>
-    public void SetPosition(WorldPos pos)
+    public void SetPosition(Vector3 pos)
     {
-        WorldPos newChPos = world.GetChunkPos(pos);
-        WorldPos ownChPos = world.GetChunkPos(new WorldPos(transform.position));
+		WorldPos wp = new WorldPos(transform.position);
+        WorldPos newChPos = world.GetChunkPos(wp);
+        WorldPos ownChPos = world.GetChunkPos(wp);
         if (newChPos.Equals(ownChPos))
         {
             Chunk tmpCh = world.GetChunk(ownChPos);
@@ -81,7 +82,7 @@ public class Entity : MonoBehaviour
                 tmpCh.stayLoaded = true;
         }
 
-        transform.position = pos.ToVector3();
+        transform.position = pos;
     }
 
     /// <summary>
@@ -106,14 +107,5 @@ public class Entity : MonoBehaviour
     {
         string[] names = GetNames();
         entityName = names[Random.Range(0, names.Length - 1)];
-    }
-
-    /// <summary>
-    /// Teleports the Entity relative to the current postion
-    /// </summary>
-    /// <param name="step"></param>
-    public void Step(Vector3 step)
-    {
-        SetPosition(new WorldPos(transform.position + step));
     }
 }

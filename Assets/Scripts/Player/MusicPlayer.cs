@@ -12,7 +12,7 @@ public class MusicPlayer : MonoBehaviour
     /// <summary>
     /// Amount of clips to load from the musicDir
     /// </summary>
-    int clipAmount = 2;
+    int clipAmount = 3;
 
     AudioClip[] clips;
 
