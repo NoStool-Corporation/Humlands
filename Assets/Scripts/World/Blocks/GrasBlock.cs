@@ -6,6 +6,10 @@ using System;
 [Serializable]
 public class GrassBlock : Block
 {
+    public GrassBlock() {
+        id = 3;
+    }
+
     public override bool IsSolid(Direction direction)
     {
         return true;

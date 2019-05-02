@@ -6,6 +6,10 @@ using System;
 [Serializable]
 public class DirtBlock : Block
 {
+    public DirtBlock() {
+        id = 2;
+    }
+
     public override Vector2 TexturePosition(Direction direction)
     {
         return Tilesheet.DIRT;

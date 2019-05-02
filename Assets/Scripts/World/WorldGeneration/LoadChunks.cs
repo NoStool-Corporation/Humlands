@@ -180,17 +180,19 @@ public class LoadChunks : MonoBehaviour
         return false;
     }
 
-    public bool IsInRenderDistance(WorldPos pos, bool isChunkPos) {
+    public bool IsInRenderDistance(WorldPos pos, bool isChunkPos)
+    {
         if (blockRenderDistance < 0)
             blockRenderDistance = renderDistance * 16;
 
-        if (isChunkPos) {
+        if (isChunkPos)
+        {
             pos.x *= 16;
             pos.y *= 16;
             pos.z *= 16;
         }
 
-        if (Mathf.Abs(pos.x  - transform.position.x) <= blockRenderDistance && Mathf.Abs(pos.z- transform.position.z) <= blockRenderDistance)
+        if (Mathf.Abs(pos.x - transform.position.x) <= blockRenderDistance && Mathf.Abs(pos.z - transform.position.z) <= blockRenderDistance)
             return true;
 
         return false;
@@ -200,12 +202,13 @@ public class LoadChunks : MonoBehaviour
     /// Generates an array of all chunks inside a 45° rotated square arround the camera
     /// </summary>
     /// <returns></returns>
-    public WorldPos[] GetRenderDistanceChunks() {
-        if (renderDistance < 1) {
+    public static WorldPos[] GetRenderDistanceChunks(int renderDistance) {
+        if (renderDistance < 1)
+        {
             Debug.Log(renderDistance);
             return null;
         }
-        
+
         WorldPos[] ret = new WorldPos[(renderDistance - 1) * renderDistance * 2 + 1];
         int i = 0;
 
@@ -214,18 +217,27 @@ public class LoadChunks : MonoBehaviour
 
         for (int z = 1; z < renderDistance; z++)
         {
-            for (int x = 0; x < z; x++) {
+            for (int x = 0; x < z; x++)
+            {
                 ret[i] = new WorldPos(x, 0, z - x);
                 i++;
-                ret[i] = new WorldPos(ret[i - 1].z, 0, ret[i - 1].x * - 1);
+                ret[i] = new WorldPos(ret[i - 1].z, 0, ret[i - 1].x * -1);
                 i++;
-                ret[i] = new WorldPos(ret[i - 2].x * - 1, 0, ret[i - 2].z * -1);
+                ret[i] = new WorldPos(ret[i - 2].x * -1, 0, ret[i - 2].z * -1);
                 i++;
-                ret[i] = new WorldPos(ret[i - 3].z * - 1, 0, ret[i - 3].x);
+                ret[i] = new WorldPos(ret[i - 3].z * -1, 0, ret[i - 3].x);
                 i++;
             }
         }
         return ret;
+    }
+
+    /// <summary>
+    /// Generates an array of all chunks inside a 45° rotated square arround the camera
+    /// </summary>
+    /// <returns></returns>
+    public WorldPos[] GetRenderDistanceChunks() {
+        return GetRenderDistanceChunks(renderDistance);
     }
 
     /// <summary>

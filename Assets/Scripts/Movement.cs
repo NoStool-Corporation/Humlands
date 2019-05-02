@@ -14,11 +14,11 @@ public class Movement
     //Speed per axis
     private float aSpeed;
 
-    private WorldPos dir;
+    private WorldPos dir = new WorldPos();
     private long startTime = 0;
     bool[] reached = { false, false, false };
-    bool moving = false;
-    bool paused = false;
+    public bool moving = false;
+    public bool paused = false;
     
 
     /// <summary>
@@ -109,6 +109,8 @@ public class Movement
     /// Updates thed direction Vector3
     /// </summary>
     private void UpdateDir() {
+        Debug.Log(startPos.x);
+        Debug.Log(targetPos.x);
         dir.x = startPos.x <= targetPos.x ? 1 : -1;
         dir.y = startPos.y <= targetPos.y ? 1 : -1;
         dir.z = startPos.z <= targetPos.z ? 1 : -1;
@@ -120,6 +122,9 @@ public class Movement
     /// <param name="pos"></param>
     public void Start(Vector3 st, float sp, Vector3 ta)
     {
+        if (st == null || sp <= 0 || ta == null)
+            return;
+
         startTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         startPos = st;
         speed = sp;

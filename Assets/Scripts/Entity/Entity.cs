@@ -11,6 +11,7 @@ public class Entity : MonoBehaviour
 
     private string NAME_FILE_PATH = "Assets/Resources/Strings/EntityNames.txt";
     public static string PREFAB_PATH = "Prefabs/Entity";
+    public int scanMapSize = 10;
 
     public Inventory inventory;
     public string entityName;
@@ -32,15 +33,20 @@ public class Entity : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        movement.Start(transform.position, 1, new Vector3(transform.position.x + 100, transform.position.y, transform.position.z + 10));
         world = FindObjectOfType<World>();
+
+        WorldPos wp = FindNextBlockWithId(5);
+        Block b = world.GetBlock(wp);
+
+        if (wp != null)
+            movement.Start(transform.position, 0.1f, wp.ToVector3());
     }
 	
 	void Update()
 	{
-        DoWork();
-
-        SetPosition(movement.GetPosition());
+        //DoWork();
+        if(movement.moving && !movement.paused)
+            SetPosition(movement.GetPosition());
     }
     
 
@@ -69,8 +75,9 @@ public class Entity : MonoBehaviour
     public void SetPosition(Vector3 pos)
     {
 		WorldPos wp = new WorldPos(transform.position);
-        WorldPos newChPos = world.GetChunkPos(wp);
+        WorldPos newChPos = world.GetChunkPos(new WorldPos(pos));
         WorldPos ownChPos = world.GetChunkPos(wp);
+
         if (newChPos.Equals(ownChPos))
         {
             Chunk tmpCh = world.GetChunk(ownChPos);
@@ -80,6 +87,7 @@ public class Entity : MonoBehaviour
             tmpCh = world.BuildChunk(newChPos);
             if (tmpCh != null)
                 tmpCh.stayLoaded = true;
+            //tmpCh.render = true;
         }
 
         transform.position = pos;
@@ -108,4 +116,63 @@ public class Entity : MonoBehaviour
         string[] names = GetNames();
         entityName = names[Random.Range(0, names.Length - 1)];
     }
+
+    /// <summary>
+    /// Tries to find the next Block having the id which is passed by the first argument.
+    /// !Important at this stage of the method is that it only searches inside the chunks on y = 0!
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public WorldPos FindNextBlockWithId(uint id) {
+        List<WorldPos> distances = new List<WorldPos>(LoadChunks.GetRenderDistanceChunks(10));
+
+        //Get current Chunk Position of the Entity
+        WorldPos currentChunkPos = new WorldPos();
+        currentChunkPos.x = Mathf.FloorToInt(transform.position.x / Chunk.chunkSize);
+        currentChunkPos.y = Mathf.FloorToInt(transform.position.y / Chunk.chunkSize);
+        currentChunkPos.z = Mathf.FloorToInt(transform.position.z / Chunk.chunkSize);
+
+        //Tree Block-ID = 5
+        WorldPos chunkPos;
+        Chunk tmpCh;
+        WorldPos blockPos = new WorldPos();
+        bool stayLoadedBefore;
+
+        for (int i = 0; i < distances.Count; i++)
+        {
+            //merge currentChunkPos and the chunk pos relative to the Entity
+            chunkPos = distances[i];
+            chunkPos.x += currentChunkPos.x;
+            chunkPos.y = 0;
+            chunkPos.z += currentChunkPos.z;
+            
+
+            tmpCh = world.BuildChunk(chunkPos);
+            if (tmpCh == null)
+                continue;
+
+            stayLoadedBefore = tmpCh.stayLoaded;
+            tmpCh.stayLoaded = true;
+            blockPos = tmpCh.SearchBlock(id);
+            tmpCh.stayLoaded = stayLoadedBefore;
+
+            if (blockPos == null)
+                continue;
+
+            
+
+            blockPos.x = Chunk.chunkSize * chunkPos.x + blockPos.x;
+            blockPos.y = Chunk.chunkSize * chunkPos.y + blockPos.y;
+            blockPos.z = Chunk.chunkSize * chunkPos.z + blockPos.z;
+
+            Block block = world.GetBlock(blockPos);
+
+            return blockPos;
+        }
+
+        return null;
+    }
+
+    
+    
 }

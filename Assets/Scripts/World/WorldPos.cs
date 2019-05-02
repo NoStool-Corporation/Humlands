@@ -6,9 +6,12 @@ using System;
 /// A position in the world, like a Vector3 but only for ints.
 /// </summary>
 [Serializable]
-public struct WorldPos
+public class WorldPos
 {
     public int x, y, z;
+
+    public WorldPos() { }
+
     public WorldPos(int x, int y, int z)
     {
         this.x = x;

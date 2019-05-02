@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ public class Chunk : MonoBehaviour
     public Block[,,] blocks;
     private List<Block> updateBlocks;
     public World world;
-    public WorldPos pos;
+    public WorldPos pos = new WorldPos();
     MeshFilter filter;
     MeshCollider coll;
 
@@ -67,6 +68,7 @@ public class Chunk : MonoBehaviour
         if (InRange(x) && InRange(y) && InRange(z))
             return blocks[x, y, z];
         return world.GetBlock(pos.x + x, pos.y + y, pos.z + z);
+
     }
     /// <summary>
     /// Places a block at the specified local coordinates
@@ -253,5 +255,27 @@ public class Chunk : MonoBehaviour
         hash = (hash + pos.y) * 2591;
         hash = (hash + pos.z) * 521;
         return hash;
+    }
+    
+    public WorldPos SearchBlock(uint sid)
+    {
+        Block block;
+
+        for (int x = 0; x < chunkSize; x++)
+        {
+            for (int z = 0; z < chunkSize; z++)
+            {
+                for (int y = 0; y < chunkSize; y++)
+                {
+                    block = GetBlock(x, y, z);
+                    if (block.id == sid) {
+                        return new WorldPos(x,y,z);
+                    }
+                        
+                }
+            }
+        }
+
+        return null;
     }
 }

@@ -10,6 +10,7 @@ public enum Direction { NORTH, EAST, SOUTH, WEST, UP, DOWN };
 [Serializable]
 public class Block
 {
+    public uint id;
     public bool changed = true;
 	public int workToBreak;
 

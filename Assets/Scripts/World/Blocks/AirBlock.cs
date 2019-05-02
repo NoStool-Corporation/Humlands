@@ -6,6 +6,10 @@ using System;
 [Serializable]
 public class AirBlock : Block
 {
+    public AirBlock()
+    {
+        id = 0;
+    }
 
     public override MeshData Blockdata(Chunk chunk, int x, int y, int z, MeshData meshData)
     {

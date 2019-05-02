@@ -13,6 +13,10 @@ public class WorkTableBlock : Block
     public int currentTask;
     public Inventory inventory;
 
+    public WorkTableBlock() {
+        id = 7;
+    }
+
     public override void SetupAfterSerialization()
     {
         inventory = new Inventory(100);

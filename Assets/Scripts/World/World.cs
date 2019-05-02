@@ -139,10 +139,11 @@ public class World : MonoBehaviour
     public Chunk GetChunk(int x, int y, int z)
     {
         WorldPos pos = GetChunkPos(x,y,z);
-        Chunk containerChunk = null;
-        chunks.TryGetValue(pos, out containerChunk);
 
-        return containerChunk;
+        if (!chunks.ContainsKey(pos))
+            return null;
+
+        return chunks[pos];
     }
 
     /// <summary>
