@@ -21,9 +21,9 @@ public class InventoryUIManager
 	public InventoryUIManager(WorkTableBlock worktable)
     {
 		this.worktable = worktable;
-		this.inventory = worktable.inventory;
-		yOffset = -30;
-		
+		inventory = worktable.inventory;
+		yOffset = 10;
+        worktable.AddUIManager(this);
 		Setup();
     }
 	
@@ -31,6 +31,7 @@ public class InventoryUIManager
     {	
 		this.inventory = inventory;
 		yOffset = 0;
+
 		Setup();
     }
 	
@@ -39,6 +40,11 @@ public class InventoryUIManager
         UI = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/InventoryUI"));
         content = UI.GetComponentInChildren<Content>();
         UI.GetComponentInChildren<Button>().onClick.AddListener(delegate { Delete(); }); ;
+
+        if (worktable != null)
+        {
+            UI.GetComponentInChildren<UIName>().gameObject.GetComponent<Text>().text = "W O R K T A B L E";
+        }
 
         imagePrefab = Resources.Load<GameObject>("Prefabs/Image");
         textPrefab = Resources.Load<GameObject>("Prefabs/Text");
@@ -63,7 +69,7 @@ public class InventoryUIManager
         }
 		
 		if (worktable != null) {
-			CreateWorktableUIElements();
+            CreateWorktableText();
 		}
 
         //Create new InventoryUI content
@@ -83,7 +89,7 @@ public class InventoryUIManager
         Image image = GameObject.Instantiate(imagePrefab, content.transform).GetComponent<Image>();
 
         image.sprite = ItemSprites.GetItemSprite(item.name);
-        image.rectTransform.anchoredPosition += new Vector2(10 * (index % 3),-15*Mathf.FloorToInt(index/3) + yOffset);
+        image.rectTransform.anchoredPosition += new Vector2(10 * (index % 3),-15*Mathf.FloorToInt(index/3) - yOffset);
     }
     /// <summary>
     /// Creates and positions the Image for an ItemStack in an Inventory
@@ -95,14 +101,50 @@ public class InventoryUIManager
         Text text = GameObject.Instantiate(textPrefab, content.transform).GetComponent<Text>();
 
         text.text = "" + size;
-        text.rectTransform.anchoredPosition += new Vector2(10 * (index % 3), -15 * Mathf.FloorToInt(index / 3) + yOffset);
+        text.rectTransform.anchoredPosition += new Vector2(10 * (index % 3), -15 * Mathf.FloorToInt(index / 3) - yOffset);
     }
 
-	private void CreateWorktableUIElements() {
-		Text workDone = GameObject.Instantiate(textPrefab, content.transform).GetComponent<Text>();
-		workDone.text = "" + (worktable.tasks[worktable.currentTask].workToComplete - worktable.tasks[worktable.currentTask].workToComplete) + "/" + worktable.tasks[worktable.currentTask].workNeeded;
-	}
-	
+    private void CreateWorktableText()
+    {
+        Text workDone = GameObject.Instantiate(textPrefab, content.transform).GetComponent<Text>();
+        Text requirements = GameObject.Instantiate(textPrefab, content.transform).GetComponent<Text>();
+        Text products = GameObject.Instantiate(textPrefab, content.transform).GetComponent<Text>();
+
+        Task task = worktable.tasks[worktable.currentTask];
+
+        //Shows the work done/work needed to finish e.g. 267/1200
+        workDone.text = "" + (task.workToComplete - task.workNeeded) + "/" + task.workToComplete;
+
+        requirements.text = "Requirements: ";
+        for (int i = 0; i < task.requiredResources.Length; i++)
+        {
+            requirements.text += task.requiredResources[i].Item.name;
+            if (i + 1 < task.requiredResources.Length)
+            {
+                requirements.text += ", ";
+            }
+        }
+
+        products.text = "Product: ";
+        for (int i = 0; i < task.product.Length; i++)
+        {
+            products.text += task.product[i].Item.name;
+            if (i + 1 < task.product.Length)
+            {
+                products.text += ", ";
+            }
+        }
+
+        //Move texts so that they don't overlap etc
+        workDone.alignment = TextAnchor.MiddleLeft;
+        requirements.alignment = TextAnchor.MiddleLeft;
+        products.alignment = TextAnchor.MiddleLeft;
+
+        workDone.rectTransform.anchoredPosition += new Vector2(45, 20);
+        requirements.rectTransform.anchoredPosition += new Vector2(45, 15);
+        products.rectTransform.anchoredPosition += new Vector2(45, 10);
+    }
+
     /// <summary>
     /// Call this to destroy the InventoryUI
     /// </summary>
@@ -111,5 +153,6 @@ public class InventoryUIManager
         GameObject.Destroy(UI);
         GameObject.Destroy(content);
         inventory.RemoveUIManager(this);
+        worktable.RemoveUIManager(this);
     }
 }

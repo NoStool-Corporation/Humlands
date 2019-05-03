@@ -12,16 +12,14 @@ public class WorkTableBlock : Block
     public Task[] tasks;
     public int currentTask;
     public Inventory inventory;
+    [NonSerialized]
+    List<InventoryUIManager> uiManagers;
 
     public WorkTableBlock() {
         id = 7;
-    }
-
-    public override void SetupAfterSerialization()
-    {
         inventory = new Inventory(100);
+        uiManagers = new List<InventoryUIManager>();
     }
-    
 
     /// <summary>
     /// Gets called once the current Task has been completed. Useful for creating the product ItemStack(s)
@@ -61,10 +59,22 @@ public class WorkTableBlock : Block
         if(readyToCraft)
         {
             tasks[currentTask].Craft(this, entity);
-            Debug.Log("ITEMS THERE!!!!!!!!!!!!!");
+            for (int i = 0; i < uiManagers.Count; i++)
+            {
+                uiManagers[i].Render();
+            }
             return true;
         }
-        Debug.Log("No ITEMS!");
         return false;
+    }
+
+    public void AddUIManager(InventoryUIManager manager)
+    {
+        uiManagers.Add(manager);
+    }
+
+    public void RemoveUIManager(InventoryUIManager manager)
+    {
+        uiManagers.Remove(manager);
     }
 }
