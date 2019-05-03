@@ -144,9 +144,9 @@ public class Entity : MonoBehaviour
         {
             //merge currentChunkPos and the chunk pos relative to the Entity
             chunkPos = distances[i];
-            chunkPos.x += currentChunkPos.x;
+            chunkPos.x = chunkPos.x * Chunk.chunkSize + currentChunkPos.x;
             chunkPos.y = 0;
-            chunkPos.z += currentChunkPos.z;
+            chunkPos.z = chunkPos.z * Chunk.chunkSize + currentChunkPos.z;
 
             tmpCh = world.BuildChunk(chunkPos);
             if (tmpCh == null)
@@ -159,14 +159,10 @@ public class Entity : MonoBehaviour
 
             if (blockPos == null)
                 continue;
-
-
-            Block block = tmpCh.GetBlock(blockPos.x, blockPos.y, blockPos.z);
-            blockPos.x = (Chunk.chunkSize * tmpCh.pos.x) + blockPos.x;
-            blockPos.y = (Chunk.chunkSize * tmpCh.pos.y) + blockPos.y;
-            blockPos.z = (Chunk.chunkSize * tmpCh.pos.z) + blockPos.z;
-            
-            Debug.Log(block.id.ToString() + " - " + world.GetBlock(blockPos, true).id.ToString() + " in " + i);
+		
+            blockPos.x += chunkPos.x;
+            blockPos.y += chunkPos.y;
+            blockPos.z += blockPos.z;
 
             return blockPos;
         }
