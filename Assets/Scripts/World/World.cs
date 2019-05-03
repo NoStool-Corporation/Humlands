@@ -66,6 +66,8 @@ public class World : MonoBehaviour
     public Chunk CreateChunk(int x, int y, int z)
     {
         WorldPos worldPos = new WorldPos(x, y, z);
+        if (chunks.ContainsKey(worldPos))
+            return chunks[worldPos];
 
         GameObject newChunkObject = Instantiate(chunkPrefab, new Vector3(x, y, z), Quaternion.Euler(Vector3.zero));
 
@@ -140,8 +142,10 @@ public class World : MonoBehaviour
     {
         WorldPos pos = GetChunkPos(x,y,z);
 
-        if (!chunks.ContainsKey(pos))
+        if (!chunks.ContainsKey(pos)) {
             return null;
+        }
+            
 
         return chunks[pos];
     }
@@ -176,9 +180,11 @@ public class World : MonoBehaviour
     /// <param name="y"></param>
     /// <param name="z"></param>
     /// <returns> Returns the block at the specified position or AirBlock if no block exists </returns>
-    public Block GetBlock(int x, int y, int z)
+    public Block GetBlock(int x, int y, int z, bool b = false)
     {
-        Chunk containerChunk = GetChunk(x, y, z);
+        Chunk containerChunk = GetChunk(x,y,z);
+        if (b)
+            Debug.Log(containerChunk == null);
         if (containerChunk != null)
         {
             Block block = containerChunk.GetBlock(
@@ -199,9 +205,12 @@ public class World : MonoBehaviour
     /// </summary>
     /// <param name="worldpos"></param>
     /// <returns> Returns the block at the specified position or AirBlock if no block exists </returns>
-    public Block GetBlock(WorldPos worldpos)
+    public Block GetBlock(WorldPos worldpos, bool b = false)
     {
-        return GetBlock(worldpos.x, worldpos.y, worldpos.z);
+        if (worldpos == null)
+            return null;
+
+        return GetBlock(worldpos.x, worldpos.y, worldpos.z, b);
     }
     /// <summary>
     /// Places a block at the specified position.

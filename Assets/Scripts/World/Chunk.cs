@@ -17,6 +17,7 @@ public class Chunk : MonoBehaviour
     private List<Block> updateBlocks;
     public World world;
     public WorldPos pos = new WorldPos();
+    private WorldPos lastp = new WorldPos();
     MeshFilter filter;
     MeshCollider coll;
 
@@ -29,10 +30,12 @@ public class Chunk : MonoBehaviour
     {
         blocks = new Block[chunkSize, chunkSize, chunkSize];
         updateBlocks = new List<Block>();
+        
     }
 
     void Start()
     {
+        lastp = pos;
         filter = gameObject.GetComponent<MeshFilter>();
         coll = gameObject.GetComponent<MeshCollider>();
 
@@ -67,7 +70,7 @@ public class Chunk : MonoBehaviour
     {
         if (InRange(x) && InRange(y) && InRange(z))
             return blocks[x, y, z];
-        return world.GetBlock(pos.x + x, pos.y + y, pos.z + z);
+        return world.GetBlock(pos.x * x, pos.y + y, pos.z + z);
 
     }
     /// <summary>
@@ -139,6 +142,10 @@ public class Chunk : MonoBehaviour
 
     private void Update()
     {
+        if (lastp != pos) {
+            Debug.Log(lastp.x.ToString() + " " + pos.x);
+            lastp = pos;
+        }
         UpdateBlocks();
         if (render)
         {
@@ -190,12 +197,12 @@ public class Chunk : MonoBehaviour
     {
         Chunk[] chunks =
         {
-            world.GetChunk(pos.x + 16, pos.y, pos.z),
-            world.GetChunk(pos.x, pos.y + 16, pos.z),
-            world.GetChunk(pos.x, pos.y, pos.z + 16),
-            world.GetChunk(pos.x - 16, pos.y, pos.z),
-            world.GetChunk(pos.x, pos.y - 16, pos.z),
-            world.GetChunk(pos.x, pos.y, pos.z - 16)
+            world.GetChunk(pos.x + chunkSize, pos.y, pos.z),
+            world.GetChunk(pos.x, pos.y + chunkSize, pos.z),
+            world.GetChunk(pos.x, pos.y, pos.z + chunkSize),
+            world.GetChunk(pos.x - chunkSize, pos.y, pos.z),
+            world.GetChunk(pos.x, pos.y - chunkSize, pos.z),
+            world.GetChunk(pos.x, pos.y, pos.z - chunkSize)
         };
 
         foreach (Chunk c in chunks)
@@ -267,8 +274,9 @@ public class Chunk : MonoBehaviour
             {
                 for (int y = 0; y < chunkSize; y++)
                 {
-                    block = GetBlock(x, y, z);
+                    block = GetBlock(x,y,z);
                     if (block.id == sid) {
+                      
                         return new WorldPos(x,y,z);
                     }
                         

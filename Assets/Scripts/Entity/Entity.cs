@@ -36,10 +36,10 @@ public class Entity : MonoBehaviour
         world = FindObjectOfType<World>();
 
         WorldPos wp = FindNextBlockWithId(5);
-        Block b = world.GetBlock(wp);
-
+        //Block b = world.GetBlock(wp);
+       //Debug.Log(wp.x);
         if (wp != null)
-            movement.Start(transform.position, 0.1f, wp.ToVector3());
+            movement.Start(transform.position, 2, wp.ToVector3());
     }
 	
 	void Update()
@@ -132,6 +132,8 @@ public class Entity : MonoBehaviour
         currentChunkPos.y = Mathf.FloorToInt(transform.position.y / Chunk.chunkSize);
         currentChunkPos.z = Mathf.FloorToInt(transform.position.z / Chunk.chunkSize);
 
+        Debug.Log(currentChunkPos.x.ToString() + " | " + currentChunkPos.y.ToString() + " | " + currentChunkPos.z.ToString());
+
         //Tree Block-ID = 5
         WorldPos chunkPos;
         Chunk tmpCh;
@@ -145,7 +147,6 @@ public class Entity : MonoBehaviour
             chunkPos.x += currentChunkPos.x;
             chunkPos.y = 0;
             chunkPos.z += currentChunkPos.z;
-            
 
             tmpCh = world.BuildChunk(chunkPos);
             if (tmpCh == null)
@@ -159,13 +160,13 @@ public class Entity : MonoBehaviour
             if (blockPos == null)
                 continue;
 
+
+            Block block = tmpCh.GetBlock(blockPos.x, blockPos.y, blockPos.z);
+            blockPos.x = (Chunk.chunkSize * tmpCh.pos.x) + blockPos.x;
+            blockPos.y = (Chunk.chunkSize * tmpCh.pos.y) + blockPos.y;
+            blockPos.z = (Chunk.chunkSize * tmpCh.pos.z) + blockPos.z;
             
-
-            blockPos.x = Chunk.chunkSize * chunkPos.x + blockPos.x;
-            blockPos.y = Chunk.chunkSize * chunkPos.y + blockPos.y;
-            blockPos.z = Chunk.chunkSize * chunkPos.z + blockPos.z;
-
-            Block block = world.GetBlock(blockPos);
+            Debug.Log(block.id.ToString() + " - " + world.GetBlock(blockPos, true).id.ToString() + " in " + i);
 
             return blockPos;
         }

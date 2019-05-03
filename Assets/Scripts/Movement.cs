@@ -109,8 +109,6 @@ public class Movement
     /// Updates thed direction Vector3
     /// </summary>
     private void UpdateDir() {
-        Debug.Log(startPos.x);
-        Debug.Log(targetPos.x);
         dir.x = startPos.x <= targetPos.x ? 1 : -1;
         dir.y = startPos.y <= targetPos.y ? 1 : -1;
         dir.z = startPos.z <= targetPos.z ? 1 : -1;
