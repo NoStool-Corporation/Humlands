@@ -36,15 +36,13 @@ public class Entity : MonoBehaviour
         world = FindObjectOfType<World>();
 
         WorldPos wp = FindNextBlockWithId(5);
-        //Block b = world.GetBlock(wp);
-       //Debug.Log(wp.x);
         if (wp != null)
             movement.Start(transform.position, 2, wp.ToVector3());
     }
 	
 	void Update()
 	{
-        //DoWork();
+        DoWork();
         if(movement.moving && !movement.paused)
             SetPosition(movement.GetPosition());
     }
@@ -128,9 +126,9 @@ public class Entity : MonoBehaviour
 
         //Get current Chunk Position of the Entity
         WorldPos currentChunkPos = new WorldPos();
-        currentChunkPos.x = Mathf.FloorToInt(transform.position.x / Chunk.chunkSize);
-        currentChunkPos.y = Mathf.FloorToInt(transform.position.y / Chunk.chunkSize);
-        currentChunkPos.z = Mathf.FloorToInt(transform.position.z / Chunk.chunkSize);
+        currentChunkPos.x = Mathf.FloorToInt(transform.position.x / Chunk.chunkSize) * Chunk.chunkSize;
+        currentChunkPos.y = Mathf.FloorToInt(transform.position.y / Chunk.chunkSize) * Chunk.chunkSize;
+        currentChunkPos.z = Mathf.FloorToInt(transform.position.z / Chunk.chunkSize) * Chunk.chunkSize;
 
         Debug.Log(currentChunkPos.x.ToString() + " | " + currentChunkPos.y.ToString() + " | " + currentChunkPos.z.ToString());
 
@@ -155,15 +153,18 @@ public class Entity : MonoBehaviour
             stayLoadedBefore = tmpCh.stayLoaded;
             tmpCh.stayLoaded = true;
             blockPos = tmpCh.SearchBlock(id);
-            tmpCh.stayLoaded = stayLoadedBefore;
 
-            if (blockPos == null)
+
+            if (blockPos == null) {
+                tmpCh.stayLoaded = stayLoadedBefore;
                 continue;
-		
-            blockPos.x += chunkPos.x;
-            blockPos.y += chunkPos.y;
-            blockPos.z += blockPos.z;
-
+            }
+        
+            blockPos.x += tmpCh.pos.x;
+            blockPos.y += tmpCh.pos.y;
+            blockPos.z += tmpCh.pos.z;
+            tmpCh.stayLoaded = stayLoadedBefore;
+            
             return blockPos;
         }
 

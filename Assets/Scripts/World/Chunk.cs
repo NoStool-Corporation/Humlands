@@ -52,7 +52,8 @@ public class Chunk : MonoBehaviour
             {
                 for (int z = 0; z < 16; z++)
                 {
-                    blocks[x, y, z].DeleteData();
+                    if(blocks[x, y, z] != null)
+                        blocks[x, y, z].DeleteData();
                 }
             }
         }
@@ -70,7 +71,7 @@ public class Chunk : MonoBehaviour
     {
         if (InRange(x) && InRange(y) && InRange(z))
             return blocks[x, y, z];
-        return world.GetBlock(pos.x * x, pos.y + y, pos.z + z);
+        return world.GetBlock(pos.x + x, pos.y + y, pos.z + z);
 
     }
     /// <summary>
@@ -276,8 +277,7 @@ public class Chunk : MonoBehaviour
                 {
                     block = GetBlock(x,y,z);
                     if (block.id == sid) {
-                      
-                        return new WorldPos(x,y,z);
+                        return new WorldPos(x, y, z);
                     }
                         
                 }
