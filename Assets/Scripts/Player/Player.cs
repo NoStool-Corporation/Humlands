@@ -16,12 +16,12 @@ public class Player : MonoBehaviour
 
     public void CycleBlock()
     {
-        if (toPlace == new StoneBlock().GetType())
+        if (toPlace == typeof(StoneBlock))
         {
-            toPlace = new CarpenterBlock().GetType();
+            toPlace = typeof(CarpenterBlock);
         } else
         {
-            toPlace = new StoneBlock().GetType();
+            toPlace = typeof(StoneBlock);
         }   
     }
 
