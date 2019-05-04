@@ -11,7 +11,7 @@ public class TerrainGen
     float stoneBaseHeight = 0;
     float stoneBaseNoise = 0.05f;
     float stoneBaseNoiseHeight = 1;
-    float stoneMountainHeight =3;
+    float stoneMountainHeight =20;
     float stoneMountainFrequency = 0.02f;
     float stoneMinHeight = 0;
     float dirtBaseHeight = 4;
