@@ -15,7 +15,7 @@ public class WorkTableBlock : Block
     [NonSerialized]
     List<InventoryUIManager> uiManagers;
 
-    public WorkTableBlock() {
+    public WorkTableBlock() : base() {
         id = 7;
         inventory = new Inventory(100);
         uiManagers = new List<InventoryUIManager>();
