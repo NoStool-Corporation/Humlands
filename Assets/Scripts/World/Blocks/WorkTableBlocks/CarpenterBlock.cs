@@ -6,9 +6,6 @@ using System;
 [Serializable]
 public class CarpenterBlock : WorkTableBlock
 {
-    public CarpenterBlock() {
-        id = 6;
-    }
 
     public override void SetupAfterSerialization()
     {

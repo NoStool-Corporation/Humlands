@@ -265,7 +265,7 @@ public class Chunk : MonoBehaviour
         return hash;
     }
     
-    public WorldPos SearchBlock(uint sid)
+    public WorldPos SearchBlock(Type sid)
     {
         Block block;
 

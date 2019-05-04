@@ -10,7 +10,7 @@ public enum Direction { NORTH, EAST, SOUTH, WEST, UP, DOWN };
 [Serializable]
 public class Block
 {
-    public uint id;
+    public Type id;
     public bool changed = true;
 	public int workToBreak;
 
@@ -20,10 +20,11 @@ public class Block
     public Block()
     {
         SetupAfterSerialization();
+        id = this.GetType();
     }
 
     /// <summary>
-    /// USE THIS INSTEAD OF THE CONSTRUCTOR!
+    /// USE THIS INSTEAD OF THE CONSTRUCTOR WHEN VALUES DON'T NEED TO BE SAVED!
     /// Gets called after beeing loaded from a save file and in the constructor, used to reinitialize values that aren't supposed to be saved.
     /// </summary>
     public virtual void SetupAfterSerialization()

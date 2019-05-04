@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System;
 
 public class Entity : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class Entity : MonoBehaviour
     {
         world = FindObjectOfType<World>();
 
-        WorldPos wp = FindNextBlockWithId(5);
+        WorldPos wp = FindNextBlockWithId(typeof(TreeBlock));
         if (wp != null)
             movement.Start(transform.position, 2, wp.ToVector3());
     }
@@ -112,7 +113,7 @@ public class Entity : MonoBehaviour
     public void GiveRandomName()
     {
         string[] names = GetNames();
-        entityName = names[Random.Range(0, names.Length - 1)];
+        entityName = names[UnityEngine.Random.Range(0, names.Length - 1)];
     }
 
     /// <summary>
@@ -121,7 +122,7 @@ public class Entity : MonoBehaviour
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public WorldPos FindNextBlockWithId(uint id) {
+    public WorldPos FindNextBlockWithId(Type id) {
         List<WorldPos> distances = new List<WorldPos>(LoadChunks.GetRenderDistanceChunks(10));
 
         //Get current Chunk Position of the Entity
