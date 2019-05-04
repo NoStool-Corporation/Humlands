@@ -17,11 +17,16 @@ public class TerrainGen
     float dirtBaseHeight = 4;
     float dirtNoise = 0.02f;
     float dirtNoiseHeight = 1;
-    float forestFrequency = 0.01f;
     float treeFrequency = 0.2f;
     float treeDensity = 10f;
     int seed;
 
+    float biomeSize = 0.005f;
+    int biomeDensityAmount = Mathf.RoundToInt(600*1.4f);
+    int grasslandDensity = 200;
+    int forestDensity = 400;
+    int desertDensity = 500;
+    int lakeDensity = 600;
     public TerrainGen(int seed)
     {
         this.seed = seed;
@@ -35,14 +40,24 @@ public class TerrainGen
     public Chunk ChunkGen(Chunk chunk)
     {
         //set the biome of the chunk
-        int Biome = GetNoise(chunk.pos.x, 0, chunk.pos.z, forestFrequency, 2);
-        if(Biome == 1)
+        int biome1 = GetNoise(chunk.pos.x + 64000, 0, chunk.pos.z + 64000, biomeSize, biomeDensityAmount);
+        int biome2 = GetNoise(chunk.pos.x, 0, chunk.pos.z, biomeSize, biomeDensityAmount);
+        int biome = Mathf.FloorToInt(Mathf.Sqrt((biome1 * biome1 + biome2 * biome2))) / 2;
+        if (biome <= grasslandDensity || IsInRange(biome, forestDensity, desertDensity) || IsInRange(biome, desertDensity, lakeDensity))
         {
             chunk.biome = "grassland";
         }
-        else
+        else if (biome <= forestDensity)
         {
             chunk.biome = "forest"; 
+        }
+        else if (biome <= desertDensity)
+        {
+            chunk.biome = "desert";
+        }
+        else if (biome <= lakeDensity)
+        {
+            chunk.biome = "lake";
         }
         
         //generate each column of the chunk
@@ -83,16 +98,27 @@ public class TerrainGen
         //go through every block in the column and place blocks according to the calculated values
         for (int y = chunk.pos.y; y < chunk.pos.y + Chunk.chunkSize; y++)
         {
+            int biome1 = GetNoise(x, 0, z, biomeSize, biomeDensityAmount);
+            int biome2 = GetNoise(x + 64000, 0, z + 64000, biomeSize, biomeDensityAmount);
+            int biomeNumber = Mathf.FloorToInt(Mathf.Sqrt((biome1 * biome1 + biome2 * biome2)) / 2);
             if (y <= stoneHeight)
             {
                 chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new StoneBlock(), false);
             } else if (y <= dirtHeight)
             {
                 chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new DirtBlock(), false);
-            } else if (y == dirtHeight+1)
+            } else if (y == dirtHeight + 1)
             {
-                chunk.SetBlock(x-chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new GrassBlock(), false);
-            } else if (y == dirtHeight + 2 && GetNoise(x,y,z, forestFrequency, 2) == 1 && GetNoise(x,0,z, treeFrequency, 100) < treeDensity)
+                if(IsInRange(biomeNumber, forestDensity, desertDensity))
+                {
+                    chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new SandBlock(), false);
+                } else if (IsInRange(biomeNumber, desertDensity, lakeDensity))
+                {
+                    chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new WaterBlock(), false);
+                } else {
+                    chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new GrassBlock(), false);
+                }
+            } else if (y == dirtHeight + 2 && IsInRange(biomeNumber, grasslandDensity, forestDensity) && GetNoise(x,0,z, treeFrequency, 100) < treeDensity)
             {
                 chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new TreeBlock(), true);
             } else
@@ -103,6 +129,23 @@ public class TerrainGen
 
         return chunk;
     }
+
+    /// <summary>
+    /// Returns whether the input number is between the min (exclusive) and the max (inclusive)
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <returns></returns>
+    private bool IsInRange(int input, int min, int max)
+    {
+        if (input > min && input <= max)
+        {
+            return true;
+        }
+        return false;
+    }
+
     /// <summary>
     /// Simpler way to generate an int using 3D noise
     /// </summary>
