@@ -26,7 +26,7 @@ public class PlayerInteraction : MonoBehaviour
                     if (player.destroy)
                         TerrainControl.SetBlock(hit, new AirBlock());
                     else
-                        TerrainControl.SetBlock(hit, player.getBlockToPlace(), true);
+                        TerrainControl.SetBlock(hit, player.GetBlockToPlace(), true);
                 }
             }
 

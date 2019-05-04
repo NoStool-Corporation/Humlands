@@ -27,14 +27,14 @@ public class WorkTableBlock : Block
     {
         for (int i = 0; i < tasks[currentTask].product.Length; i++)
         {
-            entity.inventory.Add(tasks[currentTask].product[i]);
+            inventory.Add(tasks[currentTask].product[i]);
         }
 
         for (int i = 0; i < tasks[currentTask].requiredResources.Length; i++)
         {
             inventory.Remove(tasks[currentTask].requiredResources[i]);
         }
-        Debug.Log("success!");
+        Debug.Log("Completed the crafting Task!");
     }
 
     /// <summary>

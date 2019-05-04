@@ -14,18 +14,25 @@ public class Player : MonoBehaviour
         toPlace = new StoneBlock().GetType();
     }
 
+    /// <summary>
+    /// Cycles through the blocks the player can place
+    /// </summary>
     public void CycleBlock()
     {
         if (toPlace == typeof(StoneBlock))
         {
-            toPlace = typeof(CarpenterBlock);
+            toPlace = typeof(CarpenterBlueprintBlock);
         } else
         {
             toPlace = typeof(StoneBlock);
         }   
     }
 
-    public Block getBlockToPlace()
+    /// <summary>
+    /// Returns a new instance of the block to place currently selected by the player
+    /// </summary>
+    /// <returns></returns>
+    public Block GetBlockToPlace()
     {
         Block instance = (Block)Activator.CreateInstance(toPlace);
         return instance;

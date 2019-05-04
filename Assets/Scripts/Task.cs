@@ -38,4 +38,20 @@ public struct Task
             workNeeded = workToComplete;
         }
     }
+
+    /// <summary>
+    /// Reduces the work left to complete the task and calls the OnTaskComplete of the blueprintBlock if the task is done 
+    /// </summary>
+    /// <param name="bluePrint">the blueprintBlock this task belongs to</param>
+    /// <param name="world"></param>
+    /// <param name="pos">the world position of the blueprint</param>
+    public void Craft(BlueprintBlock bluePrint, World world, WorldPos pos)
+    {
+        workNeeded--;
+        if (workNeeded <= 0)
+        {
+            bluePrint.OnTaskComplete(world, pos);
+            workNeeded = workToComplete;
+        }
+    }
 }

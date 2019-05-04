@@ -21,6 +21,7 @@ public class Entity : MonoBehaviour
     private World world;
 	public bool isBreakingBlock;
     public bool isCraftingItem;
+    public bool isBuildingBlock;
 
     public Movement movement = new Movement();
 
@@ -28,6 +29,7 @@ public class Entity : MonoBehaviour
     {
         isBreakingBlock = false;
         isCraftingItem = false;
+        isBuildingBlock = false;
         inventory = new Inventory(1000);
     }
 
@@ -55,15 +57,17 @@ public class Entity : MonoBehaviour
     public void DoWork()
 	{
         Block frontBlock = world.GetBlock(new WorldPos(transform.position + transform.forward.normalized));
-        //print(frontBlock);
-        //print(frontBlock as WorkTableBlock);
-    	if (isBreakingBlock == false && frontBlock != null)
+    	if (isBreakingBlock == true && frontBlock != null)
 		{
             frontBlock.WorkOnToBreak();
 		}
-	    if (isCraftingItem == false && frontBlock as WorkTableBlock != null)
+	    if (isCraftingItem == true && frontBlock as WorkTableBlock != null)
         {
             (frontBlock as WorkTableBlock).Craft(this);
+        }
+        if (isBuildingBlock == true && frontBlock as BlueprintBlock != null)
+        {
+            (frontBlock as BlueprintBlock).WorkOnToBuild(world, WorldPos.ToWorldPos(transform.position + transform.forward.normalized));
         }
     }
 	
