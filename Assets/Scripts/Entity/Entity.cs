@@ -39,15 +39,18 @@ public class Entity : MonoBehaviour
         world = FindObjectOfType<World>();
 
         WorldPos wp = FindNextBlockWithId(typeof(TreeBlock));
+        Debug.Log("" + wp.x + wp.y + wp.z);
         if (wp != null)
             movement.Start(transform.position, 2, wp.ToVector3());
     }
 	
-	void Update()
+	void FixedUpdate()
 	{
         DoWork();
         if(movement.moving && !movement.paused)
+        {
             SetPosition(movement.GetPosition());
+        }
     }
     
 
@@ -130,10 +133,7 @@ public class Entity : MonoBehaviour
         List<WorldPos> distances = new List<WorldPos>(LoadChunks.GetRenderDistanceChunks(10));
 
         //Get current Chunk Position of the Entity
-        WorldPos currentChunkPos = new WorldPos();
-        currentChunkPos.x = Mathf.FloorToInt(transform.position.x / Chunk.chunkSize) * Chunk.chunkSize;
-        currentChunkPos.y = Mathf.FloorToInt(transform.position.y / Chunk.chunkSize) * Chunk.chunkSize;
-        currentChunkPos.z = Mathf.FloorToInt(transform.position.z / Chunk.chunkSize) * Chunk.chunkSize;
+        WorldPos currentChunkPos = world.GetChunkPos(new WorldPos(transform.position));
 
         Debug.Log(currentChunkPos.x.ToString() + " | " + currentChunkPos.y.ToString() + " | " + currentChunkPos.z.ToString());
 
@@ -145,32 +145,36 @@ public class Entity : MonoBehaviour
 
         for (int i = 0; i < distances.Count; i++)
         {
-            //merge currentChunkPos and the chunk pos relative to the Entity
-            chunkPos = distances[i];
-            chunkPos.x = chunkPos.x * Chunk.chunkSize + currentChunkPos.x;
-            chunkPos.y = 0;
-            chunkPos.z = chunkPos.z * Chunk.chunkSize + currentChunkPos.z;
+            for (int y = 0; y < 3; y++)
+            {
+                //merge currentChunkPos and the chunk pos relative to the Entity
+                chunkPos = distances[i];
+                chunkPos.x = chunkPos.x * Chunk.chunkSize + currentChunkPos.x;
+                chunkPos.y = y * Chunk.chunkSize;
+                chunkPos.z = chunkPos.z * Chunk.chunkSize + currentChunkPos.z;
 
-            tmpCh = world.BuildChunk(chunkPos);
-            if (tmpCh == null)
-                continue;
+                tmpCh = world.BuildChunk(chunkPos);
+                if (tmpCh == null)
+                    continue;
 
-            stayLoadedBefore = tmpCh.stayLoaded;
-            tmpCh.stayLoaded = true;
-            blockPos = tmpCh.SearchBlock(id);
+                stayLoadedBefore = tmpCh.stayLoaded;
+                tmpCh.stayLoaded = true;
+                blockPos = tmpCh.SearchBlock(id);
 
 
-            if (blockPos == null) {
+                if (blockPos == null)
+                {
+                    tmpCh.stayLoaded = stayLoadedBefore;
+                    continue;
+                }
+
+                blockPos.x += tmpCh.pos.x;
+                blockPos.y += tmpCh.pos.y;
+                blockPos.z += tmpCh.pos.z;
                 tmpCh.stayLoaded = stayLoadedBefore;
-                continue;
+
+                return blockPos;
             }
-        
-            blockPos.x += tmpCh.pos.x;
-            blockPos.y += tmpCh.pos.y;
-            blockPos.z += tmpCh.pos.z;
-            tmpCh.stayLoaded = stayLoadedBefore;
-            
-            return blockPos;
         }
 
         return null;
