@@ -23,15 +23,13 @@ public class World : MonoBehaviour
         chunkPrefab = Resources.Load<GameObject>("Prefabs/Chunk");
         entityPrefab = Resources.Load<GameObject>(Entity.PREFAB_PATH);
         terrainGen = new TerrainGen(seed);
-
         LoadEntities();
 
-        GameObject g = Instantiate(entityPrefab, new Vector3(6390.26f, 10f, 64052.61f), new Quaternion(0, 0, 0, 0));
+        /*GameObject g = Instantiate(entityPrefab, new Vector3(6390.26f, 10f, 64052.61f), new Quaternion(0, 0, 0, 0));
         Entity e = g.GetComponent<Entity>();
         entities.Add(e);
         WorldPos pp = new WorldPos(30, 20, -5);
-        entities[0].GiveRandomName();
-        Serialization.SaveEntities(entities, worldName);
+        entities[0].GiveRandomName();*/
     }
 
     // Saves world when player quits
@@ -180,18 +178,16 @@ public class World : MonoBehaviour
     /// <param name="y"></param>
     /// <param name="z"></param>
     /// <returns> Returns the block at the specified position or AirBlock if no block exists </returns>
-    public Block GetBlock(int x, int y, int z, bool b = false)
+    public Block GetBlock(int x, int y, int z)
     {
         Chunk containerChunk = GetChunk(x,y,z);
-        if (b)
-            Debug.Log(containerChunk == null);
+
         if (containerChunk != null)
         {
             Block block = containerChunk.GetBlock(
                 x - containerChunk.pos.x,
                 y - containerChunk.pos.y,
                 z - containerChunk.pos.z);
-
             return block;
         }
         else
@@ -205,12 +201,12 @@ public class World : MonoBehaviour
     /// </summary>
     /// <param name="worldpos"></param>
     /// <returns> Returns the block at the specified position or AirBlock if no block exists </returns>
-    public Block GetBlock(WorldPos worldpos, bool b = false)
+    public Block GetBlock(WorldPos worldpos)
     {
         if (worldpos == null)
             return null;
 
-        return GetBlock(worldpos.x, worldpos.y, worldpos.z, b);
+        return GetBlock(worldpos.x, worldpos.y, worldpos.z);
     }
     /// <summary>
     /// Places a block at the specified position.
