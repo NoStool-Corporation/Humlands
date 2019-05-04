@@ -26,6 +26,11 @@ public class WorldPos
         this.z = (int)pos.z;
     }
 
+    public static WorldPos ToWorldPos(Vector3 vector3)
+    {
+        return new WorldPos(Mathf.FloorToInt(vector3.x), Mathf.FloorToInt(vector3.y), Mathf.FloorToInt(vector3.z));
+    }
+
     public Vector3 ToVector3()
     {
         return new Vector3(x,y,z);
