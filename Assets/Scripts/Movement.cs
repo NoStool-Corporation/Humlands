@@ -63,20 +63,20 @@ public class Movement
             reached[2] = true;
             pos.z = targetPos.z;
             ReachedOne(pos);
-
-            bool all = true;
-            for (int i = 0; i < 2; i++) {
-                if (!reached[i])
-                {
-                    all = false;
-                    continue;
-                }
-            }
-
-            if (all)
-                moving = false;
         }
-            
+
+        bool all = true;
+        for (int i = 0; i < 3; i++)
+        {
+            if (!reached[i])
+            {
+                all = false;
+                continue;
+            }
+        }
+
+        if (all)
+            moving = false;
 
         return pos;
     }
