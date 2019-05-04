@@ -10,7 +10,7 @@ public class LoadChunks : MonoBehaviour
 
     private WorldPos[] chunkPositions = null;
     
-    int renderHeight = 2;
+    int renderHeight = 3;
 
     public uint chunksPerTick;
     public int renderDistance = 8;
