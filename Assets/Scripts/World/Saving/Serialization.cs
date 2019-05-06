@@ -56,15 +56,13 @@ public static class Serialization
 
         Save(saveFile, save);
     }
-    // Saves a List with all Camera data.
+    // Saves Camera position and rotation.
     public static void SaveCam(string worldName)
     {
         if (!Directory.Exists(saveFolderName + "/" + worldName))
             return;
 
-        List<SaveCamera> camData = new List<SaveCamera>();
-
-        camData.Add(new SaveCamera(Camera.main));
+        SaveCamera camData = new SaveCamera(Camera.main);
 
         Save(saveFolderName + "/" + worldName + "/" + cameraFileName, camData);
     }
@@ -142,7 +140,8 @@ public static class Serialization
         return true;
     }
 
-    public static List<SaveCamera> LoadCamera(string worldName)
+    // Deserializes Camera position and rotation.
+    public static SaveCamera LoadCamera(string worldName)
     {
         if (!File.Exists(saveFolderName + "/" + worldName + "/" + cameraFileName))
             return null;
@@ -150,7 +149,7 @@ public static class Serialization
         IFormatter formatter = new BinaryFormatter();
         FileStream stream = new FileStream(saveFolderName + "/" + worldName + "/" + cameraFileName, FileMode.Open);
 
-        List<SaveCamera> camData = (List<SaveCamera>) formatter.Deserialize(stream);
+        SaveCamera camData = (SaveCamera) formatter.Deserialize(stream);
 
         stream.Close();
 

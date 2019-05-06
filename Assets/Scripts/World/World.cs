@@ -15,7 +15,7 @@ public class World : MonoBehaviour
     GameObject entityPrefab;
     GameObject cameraPrefab;
     public string worldName = "world";
-    private int seed = 1;
+    public int seed = 1;
     TerrainGen terrainGen;
     public Dictionary<int, WorldPos> chunkPlaces = new Dictionary<int, WorldPos>();
 
@@ -118,15 +118,16 @@ public class World : MonoBehaviour
 
     }
 
+    // Sets the Camera to the saved position with the saved rotation
     void LoadCamera()
     {
-        List<SaveCamera> camData = Serialization.LoadCamera(worldName);
+        SaveCamera camData = Serialization.LoadCamera(worldName);
 
         Vector3 pos;
         Quaternion quat;
 
-        pos = new Vector3(camData[0].position[0], camData[0].position[1], camData[0].position[2]);
-        quat = new Quaternion(camData[0].rotation[0], camData[0].rotation[1], camData[0].rotation[2], camData[0].rotation[3]);
+        pos = new Vector3(camData.position[0], camData.position[1], camData.position[2]);
+        quat = new Quaternion(camData.rotation[0], camData.rotation[1], camData.rotation[2], camData.rotation[3]);
 
         Camera.main.transform.position = pos;
         Camera.main.transform.rotation = quat;
