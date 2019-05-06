@@ -13,6 +13,7 @@ public class World : MonoBehaviour
     public List<Entity> entities = new List<Entity>();
     GameObject chunkPrefab;
     GameObject entityPrefab;
+    GameObject cameraPrefab;
     public string worldName = "world";
     private int seed = 1;
     TerrainGen terrainGen;
@@ -24,6 +25,7 @@ public class World : MonoBehaviour
         entityPrefab = Resources.Load<GameObject>(Entity.PREFAB_PATH);
         terrainGen = new TerrainGen(seed);
         LoadEntities();
+//        LoadCamera();
 
         /*GameObject g = Instantiate(entityPrefab, new Vector3(6390.26f, 10f, 64052.61f), new Quaternion(0, 0, 0, 0));
         Entity e = g.GetComponent<Entity>();
@@ -50,6 +52,7 @@ public class World : MonoBehaviour
             UnloadChunk(chunk.Value.x, chunk.Value.y, chunk.Value.z);
         }
         Serialization.SaveEntities(entities, worldName);
+        Serialization.SaveCam(worldName);
     }
 
     /// <summary>  
@@ -114,6 +117,25 @@ public class World : MonoBehaviour
         }
 
     }
+/*
+    void LoadCamera()
+    {
+        List<SaveCamera> camData = Serialization.LoadCamera(worldName);
+
+        Camera cam;
+        Vector3 pos;
+        Quaternion quat;
+
+        foreach (SaveCamera camera in camData)
+        {
+            pos = new Vector3(camera.position[0], camera.position[1], camera.position[2]);
+            quat = new Quaternion(camera.rotation[0], camera.rotation[1], camera.rotation[2], camera.rotation[3]);
+
+            cam = Instantiate(original: Camera.main, position: pos, rotation: quat);
+            DestroyImmediate(Camera.main);
+        }
+    }
+*/
 
     /// <summary>  
     /// Creates a chunk with the smallest corner at the position

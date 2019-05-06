@@ -13,6 +13,9 @@ public static class Serialization
 {
     public static string saveFolderName = "Saves";
     public static string entityFileName = "Entities.bin";
+    public static string cameraFileName = "Cam.luk";
+    private static Camera camera;
+
     /// <summary>
     /// Returns the save location based on the world name
     /// </summary>
@@ -53,7 +56,18 @@ public static class Serialization
 
         Save(saveFile, save);
     }
+    // Saves a List with all Camera data.
+    public static void SaveCam(string worldName)
+    {
+        if (!Directory.Exists(saveFolderName + "/" + worldName))
+            return;
 
+        List<SaveCamera> camData = new List<SaveCamera>();
+
+        camData.Add(new SaveCamera(Camera.main));
+
+        Save(saveFolderName + "/" + worldName + "/" + cameraFileName, camData);
+    }
     /// <summary>
     /// Saves a List of Entities
     /// </summary>
@@ -126,5 +140,20 @@ public static class Serialization
         }
         stream.Close();
         return true;
+    }
+
+    public static List<SaveCamera> LoadCamera(string worldName)
+    {
+        if (!File.Exists(saveFolderName + "/" + worldName + "/" + cameraFileName))
+            return null;
+
+        IFormatter formatter = new BinaryFormatter();
+        FileStream stream = new FileStream(saveFolderName + "/" + worldName + "/" + cameraFileName, FileMode.Open);
+
+        List<SaveCamera> camData = (List<SaveCamera>) formatter.Deserialize(stream);
+
+        stream.Close();
+
+        return camData;
     }
 }
