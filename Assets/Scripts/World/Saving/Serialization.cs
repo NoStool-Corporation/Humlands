@@ -7,13 +7,14 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 
 /// <summary>
-/// A utility class to save and load chunks
+/// A utility class to save and load chunks, entities, the camera and the seed
 /// </summary>
 public static class Serialization
 {
     public static string saveFolderName = "Saves";
     public static string entityFileName = "Entities.bin";
     public static string cameraFileName = "Cam.luk";
+    public static string   seedFileName = "seseseeeed.prt";
     private static Camera camera;
 
     /// <summary>
@@ -65,6 +66,16 @@ public static class Serialization
         SaveCamera camData = new SaveCamera(Camera.main);
 
         Save(saveFolderName + "/" + worldName + "/" + cameraFileName, camData);
+    }
+    // Saves the seed.
+    public static void SaveSeed(string worldName, World world)
+    {
+        if (!Directory.Exists(saveFolderName + "/" + worldName))
+            return;
+
+        SaveSeed seedData = new SaveSeed(world);
+
+        Save(saveFolderName + "/" + worldName + "/" + cameraFileName, seedData);
     }
     /// <summary>
     /// Saves a List of Entities
@@ -154,5 +165,20 @@ public static class Serialization
         stream.Close();
 
         return camData;
+    }
+    // Deserializes seed
+    public static SaveSeed LoadSeed(string worldName)
+    {
+        if (!File.Exists(saveFolderName + "/" + worldName + "/" + seedFileName))
+            return null;
+
+        IFormatter formatter = new BinaryFormatter();
+        FileStream stream = new FileStream(saveFolderName + "/" + worldName + "/" + seedFileName, FileMode.Open);
+
+        SaveSeed seedData = (SaveSeed)formatter.Deserialize(stream);
+
+        stream.Close();
+
+        return seedData;
     }
 }

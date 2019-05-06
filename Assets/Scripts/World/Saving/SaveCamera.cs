@@ -3,7 +3,8 @@ using UnityEngine;
 using System;
 
 
-// Datascructure to save all the information about the camera  which are needed to recreate it afer a reload.
+// Datascructure to save all the information about the camera  which are needed to recreate it afer a reload
+// (position and rotation).
 
 [Serializable]
 public class SaveCamera

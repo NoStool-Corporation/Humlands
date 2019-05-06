@@ -23,6 +23,7 @@ public class World : MonoBehaviour
     {
         chunkPrefab = Resources.Load<GameObject>("Prefabs/Chunk");
         entityPrefab = Resources.Load<GameObject>(Entity.PREFAB_PATH);
+        GiveSeed();
         terrainGen = new TerrainGen(seed);
         LoadEntities();
         LoadCamera();
@@ -53,6 +54,7 @@ public class World : MonoBehaviour
         }
         Serialization.SaveEntities(entities, worldName);
         Serialization.SaveCam(worldName);
+        Serialization.SaveSeed(worldName, this);
     }
 
     /// <summary>  
@@ -131,6 +133,19 @@ public class World : MonoBehaviour
 
         Camera.main.transform.position = pos;
         Camera.main.transform.rotation = quat;
+    }
+
+    // Sets the seed to the saved int and creates a new one if no seed is saved.
+    private void GiveSeed()
+    {
+        // Should give a random seed if no seed is saved. (Also change that the seed is always 1 in line 18)
+
+        SaveSeed seedData = Serialization.LoadSeed(worldName);
+
+        if (seedData != null)
+        {
+            this.seed = seedData.seed;
+        }
     }
 
     /// <summary>  
@@ -328,7 +343,8 @@ public class World : MonoBehaviour
         }
     }
 
-    public static float CalculateDistance(Vector3 a, Vector3 b) {
+    public static float CalculateDistance(Vector3 a, Vector3 b)
+    {
         a -= b;
         return Mathf.Sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
     }
