@@ -25,7 +25,7 @@ public class World : MonoBehaviour
         entityPrefab = Resources.Load<GameObject>(Entity.PREFAB_PATH);
         terrainGen = new TerrainGen(seed);
         LoadEntities();
-//        LoadCamera();
+        LoadCamera();
 
         /*GameObject g = Instantiate(entityPrefab, new Vector3(6390.26f, 10f, 64052.61f), new Quaternion(0, 0, 0, 0));
         Entity e = g.GetComponent<Entity>();
@@ -117,25 +117,20 @@ public class World : MonoBehaviour
         }
 
     }
-/*
+
     void LoadCamera()
     {
         List<SaveCamera> camData = Serialization.LoadCamera(worldName);
 
-        Camera cam;
         Vector3 pos;
         Quaternion quat;
 
-        foreach (SaveCamera camera in camData)
-        {
-            pos = new Vector3(camera.position[0], camera.position[1], camera.position[2]);
-            quat = new Quaternion(camera.rotation[0], camera.rotation[1], camera.rotation[2], camera.rotation[3]);
+        pos = new Vector3(camData[0].position[0], camData[0].position[1], camData[0].position[2]);
+        quat = new Quaternion(camData[0].rotation[0], camData[0].rotation[1], camData[0].rotation[2], camData[0].rotation[3]);
 
-            cam = Instantiate(original: Camera.main, position: pos, rotation: quat);
-            DestroyImmediate(Camera.main);
-        }
+        Camera.main.transform.position = pos;
+        Camera.main.transform.rotation = quat;
     }
-*/
 
     /// <summary>  
     /// Creates a chunk with the smallest corner at the position
