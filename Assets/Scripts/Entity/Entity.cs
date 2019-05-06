@@ -10,7 +10,7 @@ public class Entity : MonoBehaviour
     public enum Jobs { Miner, Crafter, Baker }
 
 
-    private string NAME_FILE_PATH = "Assets/Resources/Strings/EntityNames.txt";
+    public static string NAME_FILE_PATH = "Assets/Resources/Strings/EntityNames.txt";
     public static string PREFAB_PATH = "Prefabs/Entity";
     public int scanMapSize = 10;
 
@@ -38,7 +38,7 @@ public class Entity : MonoBehaviour
     {
         world = FindObjectOfType<World>();
 
-        WorldPos wp = FindNextBlockWithId(typeof(TreeBlock));
+        WorldPos wp = FindNextBlockOfType(typeof(TreeBlock));
         Debug.Log("" + wp.x + wp.y + wp.z);
         if (wp != null)
             movement.Start(transform.position, 2, wp.ToVector3());
@@ -125,11 +125,10 @@ public class Entity : MonoBehaviour
 
     /// <summary>
     /// Tries to find the next Block having the id which is passed by the first argument.
-    /// !Important at this stage of the method is that it only searches inside the chunks on y = 0!
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public WorldPos FindNextBlockWithId(Type id) {
+    public WorldPos FindNextBlockOfType(Type t) {
         List<WorldPos> distances = new List<WorldPos>(LoadChunks.GetRenderDistanceChunks(10));
 
         //Get current Chunk Position of the Entity
@@ -140,7 +139,7 @@ public class Entity : MonoBehaviour
         //Tree Block-ID = 5
         WorldPos chunkPos;
         Chunk tmpCh;
-        WorldPos blockPos = new WorldPos();
+        WorldPos[] blocksPos;
         bool stayLoadedBefore;
 
         for (int i = 0; i < distances.Count; i++)
@@ -159,27 +158,27 @@ public class Entity : MonoBehaviour
 
                 stayLoadedBefore = tmpCh.stayLoaded;
                 tmpCh.stayLoaded = true;
-                blockPos = tmpCh.SearchBlock(id);
-
-
-                if (blockPos == null)
-                {
-                    tmpCh.stayLoaded = stayLoadedBefore;
-                    continue;
-                }
-
-                blockPos.x += tmpCh.pos.x;
-                blockPos.y += tmpCh.pos.y;
-                blockPos.z += tmpCh.pos.z;
+                blocksPos = tmpCh.GetBlocksOfType(t);
                 tmpCh.stayLoaded = stayLoadedBefore;
 
-                return blockPos;
+
+                if (blocksPos == null)
+                    continue;
+
+                int smallest = 0;
+                float smallestDist = World.CalculateDistance(transform.position, blocksPos[0].ToVector3());
+                for (int j = 1; j < blocksPos.Length; j++) {
+                    if (World.CalculateDistance(transform.position, blocksPos[j].ToVector3()) < smallestDist)
+                        smallest = j;
+                }
+
+                
+
+                return blocksPos[smallest];
             }
         }
 
         return null;
     }
-
-    
     
 }
