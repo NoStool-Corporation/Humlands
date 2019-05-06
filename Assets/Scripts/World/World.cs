@@ -309,4 +309,9 @@ public class World : MonoBehaviour
                 chunk.render = true;
         }
     }
+
+    public float CalculateDistance(Vector3 a, Vector3 b) {
+        a -= b;
+        return Mathf.Sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+    }
 }
