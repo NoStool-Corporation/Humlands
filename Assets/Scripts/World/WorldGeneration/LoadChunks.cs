@@ -163,7 +163,7 @@ public class LoadChunks : MonoBehaviour
     public static WorldPos[] GetRenderDistanceChunks(int renderDistance) {
         if (renderDistance < 1)
         {
-            Debug.Log(renderDistance);
+            Debug.Log("Render Distance 0 or smaller!!! " + renderDistance);
             return null;
         }
 
