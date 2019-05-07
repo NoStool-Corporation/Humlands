@@ -39,7 +39,6 @@ public class Entity : MonoBehaviour
         world = FindObjectOfType<World>();
 
         WorldPos wp = FindNextBlockOfType(typeof(TreeBlock));
-        Debug.Log("" + wp.x + wp.y + wp.z);
         if (wp != null)
             movement.Start(transform.position, 2, wp.ToVector3());
     }
@@ -133,8 +132,6 @@ public class Entity : MonoBehaviour
 
         //Get current Chunk Position of the Entity
         WorldPos currentChunkPos = world.GetChunkPos(new WorldPos(transform.position));
-
-        Debug.Log(currentChunkPos.x.ToString() + " | " + currentChunkPos.y.ToString() + " | " + currentChunkPos.z.ToString());
 
         //Tree Block-ID = 5
         WorldPos chunkPos;
