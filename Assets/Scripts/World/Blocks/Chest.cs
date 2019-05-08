@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Chest : MonoBehaviour
+[Serializable]
+public class Chest : Block
 {
     public Inventory inventory;
 
 
     public Chest() : base()
     {
-        inventory = new Inventory(3000);
+        inventory = new Inventory(5000);
     }
 }
