@@ -124,7 +124,9 @@ public class World : MonoBehaviour
     void LoadCamera()
     {
         SaveCamera camData = Serialization.LoadCamera(worldName);
-
+		if (camData == null) 
+			return;
+		
         Vector3 pos;
         Quaternion quat;
 

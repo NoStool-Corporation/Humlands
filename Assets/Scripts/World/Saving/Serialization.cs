@@ -75,7 +75,7 @@ public static class Serialization
 
         SaveSeed seedData = new SaveSeed(world);
 
-        Save(saveFolderName + "/" + worldName + "/" + cameraFileName, seedData);
+        Save(saveFolderName + "/" + worldName + "/" + seedFileName, seedData);
     }
     /// <summary>
     /// Saves a List of Entities
@@ -160,7 +160,7 @@ public static class Serialization
         IFormatter formatter = new BinaryFormatter();
         FileStream stream = new FileStream(saveFolderName + "/" + worldName + "/" + cameraFileName, FileMode.Open);
 
-        SaveCamera camData = (SaveCamera) formatter.Deserialize(stream);
+        SaveCamera camData = (SaveCamera)formatter.Deserialize(stream);
 
         stream.Close();
 
