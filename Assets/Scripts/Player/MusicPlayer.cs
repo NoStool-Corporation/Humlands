@@ -57,7 +57,7 @@ public class MusicPlayer : MonoBehaviour
     void Update()
     {
         Chunk tmp = world.GetChunk((int)transform.position.x, 0, (int)transform.position.z);
-        if (tmp != null && biome != tmp.biome)
+        if (tmp != null && biome != tmp.biome && SceneManager.GetActiveScene=Main)
         {
             biome = tmp.biome;
 
@@ -73,6 +73,7 @@ public class MusicPlayer : MonoBehaviour
             audioSource.Stop();
             nextPlay = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         }
+		
 
         if (clipAmount >= 0 && nextPlay <= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
         {
@@ -87,5 +88,6 @@ public class MusicPlayer : MonoBehaviour
             audioSource.Stop();
             nextPlay = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         }
+		
     }
 }
