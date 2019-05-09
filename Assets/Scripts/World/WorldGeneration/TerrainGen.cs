@@ -17,8 +17,8 @@ public class TerrainGen
     float dirtBaseHeight = 4;
     float dirtNoise = 0.02f;
     float dirtNoiseHeight = 1;
-    float treeFrequency = 0.2f;
-    float treeDensity = 10f;
+    float treeFrequency = 0.4f;
+    float treeDensity = 3f;
     int seed;
 
     float biomeSize = 0.005f;
