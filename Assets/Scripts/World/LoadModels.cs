@@ -9,4 +9,5 @@ public static class LoadModels
     {
         TreeModel = Resources.Load<GameObject>("Graphics/Models/Treemodel/tree5");
     }
+        //TreeModel = Resources.Load<Gameobjekt>
 }
