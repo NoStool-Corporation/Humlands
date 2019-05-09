@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 /// <summary>
 /// Plays the different music tracks based on the state of the game
 /// </summary>
@@ -39,7 +40,8 @@ public class MusicPlayer : MonoBehaviour
     /// </summary>
     void Start()
     {
-        world = GameObject.Find("World").GetComponent<World>();
+		if (GameObject.Find("World") != null)
+			world = GameObject.Find("World").GetComponent<World>();
         audioSource = this.GetComponent<AudioSource>();
         audioSource.volume = 0.01f;
         clips = new AudioClip[clipAmount];
@@ -49,31 +51,34 @@ public class MusicPlayer : MonoBehaviour
         }
 
         nextPlay = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        currentClip = 0;
     }
     /// <summary>
     /// Checks if there are music tracks and if it's time to play the next.
     /// </summary>
     void Update()
     {
-        Chunk tmp = world.GetChunk((int)transform.position.x, 0, (int)transform.position.z);
-        if (tmp != null && biome != tmp.biome && SceneManager.GetActiveScene=Main)
+		Chunk tmp = null;
+		if (SceneManager.GetActiveScene().name=="Main")
+			tmp = world.GetChunk((int)transform.position.x, 0, (int)transform.position.z);
+		currentClip = 2;
+		if (tmp != null && biome != tmp.biome && SceneManager.GetActiveScene().name=="Main")
         {
             biome = tmp.biome;
 
             if(biome == "forest")
             {
-                currentClip = 1;
+                currentClip = 0;
             }
             else if(biome == "grassland")
             {        
-                currentClip = 0;
+                currentClip = 1;
             }
-
-            audioSource.Stop();
+			audioSource.Stop();
             nextPlay = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        }
-		
+        }    
+		else if (!audioSource.isPlaying){
+			currentClip = 2;
+		}
 
         if (clipAmount >= 0 && nextPlay <= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
         {
