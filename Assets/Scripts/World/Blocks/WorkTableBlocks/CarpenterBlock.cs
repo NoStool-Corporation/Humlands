@@ -8,7 +8,7 @@ public class CarpenterBlock : WorkTableBlock
 {
     public CarpenterBlock() : base()
     {
-
+        
     }
     public override void SetupAfterSerialization()
     {
@@ -22,5 +22,21 @@ public class CarpenterBlock : WorkTableBlock
         //inventory = new Inventory(100);
         inventory.Add(new ItemStack(new PlankItem(),2));
         new InventoryUIManager(this);
+    }
+
+    public override bool IsSolid(Direction direction)
+    {
+        return false;
+    }
+    public override Vector2 TexturePosition(Direction direction)
+    {
+        return Tilesheet.DIRT;
+    }
+    public override MeshData Blockdata(Chunk chunk, int x, int y, int z, MeshData meshData)
+    {
+        BlockDataCollisionOnly(chunk, x, y, z, meshData);
+        GameObject.Destroy(customModel);
+        customModel = GameObject.Instantiate(LoadModels.CarpenterModel, new Vector3(chunk.pos.x + x, chunk.pos.y + y - 0.5f, chunk.pos.z + z), Quaternion.Euler(0, 180, 0));
+        return meshData;
     }
 }
