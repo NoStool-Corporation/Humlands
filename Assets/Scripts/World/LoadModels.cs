@@ -7,7 +7,7 @@ public static class LoadModels
    public static GameObject TreeModel;
     static LoadModels ()
     {
-        TreeModel = Resources.Load<GameObject>("Graphics/Models/Treemodel/tree5");
+        TreeModel = Resources.Load<GameObject>("Graphics/Models/Treemodel/treemodel2");
     }
         //TreeModel = Resources.Load<Gameobjekt>
 }

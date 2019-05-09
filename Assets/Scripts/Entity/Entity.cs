@@ -144,10 +144,20 @@ public class Entity : MonoBehaviour
             for (int y = 0; y < 3; y++)
             {
                 //merge currentChunkPos and the chunk pos relative to the Entity
+
+                chunkPos = currentChunkPos;
+
+                Debug.Log("" + chunkPos.x + " " + chunkPos.y + " " + chunkPos.z);
+
                 chunkPos = distances[i];
-                chunkPos.x = chunkPos.x * Chunk.chunkSize + currentChunkPos.x;
+                Debug.Log(Chunk.chunkSize);
+               
+
+                chunkPos.x = (chunkPos.x * Chunk.chunkSize) + currentChunkPos.x;
                 chunkPos.y = y * Chunk.chunkSize;
-                chunkPos.z = chunkPos.z * Chunk.chunkSize + currentChunkPos.z;
+                chunkPos.z = (chunkPos.z * Chunk.chunkSize) + currentChunkPos.z;
+
+                Debug.Log("" + chunkPos.x + " " + chunkPos.y + " " + chunkPos.z);
 
                 tmpCh = world.BuildChunk(chunkPos);
                 if (tmpCh == null)
