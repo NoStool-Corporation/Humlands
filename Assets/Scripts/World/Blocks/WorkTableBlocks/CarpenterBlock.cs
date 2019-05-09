@@ -6,7 +6,10 @@ using System;
 [Serializable]
 public class CarpenterBlock : WorkTableBlock
 {
+    public CarpenterBlock() : base()
+    {
 
+    }
     public override void SetupAfterSerialization()
     {
         base.SetupAfterSerialization();
@@ -16,5 +19,8 @@ public class CarpenterBlock : WorkTableBlock
         tasks = new Task[1];
         tasks[0] = task;
         currentTask = 0;
+        //inventory = new Inventory(100);
+        inventory.Add(new ItemStack(new PlankItem(),2));
+        new InventoryUIManager(this);
     }
 }

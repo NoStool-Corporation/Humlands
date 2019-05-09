@@ -37,7 +37,7 @@ public class Entity : MonoBehaviour
     void Start()
     {
         world = FindObjectOfType<World>();
-
+        new InventoryUIManager(inventory);
         WorldPos wp = FindNextBlockOfType(typeof(TreeBlock));
         if (wp != null)
             movement.Start(transform.position, 2, wp.ToVector3());

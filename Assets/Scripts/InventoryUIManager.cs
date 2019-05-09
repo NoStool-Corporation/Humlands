@@ -140,9 +140,9 @@ public class InventoryUIManager
         requirements.alignment = TextAnchor.MiddleLeft;
         products.alignment = TextAnchor.MiddleLeft;
 
-        workDone.rectTransform.anchoredPosition += new Vector2(45, 20);
-        requirements.rectTransform.anchoredPosition += new Vector2(45, 15);
-        products.rectTransform.anchoredPosition += new Vector2(45, 10);
+        workDone.rectTransform.anchoredPosition += new Vector2(45, 15);
+        requirements.rectTransform.anchoredPosition += new Vector2(45, 10);
+        products.rectTransform.anchoredPosition += new Vector2(45, 5);
     }
 
     /// <summary>

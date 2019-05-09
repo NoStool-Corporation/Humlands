@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     {
         if (toPlace == typeof(StoneBlock))
         {
-            toPlace = typeof(CarpenterBlueprintBlock);
+            toPlace = typeof(CarpenterBlock);
         } else
         {
             toPlace = typeof(StoneBlock);

@@ -19,7 +19,6 @@ public class Block
 
     public Block()
     {
-        SetupAfterSerialization();
         id = this.GetType();
     }
 

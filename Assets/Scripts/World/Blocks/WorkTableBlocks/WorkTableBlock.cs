@@ -10,7 +10,9 @@ public class WorkTableBlock : Block
 {
     [NonSerialized]
     public Task[] tasks;
+
     public int currentTask;
+
     public Inventory inventory;
     [NonSerialized]
     List<InventoryUIManager> uiManagers;
@@ -18,6 +20,7 @@ public class WorkTableBlock : Block
     public WorkTableBlock() : base() {
         inventory = new Inventory(100);
         uiManagers = new List<InventoryUIManager>();
+        SetupAfterSerialization();
     }
 
     /// <summary>
