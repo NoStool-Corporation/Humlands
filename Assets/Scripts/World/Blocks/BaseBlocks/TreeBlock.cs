@@ -15,7 +15,8 @@ public class TreeBlock : Block
     {
         BlockDataCollisionOnly(chunk, x, y, z, meshData);
         GameObject.Destroy(customModel);
-        customModel = GameObject.Instantiate(LoadModels.TreeModel,new Vector3(chunk.pos.x  + x,chunk.pos.y + y - 0.5f,chunk.pos.z + z),Quaternion.Euler(90,0,0));
+        customModel = GameObject.Instantiate(LoadModels.TreeModel,new Vector3(chunk.pos.x  + x,chunk.pos.y + y - 0.5f,chunk.pos.z + z),Quaternion.Euler(70, 20, 0));
+        customModel.transform.Rotate(new Vector3(20, -10, 0));
         return meshData;
     }
 

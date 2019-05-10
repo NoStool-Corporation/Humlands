@@ -28,11 +28,11 @@ public class World : MonoBehaviour
         LoadEntities();
         LoadCamera();
 
-        GameObject g = Instantiate(entityPrefab, Camera.main.transform.position, new Quaternion(0, 0, 0, 0));
+        /*GameObject g = Instantiate(entityPrefab, Camera.main.transform.position, new Quaternion(0, 0, 0, 0));
         Entity e = g.GetComponent<Entity>();
         entities.Add(e);
         WorldPos pp = new WorldPos(30, 20, -5);
-        entities[0].GiveRandomName();
+        entities[0].GiveRandomName();*/
     }
 
     // Saves world when player quits

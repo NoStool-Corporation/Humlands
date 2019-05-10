@@ -28,7 +28,7 @@ public class Entity : MonoBehaviour
     public Entity()
     {
         isBreakingBlock = false;
-        isCraftingItem = false;
+        isCraftingItem = true;
         isBuildingBlock = false;
         inventory = new Inventory(1000);
     }
@@ -39,8 +39,9 @@ public class Entity : MonoBehaviour
         world = FindObjectOfType<World>();
 
         WorldPos wp = FindNextBlockOfType(typeof(TreeBlock));
+
         if (wp != null)
-            movement.Start(transform.position, 2, wp.ToVector3());
+            movement.Start(transform.position, 10, wp.ToVector3() + new Vector3(0, -0.5f, -1));
     }
 	
 	void FixedUpdate()
@@ -129,12 +130,13 @@ public class Entity : MonoBehaviour
     /// <returns></returns>
     public WorldPos FindNextBlockOfType(Type t) {
         List<WorldPos> distances = new List<WorldPos>(LoadChunks.GetRenderDistanceChunks(10));
+        Debug.Log(distances[2].x);
 
         //Get current Chunk Position of the Entity
         WorldPos currentChunkPos = world.GetChunkPos(new WorldPos(transform.position));
 
         //Tree Block-ID = 5
-        WorldPos chunkPos;
+        WorldPos chunkPos = new WorldPos();
         Chunk tmpCh;
         WorldPos[] blocksPos;
         bool stayLoadedBefore;
@@ -143,19 +145,11 @@ public class Entity : MonoBehaviour
         {
             for (int y = 0; y < 3; y++)
             {
-                //merge currentChunkPos and the chunk pos relative to the Entity
-
-                chunkPos = currentChunkPos;
-
-               
-
-                chunkPos = distances[i];
                 //Debug.Log(Chunk.chunkSize);
-                Debug.Log("" + chunkPos.x + " " + chunkPos.y + " " + chunkPos.z);
 
-                chunkPos.x = (chunkPos.x * Chunk.chunkSize) + currentChunkPos.x;
+                chunkPos.x = (distances[i].x * Chunk.chunkSize) + currentChunkPos.x;
                 chunkPos.y = y * Chunk.chunkSize;
-                chunkPos.z = (chunkPos.z * Chunk.chunkSize) + currentChunkPos.z;
+                chunkPos.z = (distances[i].z * Chunk.chunkSize) + currentChunkPos.z;
 
                 //Debug.Log("" + chunkPos.x + " " + chunkPos.y + " " + chunkPos.z);
 

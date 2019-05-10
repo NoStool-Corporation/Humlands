@@ -43,7 +43,6 @@ public class MusicPlayer : MonoBehaviour
 		if (GameObject.Find("World") != null)
 			world = GameObject.Find("World").GetComponent<World>();
         audioSource = this.GetComponent<AudioSource>();
-        audioSource.volume = 0.01f;
         clips = new AudioClip[clipAmount];
         for (int i = 0; i < clipAmount; i++)
         {
