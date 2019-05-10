@@ -176,7 +176,7 @@ public class LoadChunks : MonoBehaviour
         for (int z = 1; z < renderDistance; z++)
         {
             for (int x = 0; x < z; x++)
-            {
+            { 
                 ret[i] = new WorldPos(x, 0, z - x);
                 i++;
                 ret[i] = new WorldPos(ret[i - 1].z, 0, ret[i - 1].x * -1);

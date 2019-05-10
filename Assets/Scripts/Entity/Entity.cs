@@ -37,7 +37,7 @@ public class Entity : MonoBehaviour
     void Start()
     {
         world = FindObjectOfType<World>();
-        new InventoryUIManager(inventory);
+
         WorldPos wp = FindNextBlockOfType(typeof(TreeBlock));
         if (wp != null)
             movement.Start(transform.position, 2, wp.ToVector3());
@@ -147,17 +147,17 @@ public class Entity : MonoBehaviour
 
                 chunkPos = currentChunkPos;
 
-                Debug.Log("" + chunkPos.x + " " + chunkPos.y + " " + chunkPos.z);
+               
 
                 chunkPos = distances[i];
-                Debug.Log(Chunk.chunkSize);
-               
+                //Debug.Log(Chunk.chunkSize);
+                Debug.Log("" + chunkPos.x + " " + chunkPos.y + " " + chunkPos.z);
 
                 chunkPos.x = (chunkPos.x * Chunk.chunkSize) + currentChunkPos.x;
                 chunkPos.y = y * Chunk.chunkSize;
                 chunkPos.z = (chunkPos.z * Chunk.chunkSize) + currentChunkPos.z;
 
-                Debug.Log("" + chunkPos.x + " " + chunkPos.y + " " + chunkPos.z);
+                //Debug.Log("" + chunkPos.x + " " + chunkPos.y + " " + chunkPos.z);
 
                 tmpCh = world.BuildChunk(chunkPos);
                 if (tmpCh == null)
