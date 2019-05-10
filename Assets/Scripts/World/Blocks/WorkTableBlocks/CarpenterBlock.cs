@@ -19,7 +19,6 @@ public class CarpenterBlock : WorkTableBlock
         tasks = new Task[1];
         tasks[0] = task;
         currentTask = 0;
-        //inventory = new Inventory(100);
         inventory.Add(new ItemStack(new PlankItem(),2));
         new InventoryUIManager(this);
     }
@@ -32,6 +31,7 @@ public class CarpenterBlock : WorkTableBlock
     {
         return Tilesheet.DIRT;
     }
+
     public override MeshData Blockdata(Chunk chunk, int x, int y, int z, MeshData meshData)
     {
         BlockDataCollisionOnly(chunk, x, y, z, meshData);

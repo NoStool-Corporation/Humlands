@@ -8,10 +8,12 @@ public class PlayerInteraction : MonoBehaviour
 {
 
     Player player;
+    World world;
 
     private void Start()
     {
         player = this.GetComponent<Player>();
+        world = FindObjectOfType<World>();
     }
 
     void Update()
@@ -38,6 +40,14 @@ public class PlayerInteraction : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Y))
             {
                 player.CycleBlock();
+            }
+
+            if (Input.GetKeyDown(KeyCode.U)){
+                GameObject g = Instantiate(world.entityPrefab, Camera.main.transform.position, new Quaternion(0, 0, 0, 0));
+                Entity e = g.GetComponent<Entity>();
+                //world.entities.Add(e);
+                WorldPos pp = new WorldPos(30, 20, -5);
+                //world.entities[0].GiveRandomName();
             }
         }
     }

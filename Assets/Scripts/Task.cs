@@ -7,7 +7,7 @@ public struct Task
     public ItemStack[] requiredResources { get; }
     public ItemStack[] product { get; }
     public int workToComplete;
-    public int workNeeded;
+    public float workNeeded;
 
 
     /// <summary>
@@ -31,7 +31,7 @@ public struct Task
     /// <param name="entity">entity that is crafting at the workTable</param>
     public void Craft(WorkTableBlock workTable, Entity entity)
     {
-        workNeeded--;
+        workNeeded -= 1 / Time.deltaTime * 0.05f;
         if(workNeeded <= 0)
         {
             workTable.OnTaskComplete(entity);

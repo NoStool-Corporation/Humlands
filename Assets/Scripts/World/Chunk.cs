@@ -265,7 +265,7 @@ public class Chunk : MonoBehaviour
         return hash;
     }
     
-    public WorldPos[] GetBlocksOfType(Type sid)
+    public WorldPos[] GetBlocksOfType(Type t)
     {
         List<WorldPos> cords = new List<WorldPos>();
         Block block;
@@ -277,7 +277,7 @@ public class Chunk : MonoBehaviour
                 for (int y = 0; y < chunkSize; y++)
                 {
                     block = GetBlock(x,y,z);
-                    if (block.id == sid) {
+                    if (block.GetType() ==  t) {
                         cords.Add(new WorldPos(pos.x + x, pos.y + y, pos.z + z));
                     }
                         

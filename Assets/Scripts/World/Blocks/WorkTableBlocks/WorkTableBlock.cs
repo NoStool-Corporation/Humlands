@@ -37,7 +37,6 @@ public class WorkTableBlock : Block
         {
             inventory.Remove(tasks[currentTask].requiredResources[i]);
         }
-        Debug.Log("Completed the crafting Task!");
     }
 
     /// <summary>
@@ -54,7 +53,7 @@ public class WorkTableBlock : Block
         {
             if(tasks[currentTask].requiredResources[i].Size > inventory.GetAmountOfItem(tasks[currentTask].requiredResources[i].Item))
             {
-                readyToCraft = false;
+                //readyToCraft = false;
             }
         }
 

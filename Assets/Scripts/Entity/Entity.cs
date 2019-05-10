@@ -23,50 +23,65 @@ public class Entity : MonoBehaviour
     public bool isCraftingItem;
     public bool isBuildingBlock;
 
+    bool foundWorktable = false;
+
     public Movement movement = new Movement();
 
     public Entity()
     {
-        isBreakingBlock = false;
-        isCraftingItem = true;
-        isBuildingBlock = false;
-        inventory = new Inventory(1000);
+        
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        isBreakingBlock = false;
+        isCraftingItem = true;
+        isBuildingBlock = false;
+        inventory = new Inventory(1000);
         world = FindObjectOfType<World>();
-
-        WorldPos wp = FindNextBlockOfType(typeof(TreeBlock));
-
-        if (wp != null)
-            movement.Start(transform.position, 10, wp.ToVector3() + new Vector3(0, -0.5f, -1));
+        //new InventoryUIManager(inventory);
     }
-	
-	void FixedUpdate()
-	{
-        DoWork();
-        if(movement.moving && !movement.paused)
+
+    private void Update()
+    {
+        if (!foundWorktable)
+        {
+            WorldPos wp = FindNextBlockOfType(typeof(CarpenterBlock));
+
+            if (wp == null)
+                return;
+
+            movement.Start(transform.position, 10, wp.ToVector3() + new Vector3(0, -0.5f, -1));
+            foundWorktable = true;
+        }
+       
+        if (movement.moving && !movement.paused)
         {
             SetPosition(movement.GetPosition());
         }
     }
-    
+
+    private void FixedUpdate()
+    {
+        DoWork();
+    }
+
 
     // Finds out what type of work the Entity is doing 
     // (breaking a block; crafting an item)
     // and calls the specific method created for that purpose.
     public void DoWork()
 	{
-        Block frontBlock = world.GetBlock(new WorldPos(transform.position + transform.forward.normalized));
+        Block frontBlock = world.GetBlock(new WorldPos(transform.position + new Vector3(0,0.5f,1)));
     	if (isBreakingBlock == true && frontBlock != null)
 		{
             frontBlock.WorkOnToBreak();
 		}
-	    if (isCraftingItem == true && frontBlock as WorkTableBlock != null)
+	    if (isCraftingItem == true && frontBlock is WorkTableBlock)
         {
-            (frontBlock as WorkTableBlock).Craft(this);
+            ((WorkTableBlock) frontBlock).Craft(this);
         }
         if (isBuildingBlock == true && frontBlock as BlueprintBlock != null)
         {
@@ -129,8 +144,7 @@ public class Entity : MonoBehaviour
     /// <param name="id"></param>
     /// <returns></returns>
     public WorldPos FindNextBlockOfType(Type t) {
-        List<WorldPos> distances = new List<WorldPos>(LoadChunks.GetRenderDistanceChunks(10));
-        Debug.Log(distances[2].x);
+        List<WorldPos> distances = new List<WorldPos>(LoadChunks.GetRenderDistanceChunks(5));
 
         //Get current Chunk Position of the Entity
         WorldPos currentChunkPos = world.GetChunkPos(new WorldPos(transform.position));
@@ -145,13 +159,10 @@ public class Entity : MonoBehaviour
         {
             for (int y = 0; y < 3; y++)
             {
-                //Debug.Log(Chunk.chunkSize);
 
                 chunkPos.x = (distances[i].x * Chunk.chunkSize) + currentChunkPos.x;
                 chunkPos.y = y * Chunk.chunkSize;
                 chunkPos.z = (distances[i].z * Chunk.chunkSize) + currentChunkPos.z;
-
-                //Debug.Log("" + chunkPos.x + " " + chunkPos.y + " " + chunkPos.z);
 
                 tmpCh = world.BuildChunk(chunkPos);
                 if (tmpCh == null)

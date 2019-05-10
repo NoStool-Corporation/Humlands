@@ -12,12 +12,17 @@ public class World : MonoBehaviour
     public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
     public List<Entity> entities = new List<Entity>();
     GameObject chunkPrefab;
-    GameObject entityPrefab;
+    public GameObject entityPrefab;
     GameObject cameraPrefab;
     public string worldName = "world";
     public int seed = 1;
     TerrainGen terrainGen;
     public Dictionary<int, WorldPos> chunkPlaces = new Dictionary<int, WorldPos>();
+
+    public void PositionEntity(Vector3 pos) {
+        entities[0].movement.Start(entities[0].transform.position, 5, pos);
+        Debug.Log("exex");
+    }
 
     private void Start()
     {

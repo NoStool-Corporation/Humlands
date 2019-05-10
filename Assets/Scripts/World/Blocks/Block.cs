@@ -10,7 +10,6 @@ public enum Direction { NORTH, EAST, SOUTH, WEST, UP, DOWN };
 [Serializable]
 public class Block
 {
-    public Type id;
     public bool changed = true;
 	public int workToBreak;
 
@@ -19,7 +18,6 @@ public class Block
 
     public Block()
     {
-        id = this.GetType();
     }
 
     /// <summary>
